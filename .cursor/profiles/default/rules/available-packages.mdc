@@ -1,0 +1,94 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Available Packages and Dependencies
+
+## Core 
+### Next.js and React
+- next (v15.3.5) — App Router, SSR, API routes
+- react (v19.0.0)
+- react-dom (v19.0.0)
+
+### UI Framework
+- Shadcn
+- Emotion (v11.14.x)
+  - @emotion/react
+  - @emotion/styled
+
+### Data Fetching and State Management
+- @tanstack/react-query (v5.81.5) — for all client-side data fetching and caching
+- @tanstack/react-query-devtools (v5.81.5) — devtools for React Query
+- @tanstack/react-table (latest) — powerful table/data grid functionality for ReUI Data Grid
+
+### Drag and Drop
+- @dnd-kit/core (latest) — drag and drop functionality for interactive tables
+- @dnd-kit/sortable (latest) — sortable lists and table rows/columns
+- @dnd-kit/utilities (latest) — utilities for drag and drop operations
+
+### Utilities
+- date-fns (v4.1.0) — date utilities
+- lucide-react (v0.525.0) — primary icon library
+- uuid (v11.1.0) — unique IDs
+
+### Data Visualization (NEW)
+- Recharts (v2.x or latest) — A composable charting library built on React components, ideal for creating interactive and customizable charts for dashboards.
+
+- D3.js (v7.x or latest) — While not a direct React component library, D3 provides powerful low-level primitives for complex, custom data visualizations. Use it judiciously for highly specific or performance-critical charts that Recharts cannot easily achieve.
+
+- Tremor (v2.x or latest) — For ready-to-use, aesthetically pleasing dashboard components and simple charts, designed to be visually appealing out-of-the-box.
+
+### ✨ Animations & Interactions (INSTALLED)
+- framer-motion (v12.x or latest) — ✅ INSTALLED - A production-ready motion library for React. It makes adding animations, gestures, and interactive elements to your UI significantly simpler and more performant, crucial for a fluid "bolt.new" feel.
+## Development Dependencies
+
+### TypeScript and Types
+- typescript (v5.x)
+- @types/node (v20.x)
+- @types/react (v19.x)
+- @types/react-dom (v19.x)
+- @types/uuid (v10.0.0)
+- @types/recharts (latest) — Type definitions for Recharts (required for TypeScript)
+- @types/d3 (latest) — Type definitions for D3.js (if used directly)
+- framer-motion includes built-in TypeScript types (no separate @types package needed)
+
+
+
+### Linting and Code Quality
+- eslint (v9.x)
+- eslint-config-next (v15.3.5)
+- @eslint/eslintrc (v3.x)
+
+## Usage Guidelines
+
+1. **Version Management**
+   - All packages are managed through npm.
+   - Use exact versions for critical dependencies.
+   - Keep dependencies up to date with security patches.
+
+2. **Package Selection**
+   - Prefer official packages over community alternatives.
+   - Use Lucide icons first; use Shadcn icons only if Lucide does not provide the required icon.
+   - Ensure TypeScript support for all packages.
+   - For Charts: Prioritize Tremor for simple dashboard elements and Recharts for more complex, customizable charts. Use D3.js only for highly custom, performance-critical visualizations where Recharts is insufficient.
+
+   - For Animations: Use Framer Motion for all UI animations and gestures to ensure consistency and performance. ✅ INSTALLED and ready to use.
+
+   - For Tables/Data Grids: Always use ReUI Data Grid (built on TanStack Table + shadcn) for any table or data grid requests. It provides advanced features like sorting, filtering, pagination, drag & drop, and beautiful styling out of the box. ✅ INSTALLED and ready to use.
+
+3. **Development Workflow**
+   - Use provided scripts in package.json:
+     - Development: `npm run dev`
+     - Production build: `npm run build`
+     - Start production server: `npm run start`
+     - Lint: `npm run lint`
+   - Follow ESLint and Prettier configurations.
+
+4. **Build Process**
+   - Use Next.js build and dev scripts as above.
+
+5. **Project Conventions**
+   - Use the App Router (`src/app/`) for routing and API routes.
+   - Place all API routes in `src/app/api/`.
+   - Use React Query for all client-side data fetching; do not use SWR or direct fetch in client components. 

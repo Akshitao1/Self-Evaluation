@@ -1,0 +1,195 @@
+---
+description: Datepicker
+alwaysApply: false
+---
+# Joveo Datepicker Component Rules
+
+## Component Implementation
+
+### DateRangePicker with Preset Options
+```typescript
+import { cn } from "@/lib/utils"
+import { format, subDays } from "date-fns"
+import { Calendar as CalendarIcon } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { useState } from "react"
+
+interface DateRangePickerProps {
+  dateRange: {
+    from?: Date
+    to?: Date
+  }
+  onDateRangeChange: (range: { from?: Date; to?: Date }) => void
+  disabled?: boolean
+  className?: string
+}
+
+const DateRangePicker = ({
+  dateRange,
+  onDateRangeChange,
+  disabled,
+  className,
+}: DateRangePickerProps) => {
+  const today = new Date()
+  
+  const presetOptions = [
+    { label: "Last 7 days", value: "7d", from: subDays(today, 7), to: today },
+    { label: "Last 15 days", value: "15d", from: subDays(today, 15), to: today },
+    { label: "Last 30 days", value: "30d", from: subDays(today, 30), to: today },
+    { label: "Last month", value: "1m", from: subDays(today, 30), to: today },
+    { label: "Custom range", value: "custom", from: dateRange.from, to: dateRange.to },
+  ]
+  
+  const [activePreset, setActivePreset] = useState("30d")
+  
+  const handlePresetChange = (value: string) => {
+    setActivePreset(value)
+    
+    if (value === "custom") {
+      return // Don't change the range, just switch to custom mode
+    }
+    
+    const preset = presetOptions.find(option => option.value === value)
+    if (preset) {
+      onDateRangeChange({ from: preset.from, to: preset.to })
+    }
+  }
+  
+  return (
+    <div className={cn("flex flex-col gap-2", className)}>
+      <Select value={activePreset} onValueChange={handlePresetChange}>
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Select range" />
+        </SelectTrigger>
+        <SelectContent>
+          {presetOptions.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      
+      {activePreset === "custom" && (
+        <div className="flex items-center gap-2">
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            disabled={disabled}
+            className={cn(
+              "w-[160px] justify-start text-left font-normal",
+              !dateRange.from && "text-gray-500"
+            )}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4 text-gray-500" />
+                {dateRange.from ? format(dateRange.from, "MMM d, yyyy") : "Start date"}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            mode="single"
+            selected={dateRange.from}
+                onSelect={(date) => onDateRangeChange({ ...dateRange, from: date })}
+            initialFocus
+          />
+        </PopoverContent>
+      </Popover>
+      <span className="text-gray-500">to</span>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            disabled={disabled}
+            className={cn(
+              "w-[160px] justify-start text-left font-normal",
+              !dateRange.to && "text-gray-500"
+            )}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4 text-gray-500" />
+                {dateRange.to ? format(dateRange.to, "MMM d, yyyy") : "End date"}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            mode="single"
+            selected={dateRange.to}
+                onSelect={(date) => onDateRangeChange({ ...dateRange, to: date })}
+            initialFocus
+                disabled={(date) => dateRange.from ? date < dateRange.from : false}
+          />
+        </PopoverContent>
+      </Popover>
+        </div>
+      )}
+      
+      {activePreset !== "custom" && (
+        <div className="text-sm text-gray-500">
+          {dateRange.from && dateRange.to && 
+            `${format(dateRange.from, "MMM d, yyyy")} - ${format(dateRange.to, "MMM d, yyyy")}`
+          }
+        </div>
+      )}
+    </div>
+  )
+}
+```
+
+## Design Specifications
+
+### Colors
+- Primary: #303F9F (Selected dates, today indicator)
+- Primary Lighter: #E8EAF6 (Range highlight)
+- Background: #FFFFFF (Calendar background)
+- Text: #3D4759 (Date numbers), #718096 (Labels), #A0AEC0 (Disabled)
+
+### Typography & Spacing
+- Font: SF Pro Text (Regular 14px, Medium for selected dates)
+- Calendar Padding: 16px
+- Date Cell: 32px x 32px with 4px gap
+- Border Radius: 4px (buttons, cells), 8px (container)
+
+## Component States & Usage
+
+### States
+```typescript
+dateCellStates: {
+  default: "text-gray-700 hover:bg-gray-100",
+  selected: "bg-primary text-white hover:bg-primary-dark",
+  today: "border border-primary text-primary",
+  disabled: "text-gray-300 cursor-not-allowed",
+  inRange: "bg-primary-lighter text-primary"
+}
+```
+
+### Best Practices
+1. **Default Options**
+   - Always include preset date ranges:
+     - Last 7 days
+     - Last 15 days
+     - Last 30 days
+     - Last month
+     - Custom range (for manual selection)
+   - Show selected date range in consistent format
+
+2. **Accessibility & Responsiveness**
+   - Include ARIA labels and keyboard navigation
+   - Adjust calendar size for mobile devices
+   - Show validation errors clearly
+
+3. **Performance**
+   - Lazy load calendar component
+   - Optimize re-renders with memoization

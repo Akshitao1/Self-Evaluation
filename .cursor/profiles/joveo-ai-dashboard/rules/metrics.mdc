@@ -1,0 +1,109 @@
+# Joveo Metrics Specification
+
+## Metric Card Structure
+```typescript
+interface MetricCardProps {
+  title: string;
+  description?: string;
+  value: string | number;
+  delta?: { value: number; trend: 'up' | 'down' | 'flat' };
+  chart?: React.ReactNode; // Sparkline or tiny chart only
+  footer?: React.ReactNode;
+  loading?: boolean;
+  error?: string | null;
+}
+```
+
+## Visual Tokens
+- Colors:
+  - Title/Text: `#3D4759`
+  - Delta Up: `#43A047`
+  - Delta Down: `#E53935`
+  - Border: `#E2E6F1`
+  - Background: `#FFFFFF`
+- Typography:
+  - Title: SF Pro Text, 14px/20px, 600
+  - Value: SF Pro Text, 24px/32px, 600
+  - Delta: SF Pro Text, 12px/18px, 500
+  - Meta/Secondary: SF Pro Text, 12px/16px, 400
+- Layout:
+  - Card Radius: 4px
+  - Card Padding: 24px
+  - Grid: 4-column layout for dashboard metrics
+  - Shadow: subtle elevation only
+
+## Exact Layout Rules
+```tsx
+<Card className="bg-white rounded-[4px] shadow-sm p-6 border border-[#E2E6F1]">
+  <div className="flex justify-between items-start mb-4">
+    <div className="space-y-1">
+      <Typography variant="label" className="text-[#3D4759]">{title}</Typography>
+      <div className="flex items-center gap-2">
+        <Typography variant="h1" className="text-[#1C2536]">{value}</Typography>
+        {delta && (
+          <span
+            className={cn(
+              'text-[12px] leading-[18px] font-medium',
+              delta.trend === 'up' && 'text-[#43A047]',
+              delta.trend === 'down' && 'text-[#E53935]',
+              delta.trend === 'flat' && 'text-[#718096]'
+            )}
+          >
+            {delta.value}%
+          </span>
+        )}
+      </div>
+    </div>
+    {description && <InfoTooltip content={description} />}
+  </div>
+  {chart && <div className="h-[64px]">{chart}</div>}
+  {footer && <div className="mt-4 text-[#718096] text-[12px] leading-[16px]">{footer}</div>}
+</Card>
+```
+
+## Loading & Error States
+```tsx
+{loading ? (
+  <Card className="bg-white rounded-[4px] shadow-sm p-6 border border-[#E2E6F1]">
+    <div className="space-y-3">
+      <Skeleton className="h-4 w-24" />
+      <Skeleton className="h-8 w-32" />
+      <Skeleton className="h-[64px] w-full" />
+    </div>
+  </Card>
+) : error ? (
+  <Card className="bg-white rounded-[4px] shadow-sm p-6 border border-[#E2E6F1]">
+    <div className="text-[#E53935] text-[12px] leading-[16px]">{error}</div>
+  </Card>
+) : (
+  /* Render standard card as above */
+  null
+)}
+```
+
+## Grid Rules
+- Always render metric cards in a 4-column responsive grid.
+- Maintain consistent height across all metric cards.
+- Only tiny inline charts (sparklines) are allowed; no large charts inside metric cards.
+
+## Forbidden
+- No gradients, custom animations, or non-standard colors.
+- No custom component variants; use prebuilt Joveo `Card`, `Typography`, `Skeleton`, and `InfoTooltip`.
+
+## Example Sparkline
+```tsx
+<div className="h-[64px]">
+  <MetricSparkline data={data} color="#303F9F" background="#E8EAF6" />
+  {/* The sparkline component must adhere to tokens in design.json */}
+  {/* Axis labels and legends are not shown for inline metric sparklines */}
+  {/* Tooltip is optional and must follow chart interaction rules */}
+  {/* Keep padding tight to fit in 64px height */}
+  {/* No gridlines inside metric sparkline */}
+  {/* Colors must be from series.primary/secondary */}
+  {/* Typography must be SF Pro Text with approved sizes */}
+  {/* Border radius follows Card container only */}
+  {/* No shadows inside sparkline canvas */}
+  {/* Loading skeleton is mandatory while fetching */}
+</div>
+```
+

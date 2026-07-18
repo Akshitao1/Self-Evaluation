@@ -1,0 +1,191 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Cursor Rules Directory
+
+This directory contains specialized development rules for different aspects of the codebase.
+
+## 📁 Available Rule Files
+
+### 🔐 [aws-secrets.md](mdc:aws-secrets.md)
+**AWS Secrets Manager Development Rules**
+Comprehensive guide for secure secret management with general patterns that apply across all services.
+
+### ❄️ [snowflake.md](mdc:snowflake.md)
+**Snowflake Integration Rules**
+- SSH key authentication with JWT
+- Connection pooling and query optimization
+- Data warehouse specific patterns
+- SQL injection prevention
+- Schema and table management
+
+**Use when:** Building Snowflake data integrations, analytics dashboards, or data pipeline features.
+
+### 🎫 [jira.md](mdc:jira.md)
+**Jira Integration Rules**
+- API token authentication
+- Webhook validation and processing
+- Issue management and project operations
+- Rate limiting and error handling
+- JQL query safety
+
+**Use when:** Creating Jira integrations, issue tracking features, or project management tools.
+
+### 📊 [google-sheets.md](mdc:google-sheets.md)
+**Google Sheets Integration Rules**
+- Service account authentication
+- Spreadsheet reading and writing
+- Batch processing and quota management
+- CSV import/export functionality
+- Google Drive integration
+
+**Use when:** Building spreadsheet integrations, data import/export features, or reporting tools.
+
+### 🐘 [postgres.md](mdc:postgres.md)
+**PostgreSQL Integration Rules**
+- Connection pooling with pg library
+- Transaction management and safety
+- CRUD operations and query building
+- Migration support and health checks
+- SQL injection prevention
+
+**Use when:** Working with PostgreSQL databases, building data models, or creating database APIs.
+
+## 🎯 How to Use These Rules
+
+### 1. **Reference in prompts**
+Mention the specific rule file when asking for help:
+- *"Following the Snowflake cursor rules, create a data analytics API"*
+- *"Add Jira webhook handling using the Jira cursor rules"*
+- *"Create a Google Sheets import feature following the Google Sheets patterns"*
+
+### 2. **Combined Integrations**
+When building features that use multiple services:
+- *"Create a dashboard that combines Jira issues and Snowflake data following both cursor rules"*
+- *"Build a data pipeline from Google Sheets to PostgreSQL using both rule sets"*
+
+### 3. **Security First**
+All service-specific rules inherit from the AWS secrets patterns:
+- Server-side only credential access
+- Proper error logging without credential exposure
+- Type-safe configuration management
+- Connection pooling and resource cleanup
+
+## 🔧 Quick Reference
+
+### Common Patterns Across All Services:
+
+```typescript
+// ✅ Configuration Pattern
+// src/lib/secrets/[service].ts
+export async function get[Service]Config(): Promise<[Service]Config> {
+  return {
+    // Service-specific secrets from AWS Secrets Manager
+  };
+}
+
+// ✅ Connection Pattern  
+// src/lib/connections/[service].ts
+export async function create[Service]Client() {
+  const config = await get[Service]Config();
+  // Return configured client
+}
+
+// ✅ Service Pattern
+// src/lib/services/[service]-service.ts
+export class [Service]Service {
+  static async operation() {
+    return withServiceConnection(
+      '[Service]',
+      () => create[Service]Client(),
+      async (client) => {
+        // Business logic
+      }
+    );
+  }
+}
+```
+
+## 🚨 Security Rules (Apply to ALL Services)
+
+### ❌ **NEVER DO:**
+- Access secrets in client components (`'use client'`)
+- Log credential values in console
+- Return credentials in API responses
+- Use string interpolation for SQL/queries
+
+### ✅ **ALWAYS DO:**
+- Use server-side API routes only
+- Parameterize all queries/requests
+- Implement proper error handling
+- Clean up connections in finally blocks
+
+## 🔄 Adding New Service Rules
+
+When creating new service-specific rule files:
+
+1. **Follow the established pattern:**
+   - Core Principles section
+   - Secret Structure with AWS Secrets Manager JSON
+   - Implementation Patterns (Config → Connection → Service)
+   - Security Best Practices (Never/Always examples)
+   - Error Handling patterns
+   - File Structure recommendations
+   - Debugging utilities
+   - Common patterns with real examples
+   - Cursor prompt helpers
+   - Validation checklist
+
+2. **Use descriptive filename:** `service-name.md`
+
+3. **Add reference in this README**
+
+4. **Include practical examples** - Real TypeScript code, not pseudo-code
+
+5. **Link from main `.cursorrules`** if widely used
+
+## 🎉 Integration Examples
+
+### Multi-Service Dashboard
+```typescript
+// Combining multiple services following their respective rules
+export default async function IntegratedDashboard() {
+  const [jiraIssues, snowflakeData, sheetsData] = await Promise.all([
+    JiraService.searchIssues('project = PROJ'),
+    SnowflakeService.executeQuery('SELECT * FROM metrics'),
+    GoogleSheetsService.readSheet(SHEET_ID, 'A1:Z100')
+  ]);
+
+  // Render combined data...
+}
+```
+
+### Data Pipeline API
+```typescript
+// src/app/api/data-pipeline/route.ts
+export async function POST() {
+  return DatabaseService.transaction(async (query) => {
+    // Read from Google Sheets
+    const sheets = await GoogleSheetsService.readSheet(SHEET_ID, 'A1:Z1000');
+    
+    // Process and validate data
+    const processedData = processSheetData(sheets.values);
+    
+    // Store in PostgreSQL
+    for (const row of processedData) {
+      await query('INSERT INTO imported_data (data) VALUES ($1)', [row]);
+    }
+    
+    // Create Jira ticket for completion
+    await JiraService.createIssue({
+      projectKey: 'DATA',
+      summary: `Data import completed: ${processedData.length} rows`,
+      issueType: 'Task'
+    });
+  });
+}
+```
+
+This modular approach ensures consistent, secure, and maintainable integrations across your entire application. 

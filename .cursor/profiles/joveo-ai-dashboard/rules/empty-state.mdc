@@ -1,0 +1,166 @@
+---
+description: empty null 
+alwaysApply: false
+---
+  primaryAction?: {
+    label: string
+    onClick: () => void
+  }
+  secondaryAction?: {
+    label: string
+    onClick: () => void
+  }
+  helpAction?: {
+    label: string
+    onClick: () => void
+  }
+  className?: string
+}
+
+const EmptyState = ({
+  variant,
+  title,
+  description,
+  primaryAction,
+  secondaryAction,
+  helpAction,
+  className
+}: EmptyStateProps) => {
+  const illustration = {
+    "no-data": NoDataIllustration,
+    "error": ErrorIllustration,
+    "access-denied": AccessDeniedIllustration,
+    "timeout": TimeoutIllustration,
+    "not-found": NotFoundIllustration,
+    "server-error": ServerErrorIllustration,
+    "maintenance": MaintenanceIllustration
+  }[variant]
+
+  return (
+    <div className={cn(
+      "flex flex-col items-center justify-center p-6 text-center",
+      className
+    )}>
+      {/* Illustration */}
+      <div className="w-48 h-40 mb-4">
+        {illustration}
+      </div>
+
+      {/* Content */}
+      <div className="space-y-4 max-w-md">
+        <h3 className="text-xl font-semibold text-gray-900">
+          {title}
+        </h3>
+        <p className="text-sm text-gray-600">
+          {description}
+        </p>
+      </div>
+
+      {/* Actions */}
+      <div className="mt-6 space-y-3">
+        <div className="flex gap-2">
+          {secondaryAction && (
+            <Button
+              variant="outline"
+              className="bg-primary-lighter text-primary hover:bg-primary-lighter/80"
+              onClick={secondaryAction.onClick}
+            >
+              {secondaryAction.label}
+            </Button>
+          )}
+          {primaryAction && (
+            <Button
+              variant="default"
+              className="bg-primary text-white hover:bg-primary/90"
+              onClick={primaryAction.onClick}
+            >
+              {primaryAction.label}
+            </Button>
+          )}
+        </div>
+        {helpAction && (
+          <Button
+            variant="link"
+            className="text-gray-700 hover:text-gray-900"
+            onClick={helpAction.onClick}
+          >
+            {helpAction.label}
+          </Button>
+        )}
+      </div>
+    </div>
+  )
+}
+```
+
+### Usage Examples
+```typescript
+// No Data State
+<EmptyState
+  variant="no-data"
+  title="No data available"
+  description="There's no data to display at the moment. Try adjusting your filters or adding new data."
+  primaryAction={{
+    label: "Add Data",
+    onClick: () => {}
+  }}
+  secondaryAction={{
+    label: "Adjust Filters",
+    onClick: () => {}
+  }}
+  helpAction={{
+    label: "Learn how",
+    onClick: () => {}
+  }}
+/>
+
+// Error State
+<EmptyState
+  variant="error"
+  title="Something went wrong"
+  description="We encountered an error while processing your request. Please try again or contact support if the issue persists."
+  primaryAction={{
+    label: "Try Again",
+    onClick: () => {}
+  }}
+  helpAction={{
+    label: "Contact Support",
+    onClick: () => {}
+  }}
+/>
+```
+
+### Usage Guidelines
+1. Use for zero-state screens, error states, and no-results scenarios
+2. Include clear, actionable titles and descriptions
+3. Provide relevant primary and secondary actions
+4. Use appropriate illustrations for different states
+5. Maintain consistent spacing and alignment
+6. Keep content concise and helpful
+7. Include help or learn more links when needed
+
+### Accessibility Considerations
+- Use semantic heading structure
+- Ensure proper focus management for actions
+- Provide descriptive button labels
+- Include ARIA labels where needed
+- Support keyboard navigation
+- Maintain sufficient color contrast
+
+### Best Practices
+1. Choose appropriate variant for the context
+2. Write clear and helpful error messages
+3. Provide actionable next steps
+4. Use consistent illustration style
+5. Implement proper loading states
+6. Handle responsive layouts
+7. Maintain consistent action placement
+
+### Styling Guidelines
+1. Use consistent spacing
+2. Apply proper typography hierarchy
+3. Implement clear visual hierarchy
+4. Style buttons consistently
+5. Handle illustration sizing
+6. Maintain proper alignment
+7. Consider mobile viewports

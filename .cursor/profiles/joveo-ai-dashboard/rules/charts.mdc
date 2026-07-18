@@ -1,0 +1,373 @@
+# Axis and Legend Rules for Joveo Charts
+
+## Axis Configuration
+
+### X-Axis Rules
+```typescript
+interface XAxisConfig {
+  // Label Configuration
+  label: {
+    text: string;
+    position: 'end';  // Always at the bottom
+    padding: number;  // 16px from axis
+    font: {
+      family: 'SF Pro Text';
+      size: 12;
+      weight: 500;
+      color: '#718096';
+    };
+    truncate: {
+      maxLength: 16;
+      suffix: '...';
+    };
+  };
+
+  // Tick Configuration
+  ticks: {
+    font: {
+      family: 'SF Pro Text';
+      size: 11;
+      weight: 400;
+      color: '#718096';
+    };
+    padding: 8;
+    maxRotation: 0;  // No rotation by default
+    autoSkip: true;
+    autoSkipPadding: 16;
+    maxTicksLimit: 8;  // Maximum ticks to show
+    align: 'center';
+    crossAlign: 'far';
+  };
+
+  // Grid Configuration
+  grid: {
+    display: false;  // No vertical gridlines
+    drawBorder: false;
+    drawTicks: true;
+    tickLength: 4;
+    tickColor: '#E2E6F1';
+  };
+
+  // Border Configuration
+  border: {
+    display: true;
+    color: '#E2E6F1';
+    width: 1;
+    dash: [];  // Solid line
+  };
+}
+```
+
+### Y-Axis Rules
+```typescript
+interface YAxisConfig {
+  // Label Configuration
+  label: {
+    text: string;
+    position: 'start';  // Always at the left
+    padding: 16;
+    font: {
+      family: 'SF Pro Text';
+      size: 12;
+      weight: 500;
+      color: '#718096';
+    };
+  };
+
+  // Tick Configuration
+  ticks: {
+    font: {
+      family: 'SF Pro Text';
+      size: 11;
+      weight: 400;
+      color: '#718096';
+    };
+    padding: 8;
+    maxTicksLimit: 6;
+    stepSize: 'auto';
+    includeBounds: true;
+    align: 'end';
+    crossAlign: 'near';
+    callback: (value: number) => string;  // Format numbers
+  };
+
+  // Grid Configuration
+  grid: {
+    display: true;
+    color: '#E2E6F1';
+    lineWidth: 1;
+    drawBorder: true;
+    drawTicks: true;
+    tickLength: 4;
+    tickColor: '#E2E6F1';
+    offset: true;
+    borderDash: [4, 4];
+  };
+
+  // Border Configuration
+  border: {
+    display: true;
+    color: '#E2E6F1';
+    width: 1;
+    dash: [];  // Solid line
+  };
+}
+```
+
+## Legend Rules
+
+### Position & Layout
+```typescript
+interface LegendConfig {
+  position: 'right' | 'bottom';
+  align: 'start' | 'center' | 'end';
+  
+  // Spacing
+  padding: {
+    top: 0;
+    right: 16;
+    bottom: 0;
+    left: 16;
+  };
+  
+  // Item Configuration
+  item: {
+    gap: 8;  // Space between symbol and text
+    padding: 4;  // Padding around each item
+    marginBottom: 8;  // Space between items
+  };
+}
+```
+
+### Visual Style
+```typescript
+interface LegendStyleConfig {
+  // Symbol/Marker Style
+  symbol: {
+    type: 'circle' | 'rect';
+    size: 12;
+    radius: 2;  // For rect type
+    borderWidth: 0;
+  };
+
+  // Text Style
+  text: {
+    font: {
+      family: 'SF Pro Text';
+      size: 12;
+      weight: 400;
+      color: '#3D4759';
+    };
+    padding: 0;
+    textAlign: 'left';
+  };
+
+  // Container Style
+  container: {
+    backgroundColor: 'transparent';
+    borderWidth: 0;
+    borderRadius: 0;
+    padding: 0;
+  };
+}
+```
+
+### Interaction Rules
+```typescript
+interface LegendInteractionConfig {
+  // Hover State
+  hover: {
+    symbol: {
+      opacity: 0.8;
+    };
+    text: {
+      color: '#303F9F';
+    };
+  };
+
+  // Selected State
+  selected: {
+    symbol: {
+      opacity: 0.3;
+    };
+    text: {
+      color: '#718096';
+    };
+  };
+}
+```
+
+## Number Formatting Rules
+
+### Value Formatters
+```typescript
+const formatters = {
+  // Large Numbers
+  compact: (value: number): string => {
+    const formatter = new Intl.NumberFormat('en-US', {
+      notation: 'compact',
+      maximumFractionDigits: 1
+    });
+    return formatter.format(value);
+  },
+
+  // Percentages
+  percentage: (value: number): string => {
+    return `${value.toFixed(1)}%`;
+  },
+
+  // Currency
+  currency: (value: number): string => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(value);
+  },
+
+  // Decimal Numbers
+  decimal: (value: number): string => {
+    return value.toLocaleString('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    });
+  }
+};
+```
+
+## Implementation Examples
+
+### Bar Chart Axis
+```typescript
+const barChartConfig = {
+  scales: {
+    x: {
+      title: {
+        display: true,
+        text: 'Categories',
+        padding: { top: 16 },
+        font: {
+          size: 12,
+          weight: 500,
+          color: '#718096'
+        }
+      },
+      ticks: {
+        font: {
+          size: 11,
+          color: '#718096'
+        },
+        padding: 8
+      },
+      grid: {
+        display: false
+      },
+      border: {
+        color: '#E2E6F1'
+      }
+    },
+    y: {
+      title: {
+        display: true,
+        text: 'Values',
+        padding: { right: 16 },
+        font: {
+          size: 12,
+          weight: 500,
+          color: '#718096'
+        }
+      },
+      ticks: {
+        font: {
+          size: 11,
+          color: '#718096'
+        },
+        padding: 8,
+        callback: (value) => formatters.compact(value)
+      },
+      grid: {
+        color: '#E2E6F1',
+        lineWidth: 1,
+        borderDash: [4, 4]
+      }
+    }
+  },
+  plugins: {
+    legend: {
+      position: 'right',
+      align: 'start',
+      padding: { left: 16 },
+      labels: {
+        font: {
+          size: 12,
+          color: '#3D4759'
+        },
+        padding: 16,
+        usePointStyle: true,
+        pointStyle: 'circle'
+      }
+    }
+  }
+};
+```
+
+### Line Chart Axis
+```typescript
+const lineChartConfig = {
+  scales: {
+    x: {
+      type: 'time',
+      time: {
+        unit: 'day',
+        displayFormats: {
+          day: 'MMM d'
+        }
+      },
+      title: {
+        display: true,
+        text: 'Date',
+        padding: { top: 16 },
+        font: {
+          size: 12,
+          weight: 500,
+          color: '#718096'
+        }
+      },
+      ticks: {
+        font: {
+          size: 11,
+          color: '#718096'
+        },
+        maxTicksLimit: 8
+      },
+      grid: {
+        display: false
+      }
+    },
+    y: {
+      title: {
+        display: true,
+        text: 'Value',
+        padding: { right: 16 },
+        font: {
+          size: 12,
+          weight: 500,
+          color: '#718096'
+        }
+      },
+      ticks: {
+        font: {
+          size: 11,
+          color: '#718096'
+        },
+        callback: (value) => formatters.compact(value)
+      },
+      grid: {
+        color: '#E2E6F1',
+        borderDash: [4, 4]
+      }
+    }
+  }
+};
+```

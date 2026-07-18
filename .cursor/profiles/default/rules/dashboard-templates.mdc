@@ -1,0 +1,418 @@
+---
+alwaysApply: true
+priority: P1
+---
+# Dashboard Templates - Professional Analytics & Admin Panels
+
+## 🎯 DASHBOARD DESIGN PHILOSOPHY
+Create dashboards that feel premium, trustworthy, and provide clear insights at a glance.
+
+## 📊 CORE DASHBOARD PATTERNS
+
+### **1. Analytics Dashboard Layout**
+```tsx
+// Complete Analytics Dashboard Template
+export default function AnalyticsDashboard() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      {/* Header Section */}
+      <div className="bg-white/95 backdrop-blur-sm border-b border-slate-200/50 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+                Analytics Dashboard
+              </h1>
+              <p className="text-slate-600 mt-1">Real-time insights and performance metrics</p>
+            </div>
+            <div className="flex items-center space-x-3">
+              <DateRangePicker />
+              <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700">
+                Export Report
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Metrics Grid */}
+      <div className="max-w-7xl mx-auto p-6 space-y-8">
+        {/* Key Metrics Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <MetricCard
+            title="Total Revenue"
+            value="$45,231.89"
+            change="+20.1%"
+            changeType="positive"
+            icon={DollarSignIcon}
+            gradient="from-emerald-500 to-teal-500"
+          />
+          <MetricCard
+            title="Active Users"
+            value="12,234"
+            change="+15.3%"
+            changeType="positive"
+            icon={UsersIcon}
+            gradient="from-blue-500 to-indigo-500"
+          />
+          <MetricCard
+            title="Conversion Rate"
+            value="3.24%"
+            change="-2.1%"
+            changeType="negative"
+            icon={TrendingUpIcon}
+            gradient="from-purple-500 to-pink-500"
+          />
+          <MetricCard
+            title="Avg. Session"
+            value="4m 32s"
+            change="+5.4%"
+            changeType="positive"
+            icon={ClockIcon}
+            gradient="from-orange-500 to-red-500"
+          />
+        </div>
+
+        {/* Charts Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <RevenueChart className="lg:col-span-2" />
+          <TopProductsCard />
+        </div>
+
+        {/* Data Tables */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <RecentTransactionsTable />
+          <UserActivityTable />
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### **2. Metric Card Component**
+```tsx
+interface MetricCardProps {
+  title: string;
+  value: string;
+  change: string;
+  changeType: 'positive' | 'negative' | 'neutral';
+  icon: LucideIcon;
+  gradient: string;
+}
+
+export const MetricCard = ({ title, value, change, changeType, icon: Icon, gradient }: MetricCardProps) => {
+  const changeColors = {
+    positive: 'text-emerald-600 bg-emerald-50',
+    negative: 'text-red-600 bg-red-50',
+    neutral: 'text-slate-600 bg-slate-50'
+  };
+
+  return (
+    <Card className="group bg-white/95 backdrop-blur-sm border border-slate-200/50 hover:border-blue-300/50 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1">
+      <CardContent className="p-6">
+        <div className="flex items-start justify-between">
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-slate-600">{title}</p>
+            <p className="text-3xl font-bold text-slate-900">{value}</p>
+            <div className={cn(
+              "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
+              changeColors[changeType]
+            )}>
+              {changeType === 'positive' ? (
+                <TrendingUpIcon className="w-3 h-3 mr-1" />
+              ) : changeType === 'negative' ? (
+                <TrendingDownIcon className="w-3 h-3 mr-1" />
+              ) : (
+                <MinusIcon className="w-3 h-3 mr-1" />
+              )}
+              {change} from last month
+            </div>
+          </div>
+          <div className={cn(
+            "h-12 w-12 rounded-lg flex items-center justify-center bg-gradient-to-br",
+            gradient
+          )}>
+            <Icon className="w-6 h-6 text-white" />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+```
+
+### **3. Interactive Chart Component**
+```tsx
+export const RevenueChart = ({ className }: { className?: string }) => {
+  const [timeframe, setTimeframe] = useState('30d');
+  
+  return (
+    <Card className={cn("bg-white/95 backdrop-blur-sm border border-slate-200/50", className)}>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="text-xl font-bold text-slate-900">Revenue Overview</CardTitle>
+            <CardDescription className="text-slate-600">
+              Track your revenue performance over time
+            </CardDescription>
+          </div>
+          <div className="flex items-center space-x-2">
+            {['7d', '30d', '90d'].map((period) => (
+              <Button
+                key={period}
+                variant={timeframe === period ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setTimeframe(period)}
+                className={timeframe === period ? 
+                  'bg-gradient-to-r from-blue-600 to-indigo-600 text-white' : 
+                  'hover:bg-blue-50'
+                }
+              >
+                {period}
+              </Button>
+            ))}
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <ResponsiveContainer width="100%" height={350}>
+          <AreaChart data={revenueData}>
+            <defs>
+              <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
+                <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
+              </linearGradient>
+              <linearGradient id="colorProfit" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#10B981" stopOpacity={0.3}/>
+                <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+            <XAxis 
+              dataKey="month" 
+              stroke="#64748b"
+              fontSize={12}
+              tickLine={false}
+              axisLine={false}
+            />
+            <YAxis 
+              stroke="#64748b"
+              fontSize={12}
+              tickLine={false}
+              axisLine={false}
+              tickFormatter={(value) => `$${value}k`}
+            />
+            <Tooltip 
+              contentStyle={{
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(10px)',
+                border: 'none',
+                borderRadius: '12px',
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
+              }}
+              labelStyle={{ color: '#1e293b', fontWeight: 600 }}
+            />
+            <Area
+              type="monotone"
+              dataKey="revenue"
+              stroke="#3B82F6"
+              strokeWidth={3}
+              fill="url(#colorRevenue)"
+              animationDuration={1500}
+            />
+            <Area
+              type="monotone"
+              dataKey="profit"
+              stroke="#10B981"
+              strokeWidth={3}
+              fill="url(#colorProfit)"
+              animationDuration={1500}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </CardContent>
+    </Card>
+  );
+};
+```
+
+## 🎛️ DASHBOARD COMPONENT LIBRARY
+
+### **Filter & Search Panel**
+```tsx
+export const DashboardFilters = () => {
+  return (
+    <Card className="bg-white/95 backdrop-blur-sm border border-slate-200/50 mb-6">
+      <CardContent className="p-4">
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="flex items-center space-x-2">
+            <SearchIcon className="w-4 h-4 text-slate-500" />
+            <Input
+              placeholder="Search transactions..."
+              className="w-64 border-slate-200 focus:border-blue-500 focus:ring-blue-500/20"
+            />
+          </div>
+          
+          <Select defaultValue="all-status">
+            <SelectTrigger className="w-40">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all-status">All Status</SelectItem>
+              <SelectItem value="completed">Completed</SelectItem>
+              <SelectItem value="pending">Pending</SelectItem>
+              <SelectItem value="failed">Failed</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select defaultValue="last-30-days">
+            <SelectTrigger className="w-40">
+              <SelectValue placeholder="Date Range" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="last-7-days">Last 7 days</SelectItem>
+              <SelectItem value="last-30-days">Last 30 days</SelectItem>
+              <SelectItem value="last-90-days">Last 90 days</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Button 
+            variant="outline" 
+            className="hover:bg-blue-50 hover:border-blue-300"
+          >
+            <FilterIcon className="w-4 h-4 mr-2" />
+            More Filters
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+```
+
+### **Data Table with Actions**
+```tsx
+export const EnhancedDataTable = ({ data, columns, title }: DataTableProps) => {
+  return (
+    <Card className="bg-white/95 backdrop-blur-sm border border-slate-200/50">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg font-semibold text-slate-900">{title}</CardTitle>
+          <div className="flex items-center space-x-2">
+            <Button variant="outline" size="sm" className="hover:bg-blue-50">
+              <DownloadIcon className="w-4 h-4 mr-2" />
+              Export
+            </Button>
+            <Button variant="outline" size="sm" className="hover:bg-blue-50">
+              <RefreshCwIcon className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="border-slate-200">
+                {columns.map((column) => (
+                  <TableHead key={column.key} className="font-semibold text-slate-700">
+                    {column.title}
+                  </TableHead>
+                ))}
+                <TableHead className="w-20">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {data.map((row, index) => (
+                <TableRow 
+                  key={index} 
+                  className="border-slate-100 hover:bg-blue-50/50 transition-colors duration-200"
+                >
+                  {columns.map((column) => (
+                    <TableCell key={column.key} className="text-slate-700">
+                      {/* Custom cell rendering based on column type */}
+                      {column.render ? column.render(row[column.key], row) : row[column.key]}
+                    </TableCell>
+                  ))}
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm">
+                          <MoreHorizontalIcon className="w-4 h-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem>View Details</DropdownMenuItem>
+                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+```
+
+## 🎨 DASHBOARD COLOR SCHEMES
+
+### **Light Theme Professional**
+```tsx
+const lightTheme = {
+  background: 'bg-gradient-to-br from-slate-50 to-blue-50',
+  cardBackground: 'bg-white/95 backdrop-blur-sm',
+  border: 'border-slate-200/50',
+  text: {
+    primary: 'text-slate-900',
+    secondary: 'text-slate-600',
+    muted: 'text-slate-500'
+  },
+  gradients: {
+    primary: 'from-blue-600 to-indigo-600',
+    success: 'from-emerald-600 to-teal-600',
+    warning: 'from-orange-600 to-red-600',
+    info: 'from-cyan-600 to-blue-600'
+  }
+};
+```
+
+### **Dark Theme Professional**
+```tsx
+const darkTheme = {
+  background: 'bg-gradient-to-br from-slate-900 to-slate-800',
+  cardBackground: 'bg-slate-800/95 backdrop-blur-sm',
+  border: 'border-slate-700/50',
+  text: {
+    primary: 'text-slate-100',
+    secondary: 'text-slate-300',
+    muted: 'text-slate-400'
+  },
+  gradients: {
+    primary: 'from-blue-500 to-indigo-500',
+    success: 'from-emerald-500 to-teal-500',
+    warning: 'from-orange-500 to-red-500',
+    info: 'from-cyan-500 to-blue-500'
+  }
+};
+```
+
+## ✅ DASHBOARD SUCCESS CHECKLIST
+
+Before considering a dashboard complete:
+
+- [ ] **Visual Hierarchy**: Can users identify the most important information in 3 seconds?
+- [ ] **Interactive Feedback**: Do all filters, buttons, and controls provide immediate visual feedback?
+- [ ] **Data Clarity**: Are charts and metrics easy to understand and actionable?
+- [ ] **Professional Polish**: Does it look like a premium SaaS product?
+- [ ] **Responsive Design**: Does it work beautifully on all screen sizes?
+- [ ] **Loading States**: Are there elegant loading indicators for all async data?
+- [ ] **Empty States**: Are there helpful empty states when no data is available?
+- [ ] **Error Handling**: Are error states handled gracefully with recovery options?
+
+Remember: Great dashboards tell a story with data and make complex information feel simple and actionable.

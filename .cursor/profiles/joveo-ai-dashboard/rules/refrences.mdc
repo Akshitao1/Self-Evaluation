@@ -1,0 +1,61 @@
+---
+description: Design, UI, UX, Building UI, Design, UX, Dashboards, build, page
+alwaysApply: false
+---
+Build dashboards like Stripe/Vercel. No exceptions.
+
+SPACING RULES (Copy-Paste These Classes)
+
+// ALWAYS use these exact classes:
+className="p-6"              // Card padding
+className="space-y-6"        // Vertical spacing
+className="gap-6"            // Grid gaps
+className="px-8 py-12"       // Page container
+className="max-w-7xl mx-auto" // Center content
+VISUAL RULES (Copy-Paste These Classes)
+tsx
+
+// ALWAYS use these exact classes:
+className="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200"
+// That's your card. Use it everywhere.
+
+className="bg-gray-50"       // Page background
+className="border-b border-gray-200" // Dividers
+TYPOGRAPHY RULES
+
+// Page title
+<h1 className="text-3xl font-bold">Title</h1>
+
+// Section title  
+<h2 className="text-xl font-semibold">Section</h2>
+
+// Card title
+<h3 className="text-lg font-medium">Card Title</h3>
+
+// Body text
+<p className="text-gray-600">Body text</p>
+
+// Small text
+<span className="text-sm text-gray-500">Small text</span>
+
+BUTTON RULES
+Make sure any buttons if implemeneted are clickable
+// Primary button
+<button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+  Primary
+</button>
+
+// Secondary button  
+<button className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+  Secondary
+</button>
+FORBIDDEN
+❌ p-1, p-2, p-3 (too small)
+❌ shadow-2xl (too heavy)
+❌ Bright colors for backgrounds
+❌ Multiple font sizes without hierarchy
+❌ No hover states
+❌ Sharp corners (no rounded)
+
+ONE RULE TO RULE THEM ALL
+Copy the layout template above. Replace content. Done.

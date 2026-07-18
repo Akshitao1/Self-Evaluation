@@ -1,0 +1,27 @@
+{
+  "name": "Joveo AI Dashboard",
+  "version": "1.0.0",
+  "description": "Profile configuration for Joveo AI Dashboard mode",
+  "styles": {
+    "tailwind": {
+      "config": "./tailwind.config.js",
+      "css": "./styles.css"
+    }
+  },
+  "tokens": {
+    "design": "./design.json"
+  },
+  "rules": {
+    "components": "./rules/joveo-components.mdc",
+    "patterns": "./rules/joveo-patterns.mdc",
+    "dataGrid": "./rules/data-grid.mdc",
+    "charts": "./rules/charts.mdc",
+    "metrics": "./rules/metrics.mdc",
+    "tables": "./rules/tables.mdc"
+  },
+  "components": {
+    "enforcePrebuilt": true,
+    "allowCustomization": false,
+    "namespace": "joveo"
+  }
+}

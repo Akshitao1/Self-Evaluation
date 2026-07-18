@@ -1,0 +1,466 @@
+# Context-Aware Component Generation - Smart Variants
+
+## 🎯 PURPOSE: GENERATE PERFECTLY TAILORED COMPONENTS
+Use detected context to create domain-specific, user-optimized components automatically.
+
+## 🧠 CONTEXT-DRIVEN GENERATION (P0 - MANDATORY)
+
+### **Always Read Context Before Generation**
+```markdown
+## CONTEXT INTEGRATION WORKFLOW (Required for ALL Components)
+
+1. **READ** /.cursor/project-context.md for current context
+2. **IDENTIFY** domain and userType from context
+3. **SELECT** appropriate component variant
+4. **GENERATE** with context-specific optimizations
+5. **UPDATE** context with successful patterns
+```
+
+## 📊 HR DOMAIN COMPONENTS
+
+### **HR Admin Data Grids**
+```tsx
+// Context: domain=hr + userType=admin
+// Auto-applied when generating tables in HR context
+
+export const HREmployeeDataGrid = () => {
+  const columns = useMemo(() => [
+    columnHelper.display({
+      id: "avatar",
+      header: "",
+      cell: ({ row }) => (
+        <div className="h-10 w-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
+          <UserIcon className="w-5 h-5 text-white" />
+        </div>
+      )
+    }),
+    
+    columnHelper.accessor("employeeId", {
+      header: "Employee ID",
+      cell: ({ getValue }) => (
+        <span className="font-mono text-sm text-slate-700">{getValue()}</span>
+      )
+    }),
+    
+    columnHelper.accessor("name", {
+      header: "Employee",
+      cell: ({ row }) => (
+        <div>
+          <p className="font-semibold text-slate-900">{row.original.name}</p>
+          <p className="text-sm text-slate-600">{row.original.email}</p>
+        </div>
+      )
+    }),
+    
+    columnHelper.accessor("department", {
+      header: "Department",
+      cell: ({ getValue }) => (
+        <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+          {getValue()}
+        </Badge>
+      )
+    }),
+    
+    columnHelper.accessor("manager", {
+      header: "Manager",
+      cell: ({ getValue }) => (
+        <span className="text-slate-700">{getValue()}</span>
+      )
+    }),
+    
+    columnHelper.accessor("status", {
+      header: "Status",
+      cell: ({ getValue }) => {
+        const status = getValue();
+        const statusConfig = {
+          active: "bg-gradient-to-r from-emerald-500 to-teal-500 text-white",
+          inactive: "bg-gradient-to-r from-slate-400 to-slate-500 text-white",
+          onLeave: "bg-gradient-to-r from-orange-500 to-yellow-500 text-white"
+        };
+        return (
+          <Badge className={statusConfig[status]}>
+            {status.charAt(0).toUpperCase() + status.slice(1)}
+          </Badge>
+        );
+      }
+    }),
+    
+    columnHelper.display({
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => (
+        <div className="flex items-center space-x-2">
+          <Button variant="ghost" size="sm" className="hover:bg-blue-50 hover:text-blue-600">
+            <EditIcon className="w-4 h-4" />
+          </Button>
+          <Button variant="ghost" size="sm" className="hover:bg-orange-50 hover:text-orange-600">
+            <ClockIcon className="w-4 h-4" />
+          </Button>
+          <Button variant="ghost" size="sm" className="hover:bg-red-50 hover:text-red-600">
+            <UserMinusIcon className="w-4 h-4" />
+          </Button>
+        </div>
+      )
+    })
+  ], []);
+
+  return (
+    <DataGrid
+      table={table}
+      tableLayout={{
+        headerBackground: true,
+        headerSticky: true,
+        columnsResizable: true,
+        columnsVisibility: true
+      }}
+      tableClassNames={{
+        headerSticky: "bg-gradient-to-r from-blue-50 to-indigo-50 backdrop-blur-sm",
+        bodyRow: "hover:bg-blue-50/50 transition-colors duration-200"
+      }}
+    />
+  );
+};
+```
+
+### **HR Manager Dashboard**
+```tsx
+// Context: domain=hr + userType=manager
+// Auto-applied when generating dashboards in HR manager context
+
+export const HRManagerDashboard = () => (
+  <div className="space-y-8">
+    {/* HR-Specific Metrics */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <MetricCard
+        title="Total Employees"
+        value="247"
+        change="+12%"
+        icon={UsersIcon}
+        gradient="from-blue-500 to-indigo-500"
+      />
+      <MetricCard
+        title="New Hires (30d)"
+        value="18"
+        change="+23%"
+        icon={UserPlusIcon}
+        gradient="from-emerald-500 to-teal-500"
+      />
+      <MetricCard
+        title="Turnover Rate"
+        value="4.2%"
+        change="-0.8%"
+        icon={TrendingDownIcon}
+        gradient="from-orange-500 to-red-500"
+      />
+      <MetricCard
+        title="Avg. Tenure"
+        value="3.4 years"
+        change="+0.2y"
+        icon={CalendarIcon}
+        gradient="from-purple-500 to-pink-500"
+      />
+    </div>
+
+    {/* HR-Specific Charts */}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <ChartCard 
+        title="Headcount Trends" 
+        description="Employee count over time by department"
+        chartType="area"
+      />
+      <ChartCard 
+        title="Hire vs Attrition" 
+        description="Monthly hiring and attrition rates"
+        chartType="bar"
+      />
+    </div>
+  </div>
+);
+```
+
+## 💰 SALES DOMAIN COMPONENTS
+
+### **Sales Manager Data Grid**
+```tsx
+// Context: domain=sales + userType=manager
+// Auto-applied when generating tables in sales context
+
+export const SalesDealsDataGrid = () => {
+  const columns = useMemo(() => [
+    columnHelper.accessor("dealName", {
+      header: "Deal",
+      cell: ({ row }) => (
+        <div>
+          <p className="font-semibold text-slate-900">{row.original.dealName}</p>
+          <p className="text-sm text-slate-600">{row.original.company}</p>
+        </div>
+      )
+    }),
+    
+    columnHelper.accessor("value", {
+      header: "Deal Value",
+      cell: ({ getValue }) => (
+        <span className="font-bold text-emerald-700">
+          ${getValue().toLocaleString()}
+        </span>
+      )
+    }),
+    
+    columnHelper.accessor("stage", {
+      header: "Stage",
+      cell: ({ getValue }) => {
+        const stage = getValue();
+        const stageConfig = {
+          prospecting: "bg-gradient-to-r from-blue-500 to-indigo-500",
+          qualified: "bg-gradient-to-r from-purple-500 to-pink-500",
+          proposal: "bg-gradient-to-r from-orange-500 to-yellow-500",
+          negotiation: "bg-gradient-to-r from-red-500 to-red-600",
+          closed: "bg-gradient-to-r from-emerald-500 to-teal-500"
+        };
+        return (
+          <Badge className={`${stageConfig[stage]} text-white`}>
+            {stage.charAt(0).toUpperCase() + stage.slice(1)}
+          </Badge>
+        );
+      }
+    }),
+    
+    columnHelper.accessor("owner", {
+      header: "Sales Rep",
+      cell: ({ getValue }) => (
+        <span className="text-slate-700 font-medium">{getValue()}</span>
+      )
+    }),
+    
+    columnHelper.accessor("probability", {
+      header: "Probability",
+      cell: ({ getValue }) => (
+        <div className="flex items-center space-x-2">
+          <div className="w-16 h-2 bg-slate-200 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-blue-500 to-emerald-500 transition-all duration-300"
+              style={{ width: `${getValue()}%` }}
+            />
+          </div>
+          <span className="text-sm font-medium text-slate-600">{getValue()}%</span>
+        </div>
+      )
+    }),
+    
+    columnHelper.accessor("closeDate", {
+      header: "Close Date",
+      cell: ({ getValue }) => (
+        <span className="text-slate-600 text-sm">{getValue()}</span>
+      )
+    }),
+    
+    columnHelper.display({
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => (
+        <div className="flex items-center space-x-2">
+          <Button variant="ghost" size="sm" className="hover:bg-blue-50 hover:text-blue-600">
+            <EditIcon className="w-4 h-4" />
+          </Button>
+          <Button variant="ghost" size="sm" className="hover:bg-emerald-50 hover:text-emerald-600">
+            <DollarSignIcon className="w-4 h-4" />
+          </Button>
+          <Button variant="ghost" size="sm" className="hover:bg-purple-50 hover:text-purple-600">
+            <SendIcon className="w-4 h-4" />
+          </Button>
+        </div>
+      )
+    })
+  ], []);
+};
+```
+
+## 💸 FINANCE DOMAIN COMPONENTS
+
+### **Finance Admin Data Grid**
+```tsx
+// Context: domain=finance + userType=admin
+// Auto-applied when generating tables in finance context
+
+export const FinanceTransactionsDataGrid = () => {
+  const columns = useMemo(() => [
+    columnHelper.accessor("transactionId", {
+      header: "Transaction ID",
+      cell: ({ getValue }) => (
+        <span className="font-mono text-sm text-slate-700">{getValue()}</span>
+      )
+    }),
+    
+    columnHelper.accessor("amount", {
+      header: "Amount",
+      cell: ({ row }) => {
+        const amount = row.original.amount;
+        const isPositive = amount > 0;
+        return (
+          <span className={`font-bold ${isPositive ? 'text-emerald-700' : 'text-red-700'}`}>
+            {isPositive ? '+' : ''}${Math.abs(amount).toLocaleString()}
+          </span>
+        );
+      }
+    }),
+    
+    columnHelper.accessor("category", {
+      header: "Category",
+      cell: ({ getValue }) => {
+        const category = getValue();
+        const categoryConfig = {
+          revenue: "bg-gradient-to-r from-emerald-500 to-teal-500",
+          expense: "bg-gradient-to-r from-red-500 to-red-600",
+          investment: "bg-gradient-to-r from-blue-500 to-indigo-500",
+          transfer: "bg-gradient-to-r from-purple-500 to-pink-500"
+        };
+        return (
+          <Badge className={`${categoryConfig[category]} text-white`}>
+            {category.charAt(0).toUpperCase() + category.slice(1)}
+          </Badge>
+        );
+      }
+    }),
+    
+    columnHelper.accessor("date", {
+      header: "Date",
+      cell: ({ getValue }) => (
+        <span className="text-slate-600 text-sm">{getValue()}</span>
+      )
+    }),
+    
+    columnHelper.accessor("status", {
+      header: "Status",
+      cell: ({ getValue }) => {
+        const status = getValue();
+        const statusConfig = {
+          pending: "bg-gradient-to-r from-orange-500 to-yellow-500",
+          approved: "bg-gradient-to-r from-emerald-500 to-teal-500",
+          rejected: "bg-gradient-to-r from-red-500 to-red-600"
+        };
+        return (
+          <Badge className={`${statusConfig[status]} text-white`}>
+            {status.charAt(0).toUpperCase() + status.slice(1)}
+          </Badge>
+        );
+      }
+    }),
+    
+    columnHelper.display({
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => (
+        <div className="flex items-center space-x-2">
+          <Button variant="ghost" size="sm" className="hover:bg-blue-50 hover:text-blue-600">
+            <EyeIcon className="w-4 h-4" />
+          </Button>
+          <Button variant="ghost" size="sm" className="hover:bg-emerald-50 hover:text-emerald-600">
+            <CheckIcon className="w-4 h-4" />
+          </Button>
+          <Button variant="ghost" size="sm" className="hover:bg-red-50 hover:text-red-600">
+            <XIcon className="w-4 h-4" />
+          </Button>
+        </div>
+      )
+    })
+  ], []);
+};
+```
+
+## 🎯 CONTEXT-AWARE GENERATION RULES
+
+### **Automatic Component Selection**
+```markdown
+## DOMAIN + USER TYPE → COMPONENT VARIANT
+
+When user requests "Create a table":
+
+**HR + Admin** → HREmployeeDataGrid
+- Columns: Employee ID, Name, Department, Manager, Status
+- Actions: Edit, Time Off, Deactivate
+- Filters: Department, Status, Manager
+
+**HR + Manager** → HRTeamDataGrid  
+- Columns: Team Member, Role, Performance, Last Review
+- Actions: Review, Goal Setting, 1-on-1 Schedule
+- Focus: Team management and development
+
+**Sales + Manager** → SalesDealsDataGrid
+- Columns: Deal Name, Value, Stage, Owner, Probability
+- Actions: Edit, Move Stage, Send Proposal
+- Filters: Stage, Owner, Deal Size, Close Date
+
+**Finance + Admin** → FinanceTransactionsDataGrid
+- Columns: Transaction ID, Amount, Category, Date, Status
+- Actions: View, Approve, Reject, Export
+- Filters: Category, Status, Date Range, Amount
+
+**Analytics + Any** → AnalyticsDataGrid
+- Columns: Metric, Current Value, Trend, Target
+- Actions: Drill Down, Export, Share
+- Features: Sorting by performance, trend visualization
+```
+
+### **Context-Aware Form Generation**
+```markdown
+## SMART FORM VARIANTS
+
+When user requests "Create a form":
+
+**HR Context** → Employee Onboarding Form
+- Fields: Personal info, Emergency contacts, Tax info, Benefits
+- Validation: SSN format, Email verification, Required documents
+- Actions: Save Draft, Submit for Review, Request Missing Info
+
+**Sales Context** → Lead Capture Form
+- Fields: Company, Contact info, Deal size, Timeline, Source
+- Validation: Business email, Phone format, Deal qualification
+- Actions: Save Lead, Assign to Rep, Schedule Follow-up
+
+**Finance Context** → Expense Report Form
+- Fields: Expense type, Amount, Receipt, Business purpose
+- Validation: Receipt required >$25, Valid expense categories
+- Actions: Submit for Approval, Save Draft, Duplicate
+```
+
+### **Context-Aware Dashboard Metrics**
+```markdown
+## DOMAIN-SPECIFIC METRICS
+
+**HR Dashboards Always Include:**
+- Employee Count, New Hires, Turnover Rate, Avg Tenure
+- Department headcount, Diversity metrics, Performance ratings
+- Colors: Professional blues, success greens, warning oranges
+
+**Sales Dashboards Always Include:**
+- Revenue, Pipeline Value, Conversion Rate, Avg Deal Size
+- Win/Loss ratio, Sales cycle length, Quota attainment
+- Colors: Success greens, growth blues, urgency reds
+
+**Finance Dashboards Always Include:**
+- Revenue, Expenses, Profit Margin, Cash Flow
+- Budget vs Actual, ROI, Cost per acquisition
+- Colors: Financial greens, alert reds, neutral grays
+```
+
+## ✅ IMPLEMENTATION CHECKLIST
+
+For every component generation:
+
+- [ ] **Context Detection**: Read project context file for domain/user type?
+- [ ] **Variant Selection**: Choose appropriate component variant for context?
+- [ ] **Domain Optimization**: Apply domain-specific columns/actions/styling?
+- [ ] **User Type Optimization**: Optimize interface complexity for user type?
+- [ ] **Pattern Application**: Use successful patterns from context history?
+- [ ] **Learning Update**: Store successful generation patterns in context?
+
+## 🎯 SUCCESS METRICS
+
+**Perfect Context-Aware Components:**
+- ✅ **Domain Expertise**: Components feel designed by domain experts
+- ✅ **User Role Optimization**: Interface complexity matches user capabilities
+- ✅ **Relevant Data**: Only shows data relevant to domain/role
+- ✅ **Appropriate Actions**: Actions match user permissions and workflows
+- ✅ **Smart Defaults**: Pre-filled with sensible domain defaults
+
+**Remember: Context transforms generic components into domain-expert solutions!**

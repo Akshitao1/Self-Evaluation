@@ -1,0 +1,31 @@
+# Protected Files Policy — Authentication
+
+## Purpose
+Prevent accidental edits to critical authentication logic. Edits to protected files are disallowed unless the user explicitly requests a custom authentication setup and confirms changing the protected file.
+
+## Protected Files (DO NOT EDIT)
+- src/components/AuthenticatedRoute.tsx
+
+## Enforcement Rules (P0 — Never Break)
+- Do not modify, refactor, or auto-fix any protected file.
+- Refuse any implicit or indirect requests to change protected files.
+- Only proceed if the user explicitly asks for a "custom authentication setup" or explicitly states they want to edit `AuthenticatedRoute`.
+- When proceeding, restate that the file is protected and that you are editing it per explicit request.
+
+## Allowed Actions Without Unlock
+- Read-only access for analysis or imports.
+- Provide guidance or alternative extension points without editing the file.
+
+## Required User Confirmation Format
+- The user must clearly state one of the following (case-insensitive):
+  - "Customize authentication" or "custom authentication setup"
+  - "Edit AuthenticatedRoute"
+  - "Unlock protected auth file"
+  - "Proceed to change authentication guard"
+
+If such confirmation is not present, decline to modify the file and explain it is protected by project rules.
+
+## Recommended Alternatives (When Not Editing)
+- Propose wrapper components or feature flags outside the protected file.
+- Add new configuration/env-driven toggles rather than modifying the guard directly.
+

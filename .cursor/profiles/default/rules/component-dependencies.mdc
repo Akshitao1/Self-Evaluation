@@ -1,0 +1,258 @@
+---
+alwaysApply: true
+priority: P1
+---
+# Component Dependencies - Required Installations
+
+## 🎯 QUICK REFERENCE: What to Install When
+
+This guide ensures you always install the right shadcn components for each use case.
+
+## 📊 DASHBOARD COMPONENTS
+
+### **Analytics Dashboard (Complete)**
+```bash
+# REQUIRED components:
+npx shadcn@latest add button card input label badge dialog dropdown-menu
+
+# For data tables (ReUI):
+npx shadcn@latest add https://reui.io/r/data-grid.json
+npx shadcn@latest add command popover separator
+
+# For charts (if needed):
+# Recharts is already installed via npm
+```
+
+### **Metric Cards**
+```bash
+npx shadcn@latest add card badge
+```
+
+### **Interactive Charts**
+```bash
+npx shadcn@latest add card
+# Recharts already installed
+```
+
+### **Data Grids/Tables**
+```bash
+# ReUI Data Grid (MANDATORY for tables):
+npx shadcn@latest add https://reui.io/r/data-grid.json
+npx shadcn@latest add command popover separator button badge
+```
+
+## 📝 FORM COMPONENTS
+
+### **Basic Forms**
+```bash
+npx shadcn@latest add input label button card textarea
+```
+
+### **Advanced Forms**
+```bash
+# Basic + advanced components:
+npx shadcn@latest add input label button card textarea select checkbox radio-group switch
+npx shadcn@latest add dialog alert form
+```
+
+### **Form Validation**
+```bash
+npx shadcn@latest add input label button alert
+```
+
+## 🎨 UI COMPONENTS
+
+### **Navigation**
+```bash
+npx shadcn@latest add navigation-menu button sheet dropdown-menu
+```
+
+### **Modals/Dialogs**
+```bash
+npx shadcn@latest add dialog button
+```
+
+### **Notifications**
+```bash
+npx shadcn@latest add alert toast
+```
+
+### **Loading States**
+```bash
+npx shadcn@latest add skeleton
+```
+
+### **Data Display**
+```bash
+npx shadcn@latest add card badge avatar table
+```
+
+## 🚀 LANDING PAGE COMPONENTS
+
+### **Hero Sections**
+```bash
+npx shadcn@latest add button card
+```
+
+### **Feature Grids**
+```bash
+npx shadcn@latest add card button badge
+```
+
+### **Pricing Tables**
+```bash
+npx shadcn@latest add card button badge
+```
+
+### **Contact Forms**
+```bash
+npx shadcn@latest add input label button card textarea
+```
+
+## 🔧 UTILITY COMPONENTS
+
+### **Layout**
+```bash
+npx shadcn@latest add separator sheet
+```
+
+### **Feedback**
+```bash
+npx shadcn@latest add alert toast dialog
+```
+
+### **Interactive Elements**
+```bash
+npx shadcn@latest add button dropdown-menu popover tooltip
+```
+
+## 📋 PRE-INSTALLATION COMMANDS
+
+### **Complete Dashboard Setup (Recommended)**
+```bash
+# Install all dashboard essentials at once:
+npx shadcn@latest add button card input label badge dialog dropdown-menu alert skeleton avatar separator
+
+# Add ReUI Data Grid:
+npx shadcn@latest add https://reui.io/r/data-grid.json
+npx shadcn@latest add command popover
+
+# Optional advanced components:
+npx shadcn@latest add navigation-menu sheet toast tabs accordion
+```
+
+### **Complete Form Setup**
+```bash
+# Install all form essentials:
+npx shadcn@latest add input label button card textarea select checkbox radio-group switch form alert
+```
+
+### **Complete Landing Page Setup**
+```bash
+# Install all landing page essentials:
+npx shadcn@latest add button card badge navigation-menu sheet dialog alert
+```
+
+## 🚨 CRITICAL INSTALLATION ORDER
+
+1. **ALWAYS install basic components first:**
+   ```bash
+   npx shadcn@latest add button card input label
+   ```
+
+2. **Then install feature-specific components:**
+   ```bash
+   npx shadcn@latest add badge dialog dropdown-menu
+   ```
+
+3. **Finally install complex components:**
+   ```bash
+   npx shadcn@latest add https://reui.io/r/data-grid.json
+   npx shadcn@latest add command popover separator
+   ```
+
+## 🔍 DEPENDENCY VERIFICATION
+
+### **Check if Component Exists**
+```bash
+# Verify installation:
+ls src/components/ui/
+
+# Check specific component:
+ls src/components/ui/button.tsx
+```
+
+### **Common Missing Dependencies**
+```tsx
+// If you see import errors for these, install them:
+
+// Command palette/search:
+npx shadcn@latest add command
+
+// Dropdowns and popovers:
+npx shadcn@latest add popover dropdown-menu
+
+// Layout helpers:
+npx shadcn@latest add separator
+
+// Form components:
+npx shadcn@latest add select textarea checkbox radio-group
+
+// Feedback components:
+npx shadcn@latest add alert toast
+
+// Data display:
+npx shadcn@latest add table avatar skeleton
+```
+
+## ⚡ QUICK DEPENDENCY FIXES
+
+### **For "Cannot find module" errors:**
+
+1. **Identify the missing component** from the error message
+2. **Install it immediately:**
+   ```bash
+   npx shadcn@latest add [component-name]
+   ```
+3. **Restart your dev server:**
+   ```bash
+   npm run dev
+   ```
+
+### **For ReUI Data Grid errors:**
+```bash
+# Complete ReUI setup:
+npx shadcn@latest add https://reui.io/r/data-grid.json
+npx shadcn@latest add command popover separator button badge
+```
+
+## 📝 USAGE IN RULES
+
+When creating rules or templates, always include:
+
+```markdown
+### Required Dependencies
+```bash
+npx shadcn@latest add button card input label
+```
+
+### Component Usage
+```tsx
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+// ... rest of component
+```
+```
+
+This ensures users know exactly what to install before using your component templates.
+
+## ✅ VERIFICATION CHECKLIST
+
+Before sharing any component code:
+- [ ] **Listed all required shadcn components**
+- [ ] **Provided installation commands**
+- [ ] **Verified imports match installed components**
+- [ ] **Tested that all dependencies exist**
+- [ ] **Organized imports properly**
+
+**Remember: Better to over-install than to have broken imports!**

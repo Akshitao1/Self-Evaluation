@@ -1,0 +1,255 @@
+---
+description: Google sheets, aws, secret, spreadsheet
+alwaysApply: false
+---
+# Google Sheets Integration - Essential Cursor Rules
+
+## 🚨 CRITICAL WORKFLOW (ALWAYS FOLLOW)
+
+1. **VERIFY ACCESS FIRST** - Check if sheet is public/private before any operation
+2. **ANALYZE STRUCTURE IMMEDIATELY** - Show column mapping: `Column A: Name | Column B: Age | Column C: Email`
+3. **CONFIRM SCOPE** - Display what operation will do before execution
+
+## 🔐 SECURITY REQUIREMENTS
+
+### Service Account Setup
+- **Service Account Email**: `coder-536@jaas-282904.iam.gserviceaccount.com`
+- **AWS Secret Key**: `SPREADSHEET_SECRET`
+- **Required Sharing**: 
+  - Share Google Spreadsheet with `coder-536@jaas-282904.iam.gserviceaccount.com`
+  - Grant 'Editor' access for writing data, or 'Viewer' for reading only
+  - Access credentials securely stored in AWS Secrets Manager under `SPREADSHEET_SECRET`
+
+### Preferred Setup for this template (simple and working)
+- Store the FULL Google service account JSON (as downloaded from Google Cloud) in AWS Secrets Manager under the key `SPREADSHEET_SECRET`.
+- Only the Google Sheets ID (spreadsheetId) and the `SPREADSHEET_SECRET` are required to connect.
+- Ensure your sheet is shared with `coder-536@jaas-282904.iam.gserviceaccount.com`.
+- Use only the `https://www.googleapis.com/auth/spreadsheets` scope (Drive scopes are not required unless you specifically need Drive metadata).
+
+### Security Rules
+- **SERVER-SIDE ONLY** - Google credentials NEVER in client components
+- **AWS Secrets Manager** - Store credentials as:
+```json
+// Preferred: full service account JSON as the secret value for SPREADSHEET_SECRET
+{
+  "type": "service_account",
+  "project_id": "jaas-282904",
+  "private_key_id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "private_key": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n",
+  "client_email": "coder-536@jaas-282904.iam.gserviceaccount.com",
+  "client_id": "123456789012345678901",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/coder-536%40jaas-282904.iam.gserviceaccount.com"
+}
+```
+- **MINIMAL SCOPES** - Only `spreadsheets`
+
+#### Auth initialization snippet (server-side)
+```ts
+import { google } from 'googleapis';
+import { getRequiredSecret } from '@/lib/secrets-manager';
+
+export async function createSheetsClient() {
+  const secret = await getRequiredSecret('SPREADSHEET_SECRET');
+  const credentials = JSON.parse(secret);
+
+  if (credentials.private_key) {
+    credentials.private_key = credentials.private_key.replace(/\\n/g, '\n');
+  }
+
+  const auth = new google.auth.JWT({
+    email: credentials.client_email,
+    key: credentials.private_key,
+    scopes: ['https://www.googleapis.com/auth/spreadsheets']
+  });
+
+  await auth.authorize();
+  return google.sheets({ version: 'v4', auth });
+}
+```
+Notes:
+- Replace escaped newlines in `private_key` as shown above.
+- If you get `PERMISSION_DENIED`, verify sharing to `coder-536@jaas-282904.iam.gserviceaccount.com` and that the sheet ID is correct.
+
+## 🏗 IMPLEMENTATION PATTERNS
+
+### Structure Analysis (MANDATORY FIRST STEP)
+```typescript
+// Always show structure before operations
+static async analyzeSheetStructure(spreadsheetId: string): Promise<{
+  structure: ColumnInfo[]; // { letter: 'A', name: 'Name', dataType: 'text' }
+  sampleData: string[][];
+}> {
+  // Detect data types: text/number/date/boolean/formula
+}
+```
+
+### Safe Operations
+```typescript
+// Backup before destructive operations
+static async writeSheet(spreadsheetId, range, values, validateBeforeWrite = true)
+
+// Batch with intelligent delays for rate limits
+export async function batchProcess(items, processor, batchSize = 100)
+```
+
+## ❌ NEVER / ✅ ALWAYS
+
+### ❌ NEVER:
+- Client-side Google API access (`'use client'` components)
+- Log credentials: `console.log(config)` 
+- Return credentials in API responses
+- Broad scopes: `auth/drive` (use `drive.readonly`)
+
+### ✅ ALWAYS:
+- Analyze structure first, show to user
+- Server-side API routes only
+- Safe logging: `{ projectId: config.project_id, serviceAccount: config.client_email, privateKey: '[REDACTED]' }`
+- Handle rate limits (429) with retry logic
+- Validate sheet access (403/404) with helpful messages
+
+## 🎯 OPERATION CLASSIFICATION
+
+- **READ**: Show structure first, then fetch data
+- **WRITE**: Backup current state, confirm scope, then write
+- **IMPORT**: Validate structure compatibility before import
+- **EXPORT**: Support JSON/CSV formats
+
+## 📁 FILE STRUCTURE
+
+```
+src/lib/
+├── secrets/google.ts          # AWS Secrets Manager config
+├── connections/google-sheets.ts # googleapis client factory
+├── services/sheets-service.ts   # Business logic + structure analysis
+└── utils/google-rate-limit.ts  # Rate limiting & error handling
+```
+
+## 🚨 ERROR HANDLING SPECIFICS
+
+- **429**: Implement retry with `retry-after` header
+- **403**: "Check service account permissions and sheet sharing"
+- **404**: "Sheet not found or service account lacks access"
+- **400**: "Check range format and parameters"
+
+## 📝 CURSOR PROMPTS
+
+```
+"Analyze Google Sheets structure for [SHEET_ID] following the workflow rules"
+"Create Google Sheets import with structure validation"
+"Build Google Sheets dashboard with column type detection"
+"Add Google Sheets error handling with specific solutions"
+```
+
+## ⚡ VALIDATION CHECKLIST
+
+- [ ] Structure analyzed and shown to user before operations
+- [ ] Service account stored in AWS Secrets Manager
+- [ ] Server-side only (no client components)
+- [ ] Rate limiting with intelligent backoff
+- [ ] Backup strategy for destructive operations
+- [ ] Specific error messages with solutions
+# Google Sheets Integration - Essential Cursor Rules
+
+## 🚨 CRITICAL WORKFLOW (ALWAYS FOLLOW)
+
+1. **VERIFY ACCESS FIRST** - Check if sheet is public/private before any operation
+2. **ANALYZE STRUCTURE IMMEDIATELY** - Show column mapping: `Column A: Name | Column B: Age | Column C: Email`
+3. **CONFIRM SCOPE** - Display what operation will do before execution
+
+## 🔐 SECURITY REQUIREMENTS
+
+### Service Account Setup
+- **Service Account Email**: `coder-536@jaas-282904.iam.gserviceaccount.com`
+- **AWS Secret Key**: `SPREADSHEET_SECRET`
+- **Required Sharing**: 
+  - Share Google Spreadsheet with `coder-536@jaas-282904.iam.gserviceaccount.com`
+  - Grant 'Editor' access for writing data, or 'Viewer' for reading only
+  - Access credentials securely stored in AWS Secrets Manager under `SPREADSHEET_SECRET`
+
+### Security Rules
+- **SERVER-SIDE ONLY** - Google credentials NEVER in client components
+- **AWS Secrets Manager** - Store credentials as:
+```json
+// Preferred: use the full service account JSON in SPREADSHEET_SECRET as shown above
+```
+## 🏗 IMPLEMENTATION PATTERNS
+
+### Structure Analysis (MANDATORY FIRST STEP)
+```typescript
+// Always show structure before operations
+static async analyzeSheetStructure(spreadsheetId: string): Promise<{
+  structure: ColumnInfo[]; // { letter: 'A', name: 'Name', dataType: 'text' }
+  sampleData: string[][];
+}> {
+  // Detect data types: text/number/date/boolean/formula
+}
+```
+
+### Safe Operations
+```typescript
+// Backup before destructive operations
+static async writeSheet(spreadsheetId, range, values, validateBeforeWrite = true)
+
+// Batch with intelligent delays for rate limits
+export async function batchProcess(items, processor, batchSize = 100)
+```
+
+## ❌ NEVER / ✅ ALWAYS
+
+### ❌ NEVER:
+- Client-side Google API access (`'use client'` components)
+- Log credentials: `console.log(config)` 
+- Return credentials in API responses
+- Broad scopes: `auth/drive` (use `drive.readonly`)
+
+### ✅ ALWAYS:
+- Analyze structure first, show to user
+- Server-side API routes only
+- Safe logging: `{ projectId: config.project_id, serviceAccount: config.client_email, privateKey: '[REDACTED]' }`
+- Handle rate limits (429) with retry logic
+- Validate sheet access (403/404) with helpful messages
+
+## 🎯 OPERATION CLASSIFICATION
+
+- **READ**: Show structure first, then fetch data
+- **WRITE**: Backup current state, confirm scope, then write
+- **IMPORT**: Validate structure compatibility before import
+- **EXPORT**: Support JSON/CSV formats
+
+## 📁 FILE STRUCTURE
+
+```
+src/lib/
+├── secrets/google.ts          # AWS Secrets Manager config
+├── connections/google-sheets.ts # googleapis client factory
+├── services/sheets-service.ts   # Business logic + structure analysis
+└── utils/google-rate-limit.ts  # Rate limiting & error handling
+```
+
+## 🚨 ERROR HANDLING SPECIFICS
+
+- **429**: Implement retry with `retry-after` header
+- **403**: "Check service account permissions and sheet sharing"
+- **404**: "Sheet not found or service account lacks access"
+- **400**: "Check range format and parameters"
+
+## 📝 CURSOR PROMPTS
+
+```
+"Analyze Google Sheets structure for [SHEET_ID] following the workflow rules"
+"Create Google Sheets import with structure validation"
+"Build Google Sheets dashboard with column type detection"
+"Add Google Sheets error handling with specific solutions"
+```
+
+## ⚡ VALIDATION CHECKLIST
+
+- [ ] Structure analyzed and shown to user before operations
+- [ ] Service account stored in AWS Secrets Manager
+- [ ] Server-side only (no client components)
+- [ ] Rate limiting with intelligent backoff
+- [ ] Backup strategy for destructive operations
+- [ ] Specific error messages with solutions

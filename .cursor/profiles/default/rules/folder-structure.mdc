@@ -1,0 +1,90 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Folder structure for project
+globs: 
+---
+# Project Folder Structure Best Practices (Next.js)
+
+## !IMPORTANT Project Root Location 
+The project root is located at `/`. All paths in this documentation are relative to this root.
+
+## Folder Organization
+
+### Root Structure
+- Organize code in a logical, modular architecture
+- Keep related files close together
+- Maintain clear separation of concerns
+- Use consistent naming conventions across directories
+- Balance between flat and deeply nested structures
+
+### Standard Directory Structure (Next.js App Router)
+```
+/                             # Project root
+├── src/                      # Source code
+│   ├── app/                  # Next.js app directory (routing, layouts, pages, API routes)
+│   │   ├── api/              # API route handlers (Edge/serverless functions)
+│   │   ├── layout.tsx        # Root layout
+│   │   ├── page.tsx          # Root page
+│   │   └── ...               # Other routes, layouts, templates, etc.
+│   ├── components/           # Shared/global UI components
+│   ├── hooks/                # Shared custom hooks
+│   ├── types/                # Global TypeScript type definitions
+│   ├── utils/                # Utility functions and helpers
+│   ├── assets/               # Static assets (images, fonts, etc.)
+│   ├── styles/               # Global styles, themes, and style utilities
+│   ├── constants/            # Application-wide constants
+│   ├── config/               # Configuration files
+│   └── store/                # Global state management (if needed)
+│
+├── public/                   # Public static files
+├── node_modules/             # Dependencies
+├── package.json              # Project dependencies and scripts
+├── tsconfig.json             # TypeScript configuration
+├── .eslintrc.js              # ESLint configuration
+├── .prettierrc               # Prettier configuration
+├── README.md                 # Project documentation
+└── ... (other root-level config files)
+```
+
+### Guiding Principles
+- **Feature-First Organization**: Group code by features/modules when possible
+- **Encapsulation**: Modules should expose a clear public API via index files
+- **Proximity**: Files that change together should be located close together
+- **Discoverability**: Use consistent naming patterns to make code easy to find
+- **Scalability**: Structure should work well from small to large applications
+- **Reusability**: Clearly separate reusable code from specific implementations
+- **Index Files**: Use index.ts files to define the public API of a directory
+- **Barrel Files**: Create barrel exports in index files to simplify imports
+
+### Import Conventions
+- Use absolute imports for cross-module references
+- Use relative imports for intra-module references
+- Configure path aliases to simplify deep imports
+- Include file extensions when required by your build system
+- Create consistent import ordering (group by type - components, hooks, constants etc)
+
+### Next.js Specifics
+- Use the `app/` directory for all routing, layouts, and pages.
+- Place API route handlers in `app/api/`.
+- Use file-based routing: each folder in `app/` is a route segment.
+- Use `layout.tsx` for layouts and `page.tsx` for pages.
+- Use `"use client"` at the top of all client components (see coding best practices).
+- Prefer server components by default; use client components only when necessary.
+- Use Next.js conventions for loading, error, and template files.
+
+### Documentation
+- Include README.md files in key directories
+- Document the folder structure in the project root
+- Explain module boundaries and responsibilities
+- Maintain architectural decision records (ADRs) for structural changes
+
+### Scaling Considerations
+- Start simple and refactor as patterns emerge
+- Split large modules into submodules when they grow
+- Avoid premature modularization
+- Consider code splitting impact on your structure
+- Plan for monorepo architecture if needed

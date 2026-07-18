@@ -1,0 +1,126 @@
+# Sample Content Cleanup - Critical Template Rules
+
+## 🚨 CRITICAL: ALWAYS CLEAN DEMO CONTENT FIRST
+
+**BEFORE** generating ANY user-requested component or page:
+
+### **MANDATORY CLEANUP PROCESS**
+
+1. **IDENTIFY** if `src/app/page.tsx` contains demo/sample content
+2. **DELETE** all sample content completely 
+3. **REPLACE** with clean, minimal starting point
+4. **PROCEED** with user's actual request
+
+## 📄 SAMPLE CONTENT INDICATORS
+
+### **Files That Contain Demo Content:**
+- `src/app/page.tsx` - **ALWAYS REPLACE** when user requests anything
+- Any file with "sample", "demo", "example" in component names
+- Files with extensive mock data or tutorial content
+- Components with names like `CodeExample`, `HeroSection`, `AnimatedBackground`
+
+### **Sample Content Patterns to Remove:**
+```tsx
+// ❌ REMOVE - Sample/demo components
+const AnimatedBackground = () => { /* demo content */ };
+const CodeExample = ({ title, prompt, beforeCode, afterCode }) => { /* demo content */ };
+const HeroSection = () => { /* demo content */ };
+
+// ❌ REMOVE - Mock tutorial data
+const codeExamples = [
+  { title: "Create a Dashboard Card", prompt: "...", description: "..." }
+];
+
+// ❌ REMOVE - Demo imports
+import { Database, ArrowRight, CheckCircle, Copy, Terminal, Lightbulb, Laptop, Bug, Table } from "lucide-react";
+```
+
+## ✅ CLEAN REPLACEMENT TEMPLATE
+
+### **Replace `src/app/page.tsx` with:**
+```tsx
+"use client";
+
+import Header from "@/components/Header";
+
+export default function HomePage() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      <Header />
+      
+      <main className="max-w-7xl mx-auto px-6 py-12">
+        <div className="text-center space-y-8">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+            Welcome to Your App
+          </h1>
+          <p className="text-slate-600 text-lg max-w-2xl mx-auto">
+            Your application starts here. Ready for your content.
+          </p>
+        </div>
+      </main>
+    </div>
+  );
+}
+```
+
+## 🔄 CLEANUP WORKFLOW
+
+### **Step-by-Step Process:**
+1. **CHECK**: Does `src/app/page.tsx` contain more than 50 lines?
+2. **VERIFY**: Does it contain demo components like `AnimatedBackground`, `CodeExample`?
+3. **CLEAN**: Replace entire file with minimal template
+4. **CONFIRM**: File is now under 30 lines and ready for user content
+5. **PROCEED**: Generate user's requested component/page
+
+## 🚫 FORBIDDEN PRACTICES
+
+### **NEVER Do This:**
+- ❌ Mix demo content with user content
+- ❌ Keep sample components "just in case"
+- ❌ Partially modify demo content
+- ❌ Leave demo imports unused
+- ❌ Generate user content alongside demo content
+
+### **ALWAYS Do This:**
+- ✅ Clean slate approach for all user requests
+- ✅ Replace, don't modify sample content
+- ✅ Start fresh with clean, minimal templates
+- ✅ Remove ALL demo-related imports
+- ✅ Provide clean starting point for user's actual needs
+
+## 📋 VERIFICATION CHECKLIST
+
+Before generating user content:
+
+- [ ] **Sample Content Removed**: `src/app/page.tsx` is clean and minimal?
+- [ ] **Demo Imports Cleared**: No unused imports from demo content?
+- [ ] **Clean Slate Ready**: File is ready for user's actual content?
+- [ ] **Professional Starting Point**: Clean template that follows design rules?
+
+## 🎯 WHY THIS MATTERS
+
+### **User Experience Issues if NOT Done:**
+- Users get confused between demo and real content
+- Generated content mixed with sample content
+- Difficult to distinguish what's theirs vs. template
+- Unprofessional appearance with mixed content types
+
+### **Benefits of Clean Approach:**
+- Clear separation between demo and real content
+- Professional, focused user experience
+- Easy to understand what belongs to their app
+- Clean foundation for building their actual application
+
+## 🔧 AUTOMATION RULE
+
+**ALWAYS execute this before ANY user content generation:**
+
+```markdown
+IF user requests ANY component/page/feature THEN:
+  1. Clean src/app/page.tsx completely
+  2. Replace with minimal clean template
+  3. Remove all demo-related imports
+  4. THEN proceed with user's request
+```
+
+**Remember: Demo content is for inspiration only. Real user work requires a clean foundation!**

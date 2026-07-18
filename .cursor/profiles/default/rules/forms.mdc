@@ -1,0 +1,146 @@
+---
+description: Forms, form, validation
+alwaysApply: false
+---
+# Shadcn Form Rules
+
+## 🔴 CRITICAL - FOCUS LOSS PREVENTION
+**Check FIRST before any form code:**
+- [ ] No components defined inside other components
+- [ ] Using shadcn FormField with render prop
+- [ ] Using {...field} spread in FormControl
+- [ ] Make sure all buttons are clickable and do something. 
+
+## ❌ INSTANT VIOLATIONS
+// ❌ WRONG - Component inside component (causes focus loss)
+const MyForm = () => {
+  const CustomField = () => <Input />; // FOCUS LOSS!
+  return <form><CustomField /></form>;
+};
+
+// ✅ CORRECT - Component outside + shadcn pattern
+const MyForm = () => {
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </form>
+    </Form>
+  );
+};
+```
+
+## 📋 REQUIRED SETUP
+npx shadcn@latest add form input button
+npm install react-hook-form @hookform/resolvers/zod zod
+```
+
+## 🎯 CORE TEMPLATE
+```typescript
+"use client"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+
+const formSchema = z.object({
+  email: z.string().email({ message: "Invalid email." }),
+})
+
+export function MyForm() {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { email: "" },
+  })
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values)
+    form.reset()
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? "Submitting..." : "Submit"}
+        </Button>
+      </form>
+    </Form>
+  )
+}
+```
+
+## 🔧 FIELD PATTERNS
+```typescript
+// Text (required)
+name: z.string().min(1, { message: "Required." }),
+
+// Email
+email: z.string().email({ message: "Invalid email." }),
+
+// Number
+age: z.coerce.number().min(0, { message: "Must be positive." }),
+
+// Optional
+description: z.string().optional(),
+```
+
+## 📱 ADDITIONAL COMPONENTS
+```typescript
+// Textarea (add: npx shadcn@latest add textarea)
+<FormControl>
+  <Textarea {...field} />
+</FormControl>
+
+// Select (add: npx shadcn@latest add select)
+<Select onValueChange={field.onChange} defaultValue={field.value}>
+  <FormControl>
+    <SelectTrigger>
+      <SelectValue placeholder="Select..." />
+    </SelectTrigger>
+  </FormControl>
+  <SelectContent>
+    <SelectItem value="option1">Option 1</SelectItem>
+  </SelectContent>
+</Select>
+
+// Checkbox (add: npx shadcn@latest add checkbox)
+<FormControl>
+  <Checkbox
+    checked={field.value}
+    onCheckedChange={field.onChange}
+  />
+</FormControl>
+```
+
+## ✅ FINAL CHECK
+Ask before completion: 
+1. "Any components defined inside other components?"
+2. "Using {...field} spread?"
+3. "Form has defaultValues?"

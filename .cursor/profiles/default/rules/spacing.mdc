@@ -1,0 +1,206 @@
+---
+alwaysApply: true
+---
+# Ultimate Cursor Rules for Beautiful UI Spacing & Design
+
+## 1. MANDATORY SPACING SYSTEM - NEVER SKIP THIS
+
+### **Container Spacing (ALWAYS APPLY)**
+- **Page/Section containers**: `p-6 md:p-8 lg:p-12`
+- **Card containers**: `p-4 md:p-6`
+- **Modal/Dialog containers**: `p-6`
+- **Form containers**: `p-4 space-y-4`
+- **Content sections**: `py-8 md:py-12 lg:py-16`
+
+### **Element Spacing (REQUIRED)**
+- **Between components**: `space-y-6` or `gap-6`
+- **Between form fields**: `space-y-4` or `gap-4`
+- **Between buttons**: `space-x-3` or `gap-3`
+- **Between text elements**: `space-y-2` or `space-y-3`
+- **Between sections**: `space-y-8` or `space-y-12`
+
+### **Layout Spacing (ESSENTIAL)**
+- **Grid gaps**: `gap-4 md:gap-6 lg:gap-8`
+- **Flex gaps**: `gap-3` for horizontal, `gap-4` for vertical
+- **Navigation items**: `space-x-6` or `gap-6`
+- **Header/footer padding**: `px-4 py-3 md:px-6 md:py-4`
+
+## 2. SHADCN/UI COMPONENT ENHANCEMENT RULES
+
+### **Always Enhance Default Components**
+```tsx
+// BAD - No spacing
+<Card>
+  <CardHeader>
+    <CardTitle>Title</CardTitle>
+  </CardHeader>
+  <CardContent>
+    Content here
+  </CardContent>
+</Card>
+
+// GOOD - Proper spacing
+<Card className="p-6 space-y-4">
+  <CardHeader className="pb-4">
+    <CardTitle className="text-xl font-semibold">Title</CardTitle>
+  </CardHeader>
+  <CardContent className="space-y-4">
+    <div className="space-y-2">
+      Content here with proper spacing
+    </div>
+  </CardContent>
+</Card>
+```
+
+### **Required Component Spacing**
+- **Button**: `px-4 py-2` (small), `px-6 py-3` (default), `px-8 py-4` (large)
+- **Input**: `px-3 py-2 space-y-1` (with label spacing)
+- **Card**: `p-4 md:p-6 space-y-4`
+- **Dialog**: `p-6 space-y-4`
+- **Sheet**: `p-6 space-y-6`
+- **Tabs**: `space-y-4` between tab content sections
+
+## 3. RESPONSIVE SPACING SYSTEM
+
+### **Mobile-First Approach (MANDATORY)**
+```tsx
+// Always start with mobile spacing, then scale up
+className="p-4 md:p-6 lg:p-8"
+className="space-y-4 md:space-y-6 lg:space-y-8"
+className="gap-3 md:gap-4 lg:gap-6"
+```
+
+### **Screen Size Spacing Rules**
+- **Mobile (default)**: Smaller, comfortable spacing
+- **Tablet (md:)**: 1.5x mobile spacing
+- **Desktop (lg:)**: 2x mobile spacing
+- **Large screens (xl:)**: 2.5x mobile spacing
+
+## 4. TYPOGRAPHY SPACING RULES
+
+### **Text Hierarchy Spacing**
+- **Headings**: `mb-4` (h1), `mb-3` (h2), `mb-2` (h3)
+- **Paragraphs**: `mb-4` between paragraphs
+- **Lists**: `space-y-2` for list items
+- **Captions**: `mt-2` after images/content
+
+### **Required Typography Classes**
+```tsx
+// Heading system with proper spacing
+<h1 className="text-3xl font-bold mb-4">Main Title</h1>
+<h2 className="text-2xl font-semibold mb-3">Section Title</h2>
+<h3 className="text-xl font-medium mb-2">Subsection</h3>
+<p className="text-base leading-relaxed mb-4">Body text with proper line height</p>
+```
+
+## 5. MODERN DESIGN PRINCIPLES
+
+### **Visual Hierarchy Through Spacing**
+- **Increase spacing** between unrelated elements
+- **Decrease spacing** between related elements
+- **Use white space** as a design element, not empty space
+- **Group related content** with consistent spacing
+
+### **Professional Spacing Patterns**
+- **Content max-width**: `max-w-4xl mx-auto` or `max-w-6xl mx-auto`
+- **Section padding**: `py-12 md:py-16 lg:py-20`
+- **Card grids**: `grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6`
+- **Form layouts**: `space-y-6` for form sections, `space-y-4` for fields
+
+## 6. COMPONENT-SPECIFIC SPACING RULES
+
+### **Navigation Components**
+```tsx
+// Header/Navbar
+<header className="px-4 md:px-6 py-4 border-b">
+  <nav className="flex items-center justify-between space-x-6">
+    <Logo />
+    <ul className="flex space-x-6">
+      <li><Link className="px-3 py-2">Item</Link></li>
+    </ul>
+  </nav>
+</header>
+```
+### **Dashboard Layouts**
+```tsx
+// Dashboard with proper spacing
+<div className="min-h-screen bg-gray-50">
+  <div className="p-6 md:p-8 lg:p-12">
+    <div className="space-y-8">
+      <header className="space-y-2">
+        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <p className="text-gray-600">Overview of your data</p>
+      </header>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Cards with proper spacing */}
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+### **Form Components**
+```tsx
+// Form with perfect spacing
+<form className="space-y-6 max-w-md mx-auto p-6">
+  <div className="space-y-4">
+    <div className="space-y-2">
+      <Label htmlFor="email">Email</Label>
+      <Input id="email" type="email" className="w-full" />
+    </div>
+    
+    <div className="space-y-2">
+      <Label htmlFor="password">Password</Label>
+      <Input id="password" type="password" className="w-full" />
+    </div>
+  </div>
+  
+  <Button type="submit" className="w-full">
+    Sign In
+  </Button>
+</form>
+```
+
+## 7. SPACING QUALITY CHECKLIST
+
+### **Before Submitting ANY UI Component:**
+- [ ] All containers have proper padding (`p-4`, `p-6`, etc.)
+- [ ] Related elements are grouped with consistent spacing
+- [ ] Responsive spacing scales properly across breakpoints
+- [ ] Typography has proper line-height and spacing
+- [ ] Form elements have adequate breathing room
+- [ ] Cards and containers don't feel cramped
+- [ ] Navigation has comfortable click targets
+- [ ] White space enhances readability, not clutters
+
+## 8. FORBIDDEN PRACTICES
+
+### **NEVER DO THIS:**
+- ❌ No spacing classes at all
+- ❌ Only using `m-1` or `p-1` (too cramped)
+- ❌ Inconsistent spacing throughout the design
+- ❌ No responsive spacing considerations
+- ❌ Text touching container edges
+- ❌ Buttons too close to other elements
+- ❌ Buttons having no click action
+- ❌ No visual hierarchy through spacing
+
+### **ALWAYS DO THIS:**
+- ✅ Start with generous spacing, then adjust
+- ✅ Use consistent spacing scale (4, 6, 8, 12, 16, 24)
+- ✅ Group related elements with smaller gaps
+- ✅ Separate unrelated elements with larger gaps
+- ✅ Test on mobile, tablet, and desktop
+- ✅ Use white space as a design feature
+
+## 9. FINAL RULE: SPACING IS NOT OPTIONAL
+
+**Every UI component must have:**
+1. **Container padding** - Elements should never touch edges
+2. **Element spacing** - Related items need breathing room
+3. **Responsive scaling** - Spacing should adapt to screen size
+4. **Visual hierarchy** - Spacing should guide the eye
+5. **Professional polish** - Generous, consistent spacing throughout
+
+**Remember: Beautiful design is 80% spacing and 20% everything else.**

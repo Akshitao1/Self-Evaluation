@@ -1,0 +1,134 @@
+---
+description: PostgreSQL database integration
+globs: 
+alwaysApply: false
+---
+# PostgreSQL Integration Rules
+
+## 🔴 MANDATORY - CHECK FIRST
+**Before ANY PostgreSQL integration:**
+- [ ] Database connection string: `postgresql://user:password@host:5432/database`
+- [ ] Choose ORM: Prisma (recommended), Drizzle, or raw SQL
+- [ ] Use server components for database operations
+- [ ] Configure connection pooling for production
+
+## 🐘 CONNECTION SETUP
+```typescript
+// Environment variables
+POSTGRES_URL="postgresql://user:password@localhost:5432/mydb"
+DIRECT_URL="postgresql://user:password@localhost:5432/mydb" // For migrations
+
+// Prisma setup
+npx prisma init
+npx prisma db push
+npx prisma generate
+```
+
+## 🗂️ SCHEMA DEFINITION
+```typescript
+// schema.prisma
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  posts     Post[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id       Int    @id @default(autoincrement())
+  title    String
+  content  String?
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId Int
+}
+```
+
+## 🔧 CRUD OPERATIONS
+```typescript
+// Server component with database operations
+import { prisma } from '@/lib/prisma';
+
+async function UsersList() {
+  const users = await prisma.user.findMany({
+    include: { posts: true },
+    orderBy: { createdAt: 'desc' }
+  });
+  
+  return (
+    <div>
+      {users.map(user => (
+        <UserCard key={user.id} user={user} />
+      ))}
+    </div>
+  );
+}
+
+// API route for mutations
+export async function POST(request: Request) {
+  const data = await request.json();
+  
+  const user = await prisma.user.create({
+    data: {
+      email: data.email,
+      name: data.name
+    }
+  });
+  
+  return Response.json(user);
+}
+```
+
+## 🚀 PERFORMANCE OPTIMIZATION
+- **Indexing**: Create indexes on frequently queried columns
+- **Pagination**: Use cursor-based pagination for large datasets  
+- **Relationships**: Use `include` and `select` judiciously
+- **Connection Pooling**: Configure max connections appropriately
+- **Query Optimization**: Use EXPLAIN ANALYZE for slow queries
+
+## 🔐 SECURITY BEST PRACTICES
+```typescript
+// Input validation with Zod
+import { z } from 'zod';
+
+const createUserSchema = z.object({
+  email: z.string().email(),
+  name: z.string().min(1).max(100)
+});
+
+// Validate before database operations
+const validatedData = createUserSchema.parse(requestData);
+```
+
+## 📊 ADVANCED FEATURES
+- **JSON Support**: Store and query JSON data types
+- **Full-text Search**: Use PostgreSQL's built-in search capabilities
+- **Triggers**: Implement business logic at database level
+- **Extensions**: Leverage PostGIS, UUID, etc.
+- **Transactions**: Use for data consistency
+
+## 🔄 MIGRATIONS
+```bash
+# Create and apply migrations
+npx prisma migrate dev --name add-user-model
+npx prisma migrate deploy # Production
+
+# Reset database (development only)
+npx prisma migrate reset
+```
+
+## 🚨 ERROR HANDLING
+```typescript
+// Handle database errors gracefully
+try {
+  const result = await prisma.user.create(data);
+  return result;
+} catch (error) {
+  if (error.code === 'P2002') {
+    throw new Error('Email already exists');
+  }
+  console.error('Database error:', error);
+  throw new Error('Database operation failed');
+}
+```

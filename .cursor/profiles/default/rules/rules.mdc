@@ -1,0 +1,34 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+CRITICAL: AI Processing Instructions
+MANDATORY WORKFLOW FOR EVERY CODE GENERATION:
+
+🔍 SCAN RULES FIRST - Before writing ANY code, review relevant rules below
+🎯 IDENTIFY CONTEXT - Determine if this is dashboard/form/component/etc.
+⚡ APPLY PRIORITY RULES - Use P0 rules (NEVER break), then P1 (preferred)
+✅ VALIDATE EACH LINE - Check every line against mandatory patterns
+
+PRIORITY SYSTEM (CRITICAL)
+P0 - NEVER BREAK (Mandatory - Stop if violated)
+
+❌ NO inline styles or raw CSS
+❌ NO missing error states
+❌ NO skipping loading states
+
+P1 - STRONGLY PREFERRED (Follow unless impossible)
+
+✅ Semantic color tokens (color="text.light" not className="text-white")
+✅ Component composition over large components
+✅ Consistent spacing system
+✅ UX state patterns
+✅ NO components over 300 lines
+
+
+P2 - OPTIMIZATION (Apply when possible)
+
+Performance optimizations
+Advanced patterns
+Nice-to-have features

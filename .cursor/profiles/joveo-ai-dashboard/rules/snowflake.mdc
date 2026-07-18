@@ -1,0 +1,220 @@
+---
+description: Snowflake, secrets, aws
+alwaysApply: false
+---
+# Snowflake Integration Rules
+
+## 🔐 CORE PRINCIPLES
+- **SSH KEY ONLY**: JWT auth - NO password allowed
+- **READ-ONLY**: Only SELECT/WITH queries
+- **SERVER-SIDE ONLY**: Never in client components
+- **MEMORY SAFE**: Connection tracking + auto-cleanup
+
+## 📋 CONFIGURATION
+
+### AWS Secrets Manager (required)
+```json
+{
+  "SNOWFLAKE_USER": "SERVICE_USER", 
+  "SNOWFLAKE_SSH_KEY": "-----BEGIN RSA PRIVATE KEY-----\n...",
+  "SNOWFLAKE_ACCOUNT": "vya01839.us-east-1",
+  "SNOWFLAKE_WAREHOUSE": "COMPUTE_WH",
+  "SNOWFLAKE_ROLE": "READER"
+}
+```
+
+### App Config (not in secrets)
+```typescript
+const SNOWFLAKE_DATABASE = 'ANALYTICS_DB';
+const SNOWFLAKE_SCHEMA = 'PUBLIC';
+```
+
+## 📁 FILE STRUCTURE
+```
+src/lib/secrets/snowflake.ts              # Config from secrets
+src/lib/connections/connection-manager.ts # Memory leak prevention
+src/lib/connections/base-connection.ts    # Connection wrapper
+src/lib/services/snowflake-service.ts     # Query execution
+src/app/api/snowflake/query/route.ts      # POST query, GET test
+src/app/api/snowflake/health/route.ts     # GET stats, POST cleanup
+```
+
+## 🛠️ KEY IMPLEMENTATIONS
+
+### Config (`src/lib/secrets/snowflake.ts`)
+```typescript
+import { createPrivateKey } from 'crypto';
+
+// App config (not in secrets)
+const SNOWFLAKE_DATABASE = process.env.SNOWFLAKE_DATABASE || 'ANALYTICS_DB';
+const SNOWFLAKE_SCHEMA = process.env.SNOWFLAKE_SCHEMA || 'PUBLIC';
+
+/**
+ * Convert private key to PKCS#8 PEM format (required by Snowflake SDK)
+ * Handles PKCS#1 (RSA PRIVATE KEY), PKCS#8 (PRIVATE KEY), and other formats
+ */
+function convertToPkcs8(key: string): string {
+  // Replace \\n (double backslash + n) with actual newlines
+  // This is how it appears when JSON-escaped strings are stored in secrets
+  let normalizedKey = key.replace(/\\\\n/g, '\n');
+  
+  // Also replace \n (single backslash + n) with actual newlines
+  normalizedKey = normalizedKey.replace(/\\n/g, '\n');
+  
+  // Also handle //n if present
+  normalizedKey = normalizedKey.replace(/\/\/n/g, '\n');
+  
+  // Trim whitespace
+  normalizedKey = normalizedKey.trim();
+  
+  console.log('[SnowflakeConfig] Key after newline normalization (first 50 chars):', normalizedKey.substring(0, 50));
+  
+  // Check if already in PKCS#8 format
+  if (normalizedKey.includes('-----BEGIN PRIVATE KEY-----')) {
+    console.log('[SnowflakeConfig] Key is already in PKCS#8 format');
+    return normalizedKey;
+  }
+
+  console.log('[SnowflakeConfig] Converting key to PKCS#8 format...');
+  
+  // Use Node.js crypto to convert to PKCS#8
+  const privateKeyObject = createPrivateKey({
+    key: normalizedKey,
+    format: 'pem',
+  });
+
+  const pkcs8Key = privateKeyObject.export({
+    type: 'pkcs8',
+    format: 'pem',
+  }) as string;
+
+  console.log('[SnowflakeConfig] Key converted to PKCS#8 format successfully');
+  return pkcs8Key;
+}
+
+export async function getSnowflakeConfig() {
+  const sshKey = await getRequiredSecret('SNOWFLAKE_SSH_KEY');
+  if (!sshKey) throw new Error('SSH key required - no password auth');
+  return {
+    account: await getRequiredSecret('SNOWFLAKE_ACCOUNT'),
+    username: await getRequiredSecret('SNOWFLAKE_USER'),
+    privateKey: convertToPkcs8(sshKey),
+    authenticator: 'SNOWFLAKE_JWT',
+    warehouse: await getRequiredSecret('SNOWFLAKE_WAREHOUSE'),
+    database: SNOWFLAKE_DATABASE,  // from app config
+    schema: SNOWFLAKE_SCHEMA,      // from app config
+    role: await getRequiredSecret('SNOWFLAKE_ROLE'),
+    timeout: 60000,
+  };
+}
+```
+
+### Connection Manager (Memory Leak Prevention)
+```typescript
+// Config: max 10 connections, 5min lifetime, 1min idle, 30s query timeout
+class ConnectionManager {
+  private connections = new Map<string, TrackedConnection>();
+  
+  canCreate = () => this.connections.size < 10;
+  
+  register(conn: any, name: string): string {
+    if (!this.canCreate()) throw new Error('Max connections reached');
+    const id = `conn_${Date.now()}`;
+    this.connections.set(id, { id, connection: conn, createdAt: Date.now(), isActive: true });
+    return id;
+  }
+
+  async destroy(id: string) {
+    const tracked = this.connections.get(id);
+    if (tracked?.connection?.destroy) {
+      await new Promise<void>(r => { tracked.connection.destroy(() => r()); });
+    }
+    this.connections.delete(id);
+  }
+
+  // Auto-cleanup runs every 30s, removes expired/idle connections
+  async cleanup() { /* removes connections older than 5min or idle > 1min */ }
+  
+  getStats() { return { total: this.connections.size, memoryUsage: process.memoryUsage() }; }
+}
+export const connectionManager = new ConnectionManager();
+```
+
+### Service Pattern
+```typescript
+export class SnowflakeService {
+  static async executeQuery(sql: string, binds: any[] = []) {
+    // Enforce read-only
+    const norm = sql.trim().toUpperCase();
+    if (!norm.startsWith('SELECT') && !norm.startsWith('WITH'))
+      throw new Error('Only SELECT queries allowed');
+    
+    return withServiceConnection('Snowflake', createConnection, conn =>
+      new Promise((resolve, reject) => {
+        conn.execute({ sqlText: sql, binds, complete: (err, stmt, rows) => {
+          err ? reject(err) : resolve({ rows: rows || [], rowCount: stmt.getNumRows() });
+        }});
+      })
+    );
+  }
+  
+  static getStats = () => connectionManager.getStats();
+  static forceCleanup = () => connectionManager.cleanup();
+}
+```
+
+### Connection Wrapper (Always use this!)
+```typescript
+export async function withServiceConnection<T, R>(
+  name: string, factory: () => Promise<T>, handler: (conn: T) => Promise<R>
+): Promise<R> {
+  let connId: string | null = null, conn: T | null = null;
+  try {
+    conn = await factory();
+    connId = connectionManager.register(conn, name);
+    return await handler(conn);
+  } finally {
+    if (connId) await connectionManager.destroy(connId); // ALWAYS cleanup
+  }
+}
+```
+
+### API Routes
+```typescript
+// POST /api/snowflake/query - Execute query
+const { sql, params } = await req.json();
+const result = await SnowflakeService.executeQuery(sql, params);
+return NextResponse.json({ data: result.rows });
+
+// GET /api/snowflake/query - Test connection
+return NextResponse.json({ success: await SnowflakeService.testConnection() });
+
+// GET /api/snowflake/health - Stats
+return NextResponse.json(SnowflakeService.getStats());
+
+// POST /api/snowflake/health - Force cleanup
+return NextResponse.json({ cleaned: await SnowflakeService.forceCleanup() });
+```
+
+## ❌ NEVER / ✅ ALWAYS
+| ❌ NEVER | ✅ ALWAYS |
+|----------|-----------|
+| Password auth | SSH key (JWT) only |
+| Client-side | Server-side only |
+| INSERT/UPDATE/DELETE | SELECT/WITH only |
+| Global connection refs | `withServiceConnection()` |
+| Skip cleanup | Destroy in finally |
+| String concat SQL | Parameterized queries |
+
+## 🎯 USAGE
+```typescript
+const result = await SnowflakeService.executeQuery(
+  'SELECT * FROM users WHERE id = ?', [userId]
+);
+```
+
+## ⚡ CHECKLIST
+- [ ] `npm install snowflake-sdk`
+- [ ] AWS Secrets: SNOWFLAKE_USER, SNOWFLAKE_SSH_KEY, SNOWFLAKE_ACCOUNT, SNOWFLAKE_WAREHOUSE, SNOWFLAKE_ROLE
+- [ ] App config/env: SNOWFLAKE_DATABASE, SNOWFLAKE_SCHEMA
+- [ ] Health endpoint at `/api/snowflake/health`

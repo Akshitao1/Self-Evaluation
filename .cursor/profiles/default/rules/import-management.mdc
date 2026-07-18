@@ -1,0 +1,274 @@
+---
+alwaysApply: true
+priority: P0
+---
+# Import Management - Clean & Valid Imports Only
+
+## 🎯 CRITICAL: IMPORT VALIDATION & CLEANUP
+
+Every generated file must have **ONLY valid, used imports** with **NO unused imports**.
+
+## 🚫 FORBIDDEN IMPORT PRACTICES
+
+❌ **NEVER** import components that don't exist
+❌ **NEVER** leave unused imports in files
+❌ **NEVER** import entire libraries when only specific exports are needed
+❌ **NEVER** use relative imports for UI components (use `@/components/ui/`)
+❌ **NEVER** import the same module multiple times
+
+## ✅ MANDATORY IMPORT STANDARDS
+
+### **1. Import Validation (CRITICAL)**
+```tsx
+// ✅ BEFORE adding any import, verify the component exists:
+import { Button } from "@/components/ui/button";        // ✅ Exists in shadcn
+import { DataGrid } from "@/components/ui/data-grid";   // ✅ Exists after ReUI install
+import { Card } from "@/components/ui/card";            // ✅ Exists in shadcn
+
+// ❌ NEVER import without checking:
+import { NonExistentComponent } from "@/components/ui/fake";  // ❌ Will cause errors
+```
+
+### **2. Required Shadcn Components Check**
+Before generating any component that uses these imports, **ALWAYS** ensure they're installed:
+
+```tsx
+// ReUI Data Grid Dependencies (install if missing):
+// npx shadcn@latest add command popover separator
+
+// Common Dashboard Dependencies:
+// npx shadcn@latest add button card input label badge dialog dropdown-menu
+
+// Form Dependencies:
+// npx shadcn@latest add input label button card textarea select
+
+// Chart Dependencies (already installed):
+// Recharts, Framer Motion, Lucide React
+```
+
+### **3. Import Organization (REQUIRED)**
+```tsx
+// ✅ CORRECT - Organized import order:
+
+// 1. React and Next.js imports
+import React, { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
+
+// 2. Third-party libraries
+import { createColumnHelper, useReactTable } from "@tanstack/react-table";
+import { motion } from "framer-motion";
+
+// 3. UI components (alphabetical)
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { DataGrid } from "@/components/ui/data-grid";
+
+// 4. Custom components
+import { UserAvatar } from "@/components/UserAvatar";
+
+// 5. Icons (grouped)
+import { EditIcon, TrashIcon, UserIcon } from "lucide-react";
+
+// 6. Utils and types
+import { cn } from "@/lib/utils";
+import type { User } from "@/types/user";
+```
+
+### **4. Component Existence Verification**
+```tsx
+// ✅ STANDARD CHECK - Before any import:
+
+// For shadcn components:
+// 1. Check if file exists: src/components/ui/[component].tsx
+// 2. If missing, install: npx shadcn@latest add [component]
+// 3. Only then import and use
+
+// For custom components:
+// 1. Verify the component exists in the project
+// 2. Check the exact export name
+// 3. Use correct import path
+```
+
+## 🧹 UNUSED IMPORT REMOVAL (MANDATORY)
+
+### **Auto-Cleanup Process**
+```tsx
+// ❌ BEFORE - Unused imports:
+import React, { useState, useEffect, useMemo } from "react";  // useEffect unused
+import { Button } from "@/components/ui/button";              // Button unused
+import { Card, CardContent, CardHeader } from "@/components/ui/card";  // CardContent unused
+import { motion } from "framer-motion";                       // motion unused
+import { EditIcon, TrashIcon, UserIcon } from "lucide-react"; // TrashIcon unused
+
+export default function MyComponent() {
+  const [data, setData] = useState([]);
+  
+  return (
+    <Card>
+      <CardHeader>
+        <UserIcon className="w-4 h-4" />
+        <EditIcon className="w-4 h-4" />
+      </CardHeader>
+    </Card>
+  );
+}
+
+// ✅ AFTER - Only used imports:
+import React, { useState } from "react";
+import { Card, CardHeader } from "@/components/ui/card";
+import { EditIcon, UserIcon } from "lucide-react";
+
+export default function MyComponent() {
+  const [data, setData] = useState([]);
+  
+  return (
+    <Card>
+      <CardHeader>
+        <UserIcon className="w-4 h-4" />
+        <EditIcon className="w-4 h-4" />
+      </CardHeader>
+    </Card>
+  );
+}
+```
+
+## 🔧 IMPORT OPTIMIZATION RULES
+
+### **1. Destructured Imports (PREFERRED)**
+```tsx
+// ✅ GOOD - Destructured imports:
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+
+// ❌ AVOID - Namespace imports for UI components:
+import * as Card from "@/components/ui/card";
+import ButtonComponent from "@/components/ui/button";
+```
+
+### **2. Conditional Imports (ADVANCED)**
+```tsx
+// ✅ GOOD - Only import what's actually used:
+import { DataGrid } from "@/components/ui/data-grid";
+// Only include DataGridColumnFilter if filtering is actually implemented
+import { DataGridColumnFilter } from "@/components/ui/data-grid-column-filter";
+```
+
+### **3. Type-Only Imports (TYPESCRIPT)**
+```tsx
+// ✅ GOOD - Separate type imports:
+import type { User } from "@/types/user";
+import type { Column } from "@tanstack/react-table";
+import { Button } from "@/components/ui/button";
+```
+
+## 📋 VALIDATION CHECKLIST
+
+Before completing any file generation:
+
+### **Import Validation:**
+- [ ] **All imports point to existing files?**
+- [ ] **All imported components are actually used in the component?**
+- [ ] **No duplicate imports from the same module?**
+- [ ] **Import paths use correct aliases (@/ for src/)?**
+
+### **Component Dependencies:**
+- [ ] **Required shadcn components are installed?**
+- [ ] **ReUI Data Grid dependencies available if used?**
+- [ ] **Third-party packages exist in package.json?**
+- [ ] **Custom components exist in the project?**
+
+### **Code Quality:**
+- [ ] **Imports are organized by category?**
+- [ ] **Destructured imports used where appropriate?**
+- [ ] **Type imports separated with 'type' keyword?**
+- [ ] **No unused variables or imports remain?**
+
+## 🚨 COMMON IMPORT ERRORS TO AVOID
+
+### **1. Missing Component Installation**
+```tsx
+// ❌ ERROR - Component not installed:
+import { Command } from "@/components/ui/command";  // Error if not installed
+
+// ✅ SOLUTION - Install first:
+// npx shadcn@latest add command
+import { Command } from "@/components/ui/command";
+```
+
+### **2. Wrong Import Paths**
+```tsx
+// ❌ ERROR - Incorrect paths:
+import { Button } from "components/ui/button";          // Missing @/
+import { Button } from "@/components/button";           // Wrong path
+import { Button } from "../../../components/ui/button"; // Relative path
+
+// ✅ CORRECT - Proper aliases:
+import { Button } from "@/components/ui/button";
+```
+
+### **3. Importing Unused Components**
+```tsx
+// ❌ ERROR - Importing but never using:
+import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
+
+export default function MyComponent() {
+  return <div>No dialog used here</div>;
+}
+
+// ✅ CORRECT - Only import what you use:
+export default function MyComponent() {
+  return <div>No dialog used here</div>;
+}
+```
+
+## 🔧 AUTOMATED IMPORT MANAGEMENT
+
+### **IDE Integration**
+```json
+// VS Code settings for automatic import management:
+{
+  "typescript.preferences.organizeImports": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
+    "source.removeUnusedImports": true
+  }
+}
+```
+
+### **ESLint Rules (RECOMMENDED)**
+```json
+// .eslintrc.js additions:
+{
+  "rules": {
+    "no-unused-vars": "error",
+    "import/no-unused-modules": "error",
+    "import/order": ["error", {
+      "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+      "alphabetize": { "order": "asc" }
+    }]
+  }
+}
+```
+
+## ⚡ QUICK IMPORT CHECKLIST
+
+For every component generation:
+
+1. **✅ VERIFY** - Do all imported components exist?
+2. **✅ CLEAN** - Remove any unused imports
+3. **✅ ORGANIZE** - Group imports by category
+4. **✅ VALIDATE** - Check paths use correct aliases
+5. **✅ TEST** - Ensure no TypeScript/ESLint errors
+
+## 🎯 EXPECTED RESULT
+
+Every generated file should:
+- ✅ **Compile without import errors**
+- ✅ **Have no unused imports**
+- ✅ **Use consistent import organization**
+- ✅ **Import only existing, required components**
+- ✅ **Follow TypeScript best practices**
+
+**Remember: Clean imports = Clean code = Happy developers!**

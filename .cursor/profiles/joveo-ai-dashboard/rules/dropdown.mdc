@@ -1,0 +1,273 @@
+---
+description: select dropdown
+alwaysApply: false
+---
+# Dropdown Components
+
+## Multi-Level Dropdown Components
+
+### Basic Dropdown with Search
+```typescript
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuSearch,
+} from "@/components/ui/dropdown-menu"
+import { ChevronRight, Plus, Search, X } from "lucide-react"
+
+interface DropdownItemProps {
+  label: string
+  subtitle?: string
+  icon?: React.ReactNode
+  onClick?: () => void
+  disabled?: boolean
+}
+
+<DropdownMenu>
+  <DropdownMenuTrigger className="w-full">
+    <div className="flex items-center justify-between px-4 py-2 border rounded-md">
+      <span className="text-sm font-medium text-content-darker">Heading</span>
+      <ChevronRight className="w-4 h-4 text-gray-400" />
+    </div>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent className="w-56">
+    <DropdownMenuSearch>
+      <div className="flex items-center px-2 py-1.5 border-b">
+        <Search className="w-4 h-4 text-gray-400 mr-2" />
+        <input
+          type="text"
+          placeholder="Search"
+          className="w-full text-sm bg-transparent outline-none"
+        />
+      </div>
+    </DropdownMenuSearch>
+    <DropdownMenuGroup>
+      <DropdownMenuItem>
+        <Plus className="w-4 h-4 mr-2" />
+        <span>Label</span>
+      </DropdownMenuItem>
+      <DropdownMenuItem className="bg-primary-lighter">
+        <Plus className="w-4 h-4 mr-2" />
+        <span>Selected Label</span>
+      </DropdownMenuItem>
+    </DropdownMenuGroup>
+    <DropdownMenuSeparator />
+    <DropdownMenuGroup>
+      <DropdownMenuLabel>Heading</DropdownMenuLabel>
+      <DropdownMenuItem>
+        <Plus className="w-4 h-4 mr-2" />
+        <span>Label</span>
+      </DropdownMenuItem>
+    </DropdownMenuGroup>
+    <DropdownMenuSeparator />
+    <div className="p-2">
+      <button className="w-full px-4 py-2 text-sm font-medium text-white bg-primary rounded-md">
+        CTA
+      </button>
+    </div>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+### Nested Dropdown
+```typescript
+<DropdownMenu>
+  <DropdownMenuTrigger className="w-full">
+    <div className="flex items-center justify-between px-4 py-2 border rounded-md">
+      <span className="text-sm font-medium text-content-darker">Heading</span>
+      <ChevronRight className="w-4 h-4 text-gray-400" />
+    </div>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent className="w-56">
+    <DropdownMenuSub>
+      <DropdownMenuSubTrigger>
+        <Plus className="w-4 h-4 mr-2" />
+        <span>Label</span>
+        <ChevronRight className="w-4 h-4 ml-auto" />
+      </DropdownMenuSubTrigger>
+      <DropdownMenuSubContent>
+        <DropdownMenuItem>
+          <Plus className="w-4 h-4 mr-2" />
+          <span>Sublabel</span>
+        </DropdownMenuItem>
+      </DropdownMenuSubContent>
+    </DropdownMenuSub>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+### Usage Guidelines
+1. Use for selection menus, navigation, or action lists
+2. Include search when list items exceed 10
+3. Group related items with separators and labels
+4. Use icons consistently for visual hierarchy
+5. Include keyboard navigation support
+6. Show selected state with background highlight
+7. Add clear button (X) for searchable dropdowns
+
+### Accessibility Considerations
+- Use proper ARIA labels for dropdown trigger
+- Implement keyboard navigation (arrows, enter, escape)
+- Provide clear focus indicators
+- Include screen reader descriptions
+- Support type-ahead filtering when applicable
+
+### Best Practices
+1. Keep dropdown items concise
+2. Use consistent icon placement
+3. Implement proper loading states
+4. Handle long content gracefully
+5. Consider mobile interactions
+6. Maintain proper z-index
+7. Handle overflow properly
+
+### Styling Guidelines
+1. Use consistent spacing
+2. Apply proper typography
+3. Style hover states
+4. Handle focus states
+5. Implement proper borders
+6. Consider dropdown width
+7. Maintain proper alignment# Dropdown Components
+
+## Multi-Level Dropdown Components
+
+### Basic Dropdown with Search
+```typescript
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuSearch,
+} from "@/components/ui/dropdown-menu"
+import { ChevronRight, Plus, Search, X } from "lucide-react"
+
+interface DropdownItemProps {
+  label: string
+  subtitle?: string
+  icon?: React.ReactNode
+  onClick?: () => void
+  disabled?: boolean
+}
+
+<DropdownMenu>
+  <DropdownMenuTrigger className="w-full">
+    <div className="flex items-center justify-between px-4 py-2 border rounded-md">
+      <span className="text-sm font-medium text-content-darker">Heading</span>
+      <ChevronRight className="w-4 h-4 text-gray-400" />
+    </div>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent className="w-56">
+    <DropdownMenuSearch>
+      <div className="flex items-center px-2 py-1.5 border-b">
+        <Search className="w-4 h-4 text-gray-400 mr-2" />
+        <input
+          type="text"
+          placeholder="Search"
+          className="w-full text-sm bg-transparent outline-none"
+        />
+      </div>
+    </DropdownMenuSearch>
+    <DropdownMenuGroup>
+      <DropdownMenuItem>
+        <Plus className="w-4 h-4 mr-2" />
+        <span>Label</span>
+      </DropdownMenuItem>
+      <DropdownMenuItem className="bg-primary-lighter">
+        <Plus className="w-4 h-4 mr-2" />
+        <span>Selected Label</span>
+      </DropdownMenuItem>
+    </DropdownMenuGroup>
+    <DropdownMenuSeparator />
+    <DropdownMenuGroup>
+      <DropdownMenuLabel>Heading</DropdownMenuLabel>
+      <DropdownMenuItem>
+        <Plus className="w-4 h-4 mr-2" />
+        <span>Label</span>
+      </DropdownMenuItem>
+    </DropdownMenuGroup>
+    <DropdownMenuSeparator />
+    <div className="p-2">
+      <button className="w-full px-4 py-2 text-sm font-medium text-white bg-primary rounded-md">
+        CTA
+      </button>
+    </div>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+### Nested Dropdown
+```typescript
+<DropdownMenu>
+  <DropdownMenuTrigger className="w-full">
+    <div className="flex items-center justify-between px-4 py-2 border rounded-md">
+      <span className="text-sm font-medium text-content-darker">Heading</span>
+      <ChevronRight className="w-4 h-4 text-gray-400" />
+    </div>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent className="w-56">
+    <DropdownMenuSub>
+      <DropdownMenuSubTrigger>
+        <Plus className="w-4 h-4 mr-2" />
+        <span>Label</span>
+        <ChevronRight className="w-4 h-4 ml-auto" />
+      </DropdownMenuSubTrigger>
+      <DropdownMenuSubContent>
+        <DropdownMenuItem>
+          <Plus className="w-4 h-4 mr-2" />
+          <span>Sublabel</span>
+        </DropdownMenuItem>
+      </DropdownMenuSubContent>
+    </DropdownMenuSub>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+### Usage Guidelines
+1. Use for selection menus, navigation, or action lists
+2. Include search when list items exceed 10
+3. Group related items with separators and labels
+4. Use icons consistently for visual hierarchy
+5. Include keyboard navigation support
+6. Show selected state with background highlight
+7. Add clear button (X) for searchable dropdowns
+
+### Accessibility Considerations
+- Use proper ARIA labels for dropdown trigger
+- Implement keyboard navigation (arrows, enter, escape)
+- Provide clear focus indicators
+- Include screen reader descriptions
+- Support type-ahead filtering when applicable
+
+### Best Practices
+1. Keep dropdown items concise
+2. Use consistent icon placement
+3. Implement proper loading states
+4. Handle long content gracefully
+5. Consider mobile interactions
+6. Maintain proper z-index
+7. Handle overflow properly
+
+### Styling Guidelines
+1. Use consistent spacing
+2. Apply proper typography
+3. Style hover states
+4. Handle focus states
+5. Implement proper borders
+6. Consider dropdown width
+7. Maintain proper alignment

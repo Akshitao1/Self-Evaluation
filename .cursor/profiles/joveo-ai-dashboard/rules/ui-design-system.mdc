@@ -1,0 +1,631 @@
+---
+alwaysApply: true
+---
+
+# Joveo AI Dashboard UI Design System
+
+## Core Layout Structure
+
+### Header
+```typescript
+// Dark navy header with account/region controls
+const Header = {
+  height: "64px",
+  background: "#1C2536",
+  color: "#FFFFFF",
+  components: {
+    accountSelector: {
+      font: "SF Pro Text Medium 14px",
+      dropdownTrigger: true
+    },
+    breadcrumbs: {
+      separator: "/",
+      activeColor: "#E2E6F1"
+    },
+    regionSelector: {
+      background: "#202E49",
+      borderRadius: "55px"
+    }
+  }
+}
+```
+
+### Sidebar
+```typescript
+const Sidebar = {
+  width: "72px",
+  background: "#FFFFFF",
+  border: "1px solid #E2E8F0",
+  navigation: {
+    iconSize: "20px",
+    activeState: {
+      background: "#E4E8FF",
+      color: "#303F9F"
+    }
+  }
+}
+```
+
+### Main Content
+```typescript
+const MainContent = {
+  padding: "40px",
+  background: "#F4F5FB",
+  maxWidth: "1440px",
+  gridGap: "24px"
+}
+```
+
+## Component Specifications
+
+### Metric Cards
+```typescript
+const MetricCard = {
+  background: "#FFFFFF",
+  borderRadius: "8px",
+  padding: "32px",
+  shadow: "0px 1px 3px rgba(0, 0, 0, 0.1)",
+  layout: {
+    header: {
+      icon: { size: "20px" },
+      label: {
+        font: "SF Pro Text Regular 14px",
+        color: "#1A202C"
+      }
+    },
+    metric: {
+      font: "SF Pro Text Semibold 20px",
+      color: "#3D4759"
+    },
+    trend: {
+      positive: "#43A047",
+      negative: "#E53935",
+      font: "SF Pro Text Regular 12px"
+    },
+    chart: {
+      height: "60px",
+      colors: {
+        primary: "#7681E8",
+        secondary: "#283593"
+      }
+    }
+  }
+}
+```
+
+### Data Visualizations
+
+#### Bar Charts
+```typescript
+const BarChart = {
+  grid: {
+    stroke: "#E2E8F0",
+    strokeDasharray: "4 4"
+  },
+  bars: {
+    width: "10px",
+    radius: "2px",
+    colors: {
+      primary: "#7681E8",
+      secondary: "#283593"
+    }
+  },
+  axis: {
+    font: "SF Pro Text Regular 10px",
+    color: "#718096"
+  },
+  legend: {
+    position: "top-right",
+    font: "SF Pro Text Regular 12px"
+  }
+}
+```
+
+#### Funnel Chart
+```typescript
+const FunnelChart = {
+  colors: {
+    start: "#525DC2",
+    end: "#83B2F9"
+  },
+  labels: {
+    font: "SF Pro Text Regular 14px",
+    color: "#3D4759"
+  },
+  metrics: {
+    font: "SF Pro Text Semibold 16px",
+    color: "#1A202C"
+  },
+  dropIndicator: {
+    font: "SF Pro Text Regular 12px",
+    color: "#718096"
+  }
+}
+```
+
+#### Publisher Distribution
+```typescript
+const PublisherChart = {
+  donut: {
+    innerRadius: "60%",
+    colors: [
+      "#525DC2",
+      "#7681E8",
+      "#649EF5",
+      "#83B2F9",
+      "#59CEE0",
+      "#7CE0F0",
+      "#85CB8B",
+      "#C5E08C"
+    ]
+  },
+  bars: {
+    height: "10px",
+    radius: "2px",
+    spacing: "24px"
+  },
+  labels: {
+    font: "SF Pro Text Regular 14px",
+    color: "#475467"
+  }
+}
+```
+
+## Typography System
+```typescript
+const Typography = {
+  h1: {
+    font: "SF Pro Text Semibold 20px/30px"
+  },
+  h2: {
+    font: "SF Pro Text Semibold 16px/24px"
+  },
+  body1: {
+    font: "SF Pro Text Regular 14px/20px"
+  },
+  body2: {
+    font: "SF Pro Text Regular 12px/18px"
+  },
+  label: {
+    font: "SF Pro Text Medium 12px/18px"
+  }
+}
+```
+
+## Color Palette
+```typescript
+const Colors = {
+  primary: {
+    main: "#303F9F",
+    light: "#7681E8",
+    dark: "#283593",
+    lighter: "#E8EAF6"
+  },
+  secondary: {
+    main: "#102DD1",
+    lighter: "#E4E8FF"
+  },
+  success: {
+    main: "#43A047",
+    dark: "#1B5E20",
+    lighter: "#E8F5E9"
+  },
+  text: {
+    primary: "#1A202C",
+    secondary: "#3D4759",
+    tertiary: "#718096"
+  },
+  background: {
+    default: "#F4F5FB",
+    paper: "#FFFFFF",
+    dark: "#1C2536"
+  },
+  border: {
+    light: "#E2E8F0"
+  }
+}
+```
+
+## Interactive States
+```typescript
+const InteractiveStates = {
+  hover: {
+    background: "rgba(0, 0, 0, 0.04)",
+    transition: "all 0.2s ease"
+  },
+  active: {
+    background: "rgba(0, 0, 0, 0.08)"
+  },
+  focus: {
+    outline: "2px solid #303F9F",
+    outlineOffset: "2px"
+  },
+  disabled: {
+    opacity: 0.5,
+    cursor: "not-allowed"
+  }
+}
+```
+
+## Spacing System
+```typescript
+const Spacing = {
+  unit: 4,
+  scale: {
+    xs: "4px",
+    sm: "8px",
+    md: "16px",
+    lg: "24px",
+    xl: "32px",
+    xxl: "40px"
+  }
+}
+```
+
+## Responsive Breakpoints
+```typescript
+const Breakpoints = {
+  sm: "640px",
+  md: "768px",
+  lg: "1024px",
+  xl: "1280px",
+  "2xl": "1536px"
+}
+```
+
+## Implementation Guidelines
+
+1. **Component Library Integration**
+   - Use shadcn/ui as base component library
+   - Extend components with custom styles
+   - Maintain consistent props API
+
+2. **Chart Implementation**
+   - Use Recharts for all data visualizations
+   - Implement consistent tooltips
+   - Add loading/empty states
+   - Enable responsive behavior
+
+3. **Accessibility**
+   - Maintain WCAG 2.1 AA compliance
+   - Implement keyboard navigation
+   - Add ARIA labels
+   - Test with screen readers
+
+4. **Performance**
+   - Lazy load charts
+   - Implement virtual scrolling for large datasets
+   - Optimize bundle size
+   - Cache API responses
+
+5. **Responsive Design**
+   - Mobile-first approach
+   - Maintain spacing ratios
+   - Stack cards on smaller screens
+   - Collapsible sidebar
+
+6. **State Management**
+   - Loading states
+   - Error handling
+   - Empty states
+   - Success feedback
+   - Offline support
+
+7. **Animation Guidelines**
+   - Use subtle transitions
+   - Keep duration under 300ms
+   - Avoid complex animations
+   - Respect reduced motion preferences# Joveo AI Dashboard UI Design System
+
+## Core Layout Structure
+
+### Header
+```typescript
+// Dark navy header with account/region controls
+const Header = {
+  height: "64px",
+  background: "#1C2536",
+  color: "#FFFFFF",
+  components: {
+    accountSelector: {
+      font: "SF Pro Text Medium 14px",
+      dropdownTrigger: true
+    },
+    breadcrumbs: {
+      separator: "/",
+      activeColor: "#E2E6F1"
+    },
+    regionSelector: {
+      background: "#202E49",
+      borderRadius: "55px"
+    }
+  }
+}
+```
+
+### Sidebar
+```typescript
+const Sidebar = {
+  width: "72px",
+  background: "#FFFFFF",
+  border: "1px solid #E2E8F0",
+  navigation: {
+    iconSize: "20px",
+    activeState: {
+      background: "#E4E8FF",
+      color: "#303F9F"
+    }
+  }
+}
+```
+
+### Main Content
+```typescript
+const MainContent = {
+  padding: "40px",
+  background: "#F4F5FB",
+  maxWidth: "1440px",
+  gridGap: "24px"
+}
+```
+
+## Component Specifications
+
+### Metric Cards
+```typescript
+const MetricCard = {
+  background: "#FFFFFF",
+  borderRadius: "8px",
+  padding: "32px",
+  shadow: "0px 1px 3px rgba(0, 0, 0, 0.1)",
+  layout: {
+    header: {
+      icon: { size: "20px" },
+      label: {
+        font: "SF Pro Text Regular 14px",
+        color: "#1A202C"
+      }
+    },
+    metric: {
+      font: "SF Pro Text Semibold 20px",
+      color: "#3D4759"
+    },
+    trend: {
+      positive: "#43A047",
+      negative: "#E53935",
+      font: "SF Pro Text Regular 12px"
+    },
+    chart: {
+      height: "60px",
+      colors: {
+        primary: "#7681E8",
+        secondary: "#283593"
+      }
+    }
+  }
+}
+```
+
+### Data Visualizations
+
+#### Bar Charts
+```typescript
+const BarChart = {
+  grid: {
+    stroke: "#E2E8F0",
+    strokeDasharray: "4 4"
+  },
+  bars: {
+    width: "10px",
+    radius: "2px",
+    colors: {
+      primary: "#7681E8",
+      secondary: "#283593"
+    }
+  },
+  axis: {
+    font: "SF Pro Text Regular 10px",
+    color: "#718096"
+  },
+  legend: {
+    position: "top-right",
+    font: "SF Pro Text Regular 12px"
+  }
+}
+```
+
+#### Funnel Chart
+```typescript
+const FunnelChart = {
+  colors: {
+    start: "#525DC2",
+    end: "#83B2F9"
+  },
+  labels: {
+    font: "SF Pro Text Regular 14px",
+    color: "#3D4759"
+  },
+  metrics: {
+    font: "SF Pro Text Semibold 16px",
+    color: "#1A202C"
+  },
+  dropIndicator: {
+    font: "SF Pro Text Regular 12px",
+    color: "#718096"
+  }
+}
+```
+
+#### Publisher Distribution
+```typescript
+const PublisherChart = {
+  donut: {
+    innerRadius: "60%",
+    colors: [
+      "#525DC2",
+      "#7681E8",
+      "#649EF5",
+      "#83B2F9",
+      "#59CEE0",
+      "#7CE0F0",
+      "#85CB8B",
+      "#C5E08C"
+    ]
+  },
+  bars: {
+    height: "10px",
+    radius: "2px",
+    spacing: "24px"
+  },
+  labels: {
+    font: "SF Pro Text Regular 14px",
+    color: "#475467"
+  }
+}
+```
+
+## Typography System
+```typescript
+const Typography = {
+  h1: {
+    font: "SF Pro Text Semibold 20px/30px"
+  },
+  h2: {
+    font: "SF Pro Text Semibold 16px/24px"
+  },
+  body1: {
+    font: "SF Pro Text Regular 14px/20px"
+  },
+  body2: {
+    font: "SF Pro Text Regular 12px/18px"
+  },
+  label: {
+    font: "SF Pro Text Medium 12px/18px"
+  }
+}
+```
+
+## Color Palette
+```typescript
+const Colors = {
+  primary: {
+    main: "#303F9F",
+    light: "#7681E8",
+    dark: "#283593",
+    lighter: "#E8EAF6"
+  },
+  secondary: {
+    main: "#102DD1",
+    lighter: "#E4E8FF"
+  },
+  success: {
+    main: "#43A047",
+    dark: "#1B5E20",
+    lighter: "#E8F5E9"
+  },
+  text: {
+    primary: "#1A202C",
+    secondary: "#3D4759",
+    tertiary: "#718096"
+  },
+  background: {
+    default: "#F4F5FB",
+    paper: "#FFFFFF",
+    dark: "#1C2536"
+  },
+  border: {
+    light: "#E2E8F0"
+  }
+}
+```
+
+## Interactive States
+```typescript
+const InteractiveStates = {
+  hover: {
+    background: "rgba(0, 0, 0, 0.04)",
+    transition: "all 0.2s ease"
+  },
+  active: {
+    background: "rgba(0, 0, 0, 0.08)"
+  },
+  focus: {
+    outline: "2px solid #303F9F",
+    outlineOffset: "2px"
+  },
+  disabled: {
+    opacity: 0.5,
+    cursor: "not-allowed"
+  }
+}
+```
+
+## Spacing System
+```typescript
+const Spacing = {
+  unit: 4,
+  scale: {
+    xs: "4px",
+    sm: "8px",
+    md: "16px",
+    lg: "24px",
+    xl: "32px",
+    xxl: "40px"
+  }
+}
+```
+
+## Responsive Breakpoints
+```typescript
+const Breakpoints = {
+  sm: "640px",
+  md: "768px",
+  lg: "1024px",
+  xl: "1280px",
+  "2xl": "1536px"
+}
+```
+
+## Implementation Guidelines
+
+1. **Component Library Integration**
+   - Use shadcn/ui as base component library
+   - Extend components with custom styles
+   - Maintain consistent props API
+
+2. **Chart Implementation**
+   - Use Recharts for all data visualizations
+   - Implement consistent tooltips
+   - Add loading/empty states
+   - Enable responsive behavior
+
+3. **Accessibility**
+   - Maintain WCAG 2.1 AA compliance
+   - Implement keyboard navigation
+   - Add ARIA labels
+   - Test with screen readers
+
+4. **Performance**
+   - Lazy load charts
+   - Implement virtual scrolling for large datasets
+   - Optimize bundle size
+   - Cache API responses
+
+5. **Responsive Design**
+   - Mobile-first approach
+   - Maintain spacing ratios
+   - Stack cards on smaller screens
+   - Collapsible sidebar
+
+6. **State Management**
+   - Loading states
+   - Error handling
+   - Empty states
+   - Success feedback
+   - Offline support
+
+7. **Animation Guidelines**
+   - Use subtle transitions
+   - Keep duration under 300ms
+   - Avoid complex animations
+   - Respect reduced motion preferences

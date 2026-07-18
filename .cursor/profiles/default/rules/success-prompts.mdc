@@ -1,0 +1,217 @@
+---
+alwaysApply: true
+priority: P1
+---
+# Success Prompts - Proven Beautiful UI Generators
+
+## 🎯 WHAT MAKES PROMPTS SUCCESSFUL
+
+The key to generating beautiful UIs like bolt.new is using **specific, design-focused prompts** that include:
+- Visual style requirements (gradients, shadows, animations)
+- Specific component types and layouts
+- Interaction patterns and micro-animations
+- Professional color schemes and spacing
+
+## 🏆 PROVEN SUCCESSFUL PROMPTS
+
+### **Dashboard Components**
+
+#### **Analytics Dashboard Card**
+```
+"Create a modern analytics dashboard card component showing revenue metrics. Include a gradient background from blue to indigo, subtle glassmorphism effect with backdrop-blur, hover animations that lift the card with shadow, and a chart area using Recharts with gradient fills. Add a trending indicator with green color for positive growth and proper TypeScript props."
+```
+
+**Why this works:**
+- Specifies exact visual effects (gradient, glassmorphism, hover lift)
+- Mentions specific libraries (Recharts)
+- Includes interaction details (trending indicator)
+- Requests TypeScript integration
+
+#### **Dashboard Overview Page**
+```
+"Build a complete dashboard overview page with a gradient background from slate-50 to blue-50, sticky header with glassmorphic nav, grid of metric cards with hover effects, interactive charts with smooth animations, and a data table with search and filters. Use professional blue/indigo color scheme throughout and ensure mobile responsiveness."
+```
+
+#### **KPI Metric Cards Grid**
+```
+"Create a grid of KPI metric cards for a SaaS dashboard. Each card should have a white/transparent background with backdrop blur, colored icon in a gradient circle, large metric number with subtle animation on load, percentage change indicator with trending arrow, and smooth hover effects that scale and add shadow. Include loading skeleton states."
+```
+
+### **Landing Page Components**
+
+#### **Hero Section with Animation**
+```
+"Design a modern hero section with animated gradient background, floating geometric shapes, glassmorphic content card with call-to-action buttons using blue/indigo gradients, smooth scroll animations, and responsive typography. Include particle effects or subtle motion graphics and ensure mobile-first design."
+```
+
+#### **Feature Cards Section**
+```
+"Create a features section with three cards in a responsive grid. Each card should have gradient borders, hover animations that lift and rotate slightly, icon with gradient background, compelling copy, and a 'Learn more' link with arrow animation. Use professional color palette and ensure cards stack nicely on mobile."
+```
+
+#### **Pricing Cards with Comparison**
+```
+"Build a pricing comparison section with three tiers. Popular plan should have gradient background and 'Most Popular' badge. Include hover effects, animated pricing numbers, feature lists with checkmark icons, and prominent CTA buttons with gradient backgrounds. Add glassmorphism effects and professional shadows."
+```
+
+### **Form Components**
+
+#### **Multi-Step Form with Progress**
+```
+"Create a beautiful multi-step form component with progress indicator, smooth step transitions, form validation with real-time feedback, gradient submit buttons, and success/error states. Include glassmorphic styling, proper TypeScript types, and accessibility features like focus management."
+```
+
+#### **Contact Form with Validation**
+```
+"Design a contact form with real-time validation, floating labels, gradient focus rings, smooth error message animations, and a success state with confetti animation. Use glassmorphic card design with backdrop blur and ensure proper accessibility with ARIA labels."
+```
+
+#### **Search Interface with Filters**
+```
+"Build an advanced search interface with instant search, filter sidebar with checkbox groups, sort options, results counter, and pagination. Include smooth animations for filter toggles, loading states for search results, and empty state with illustration. Use professional blue/gray color scheme."
+```
+
+### **Application Components**
+
+#### **User Profile Dashboard**
+```
+"Create a user profile dashboard with avatar upload, editable profile fields, activity timeline, statistics cards with charts, and settings panel. Include smooth transitions between sections, hover effects on interactive elements, and a professional gradient color scheme with glassmorphic elements."
+```
+
+#### **Data Table with Advanced Features**
+```
+"Build a professional data table with sortable columns, search functionality, row selection, bulk actions, export options, and pagination. Include hover effects on rows, loading skeletons, empty states, and action dropdowns. Use gradient headers and ensure mobile responsiveness with horizontal scroll."
+```
+
+#### **Notification Center**
+```
+"Design a notification center with toast notifications, notification history panel, mark as read functionality, and different notification types (success, warning, error, info). Include smooth slide-in animations, gradient backgrounds for different types, and proper dismissal interactions."
+```
+
+### **Chart and Visualization Components**
+
+#### **Interactive Revenue Chart**
+```
+"Create an interactive revenue chart using Recharts with gradient area fills, smooth animations on load, interactive tooltips with glassmorphic styling, time period selector buttons, and export functionality. Include loading states and responsive design for mobile."
+```
+
+#### **Real-time Analytics Widget**
+```
+"Build a real-time analytics widget showing live data with animated counters, sparkline charts, percentage change indicators with color coding, and refresh functionality. Include pulse animations for live updates and professional styling with gradients and shadows."
+```
+
+#### **Comparison Dashboard Charts**
+```
+"Design a dashboard section comparing metrics with before/after charts, percentage change visualizations, trend indicators, and interactive legends. Use consistent color coding, smooth transitions between data sets, and professional styling with glassmorphic cards."
+```
+
+## 🎨 DESIGN-SPECIFIC PROMPT PATTERNS
+
+### **Color and Visual Style Prompts**
+Always include specific visual requirements:
+
+```
+"...with gradient background from [color] to [color], glassmorphic effects with backdrop-blur, professional shadows with subtle [color] hints, and hover animations that scale/lift/rotate..."
+```
+
+### **Animation and Interaction Prompts**
+Specify micro-interactions:
+
+```
+"...include smooth transitions (200-300ms), hover effects that provide clear feedback, loading states with skeleton screens, and entrance animations that fade-in with slide effects..."
+```
+
+### **Layout and Spacing Prompts**
+Request professional layouts:
+
+```
+"...use consistent spacing with the spacing system, responsive grid that adapts to mobile, proper visual hierarchy with typography variants, and ensure touch-friendly interactions on mobile devices..."
+```
+
+## 🚀 ADVANCED PROMPT TECHNIQUES
+
+### **Prompt Stacking for Complex Components**
+Break complex requests into focused parts:
+
+1. **Base Structure**: "Create the layout and basic structure for..."
+2. **Visual Enhancement**: "Now enhance the visual design with gradients and animations..."
+3. **Interactions**: "Add interactive features like hover effects and loading states..."
+4. **Data Integration**: "Connect the component to use real data with proper TypeScript types..."
+
+### **Context-Aware Prompts**
+Include relevant context:
+
+```
+"For a SaaS admin dashboard, create a user management table that feels premium and trustworthy, with professional styling that matches high-end analytics platforms like..."
+```
+
+### **Mobile-First Prompts**
+Always specify responsive behavior:
+
+```
+"Design with mobile-first approach, ensuring touch-friendly interactions, readable typography on small screens, and layout that adapts gracefully from mobile to desktop..."
+```
+
+## 🎯 PROMPT FORMULA FOR SUCCESS
+
+### **Perfect Prompt Structure:**
+```
+[Component Type] + [Visual Style] + [Interactions] + [Technical Requirements] + [Context]
+
+Example:
+"Create a [dashboard metric card] with [gradient blue background and glassmorphic effects] that [animates on hover and shows trending indicators] using [TypeScript and Recharts] for [a SaaS analytics platform]."
+```
+
+### **Essential Elements to Always Include:**
+1. **Specific visual effects**: gradients, shadows, glassmorphism
+2. **Animation details**: hover effects, transitions, loading states
+3. **Color schemes**: professional palettes with specific color names
+4. **Technical specs**: TypeScript, specific libraries, responsive design
+5. **Use case context**: dashboard, landing page, user app, etc.
+
+## ❌ PROMPTS THAT DON'T WORK
+
+### **Too Generic:**
+```
+❌ "Create a dashboard card"
+❌ "Make a form component"
+❌ "Build a table"
+```
+
+### **Missing Visual Specifications:**
+```
+❌ "Create a button with good styling"
+❌ "Make a nice-looking card"
+❌ "Design a modern interface"
+```
+
+### **No Interaction Details:**
+```
+❌ "Create a static dashboard"
+❌ "Make a simple form"
+❌ "Build a basic table"
+```
+
+## ✅ SUCCESS MEASUREMENT
+
+A successful prompt should generate code that:
+- **Looks premium** from the first render
+- **Includes hover/interaction effects** without asking
+- **Uses professional color schemes** automatically
+- **Has proper loading/empty states** built-in
+- **Works responsively** on all screen sizes
+- **Feels like a high-end SaaS product**
+
+## 🔥 PRO TIPS
+
+1. **Be Specific About Visual Effects**: The more specific you are about gradients, shadows, and animations, the better the result.
+
+2. **Reference High-Quality Products**: Mention platforms like "similar to Notion's design" or "like a premium analytics dashboard."
+
+3. **Include Edge Cases**: Ask for loading states, empty states, and error handling in your initial prompt.
+
+4. **Request TypeScript**: Always ask for proper TypeScript integration for better code quality.
+
+5. **Specify Mobile Behavior**: Include responsive design requirements in every prompt.
+
+Remember: The goal is to generate code that looks like it was designed by a professional UI/UX team and developed by a senior frontend engineer.

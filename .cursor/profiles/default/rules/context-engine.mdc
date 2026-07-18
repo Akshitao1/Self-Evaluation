@@ -1,0 +1,423 @@
+---
+alwaysApply: true
+---
+
+# Context Detection & Learning Engine - Smart AI Rules
+
+## 🎯 PURPOSE: MAKE AI UNDERSTAND PROJECT CONTEXT
+Automatically detect domain, user type, and preferences to generate perfectly tailored components.
+
+## 🧠 CONTEXT DETECTION (P0 - MANDATORY)
+
+### **Auto-Detect Domain from ANY User Request**
+```markdown
+## DOMAIN DETECTION PATTERNS (Always Apply)
+
+Scan every user request for these indicators:
+
+**HR/Human Resources:**
+- Keywords: "employee", "staff", "hr", "human resources", "personnel", "onboarding", "payroll", "benefits", "department", "manager", "team member"
+- Components: user management, employee dashboards, org charts, attendance
+- → Store: domain=hr
+
+**Finance/Accounting:**
+- Keywords: "finance", "accounting", "budget", "revenue", "expense", "invoice", "payment", "transaction", "profit", "cost", "financial"
+- Components: revenue dashboards, expense tracking, financial reports
+- → Store: domain=finance
+
+**Sales/CRM:**
+- Keywords: "sales", "leads", "deals", "customers", "prospects", "pipeline", "crm", "opportunities", "quotas", "commission"
+- Components: sales dashboards, lead management, deal tracking
+- → Store: domain=sales
+
+**Analytics/Reporting:**
+- Keywords: "analytics", "metrics", "kpi", "dashboard", "report", "insights", "data", "performance", "tracking"
+- Components: analytics dashboards, metric cards, charts
+- → Store: domain=analytics
+
+**Admin/System:**
+- Keywords: "admin", "system", "configuration", "settings", "permissions", "roles", "access", "security"
+- Components: admin panels, user roles, system settings
+- → Store: domain=admin
+```
+
+### **Auto-Detect User Type from Request Context**
+```markdown
+## USER TYPE DETECTION (Always Apply)
+
+**Admin/Administrator:**
+- Indicators: "manage users", "admin panel", "system settings", "permissions", "bulk operations", "user roles"
+- UI Needs: Data-dense tables, bulk actions, advanced filters, export functions
+- → Store: userType=admin
+
+**Manager/Supervisor:**
+- Indicators: "team dashboard", "manager view", "reports", "team performance", "overview", "supervise"
+- UI Needs: Summary cards, trend charts, drill-down capabilities, team focus
+- → Store: userType=manager
+
+**End User:**
+- Indicators: "my profile", "user dashboard", "personal", "view my", "individual"
+- UI Needs: Simple interfaces, personal data, limited actions, intuitive design
+- → Store: userType=enduser
+
+**Developer/Technical:**
+- Indicators: "api", "integration", "technical", "developer", "code", "configuration"
+- UI Needs: Technical details, code snippets, advanced options, debugging tools
+- → Store: userType=developer
+```
+
+## 📁 CONTEXT STORAGE SYSTEM
+
+### **Context File Format**
+Always maintain: `/.cursor/project-context.md`
+
+```markdown
+# Project Context (Auto-Generated)
+
+## Current Context
+- **Domain**: [detected_domain]
+- **User Type**: [detected_user_type]
+- **Last Updated**: [timestamp]
+- **Session Count**: [number]
+
+## Learned Patterns
+- **Preferred Components**: [list]
+- **Color Schemes**: [preferences]
+- **Data Types**: [common_data_structures]
+- **User Workflows**: [detected_patterns]
+
+## Component History
+- **Generated Components**: [list_with_context]
+- **User Feedback**: [positive/negative_patterns]
+- **Successful Patterns**: [what_worked_well]
+```
+
+### **Context Update Rules (MANDATORY)**
+```markdown
+## CONTEXT UPDATE WORKFLOW
+
+For EVERY user request:
+
+1. **READ** existing /.cursor/project-context.md
+2. **ANALYZE** current request for domain/user indicators
+3. **UPDATE** context file with new insights
+4. **STORE** component preferences and patterns
+5. **REFERENCE** context for intelligent generation
+
+Example Update Process:
+```
+User Request: "Create an employee onboarding dashboard"
+→ Detected: domain=hr, userType=admin, component=dashboard
+→ Update context file with HR admin preferences
+→ Generate HR-optimized dashboard with employee-specific features
+```
+```
+
+## 🎯 CONTEXT APPLICATION RULES
+
+### **Context-Driven Component Generation**
+```markdown
+## APPLY CONTEXT TO EVERY COMPONENT (P0)
+
+BEFORE generating any component:
+
+1. **Read Context**: Check /.cursor/project-context.md
+2. **Apply Domain Logic**: Use domain-specific optimizations
+3. **Apply User Type Logic**: Optimize for user type needs
+4. **Generate**: Create context-aware component
+5. **Learn**: Update context with successful patterns
+
+**Context Application Examples:**
+
+If domain=hr + userType=admin:
+- Tables: Employee ID, Department, Manager, Status, Actions (Edit, Deactivate, Export)
+- Forms: Employee onboarding with validation
+- Charts: Headcount trends, department distribution
+- Actions: Bulk operations, CSV export, role assignments
+
+If domain=sales + userType=manager:
+- Tables: Lead Source, Deal Value, Stage, Owner, Last Contact
+- Charts: Sales pipeline, revenue trends, team performance
+- Metrics: Conversion rates, quota attainment, deal velocity
+- Actions: Assign leads, export to CRM, team reports
+
+If domain=finance + userType=admin:
+- Tables: Transaction ID, Amount, Category, Date, Status
+- Charts: Revenue/expense trends, budget vs actual
+- Metrics: Cash flow, profit margins, expense ratios
+- Actions: Reconcile, approve, export for audit
+```
+
+## 🚀 INTELLIGENT ENHANCEMENT RULES
+
+### **Smart Default Enhancement**
+```markdown
+## CONTEXT-AWARE AUTO-ENHANCEMENT
+
+Based on stored context, AUTOMATICALLY enhance basic requests:
+
+**Basic Request**: "Create a table"
+**Context-Enhanced**: 
+- domain=hr → "Create an employee management table with HR-specific columns, role-based actions, and department filtering"
+- domain=sales → "Create a deals pipeline table with sales-specific metrics, stage progression, and CRM integration actions"
+- domain=finance → "Create a transaction table with financial data, approval workflows, and audit trail features"
+
+**Basic Request**: "Add a dashboard"  
+**Context-Enhanced**:
+- userType=admin → "Create an admin dashboard with system metrics, user management, and operational controls"
+- userType=manager → "Create a manager dashboard with team performance, trend analysis, and actionable insights"
+- userType=enduser → "Create a user dashboard with personal metrics, simple navigation, and relevant personal data"
+```
+
+### **Pattern Learning System**
+```markdown
+## LEARN FROM USER INTERACTIONS
+
+Track and apply successful patterns:
+
+**Success Indicators:**
+- User accepts generated component without modifications
+- User requests similar components with same context
+- User provides positive feedback
+
+**Failure Indicators:**
+- User requests multiple modifications
+- User rejects component styling/functionality
+- User provides negative feedback
+
+**Learning Actions:**
+- Update context file with successful patterns
+- Avoid patterns that led to user dissatisfaction
+- Reinforce context detection accuracy
+- Improve domain-specific optimizations
+```
+
+## ✅ IMPLEMENTATION CHECKLIST
+
+For every component generation:
+
+- [ ] **Context Detection**: Analyzed request for domain/user indicators?
+- [ ] **Context Read**: Read existing project context file?
+- [ ] **Context Application**: Applied domain and user type optimizations?
+- [ ] **Context Update**: Updated context file with new learnings?
+- [ ] **Pattern Learning**: Stored successful patterns for future use?
+
+## 🎯 SUCCESS METRICS
+
+**Perfect Context System Achieves:**
+- ✅ **1-Prompt Perfection**: Basic requests yield perfectly tailored components
+- ✅ **Intelligent Defaults**: AI understands project needs without explicit instruction
+- ✅ **Learning Curve**: Each interaction improves future generations
+- ✅ **Domain Expertise**: Components feel like they were designed by domain experts
+- ✅ **User Type Optimization**: Interfaces perfectly match user role needs
+
+**Remember: Context is the key to achieving bolt.new level intelligence!**# Context Detection & Learning Engine - Smart AI Rules
+
+## 🎯 PURPOSE: MAKE AI UNDERSTAND PROJECT CONTEXT
+Automatically detect domain, user type, and preferences to generate perfectly tailored components.
+
+## 🧠 CONTEXT DETECTION (P0 - MANDATORY)
+
+### **Auto-Detect Domain from ANY User Request**
+```markdown
+## DOMAIN DETECTION PATTERNS (Always Apply)
+
+Scan every user request for these indicators:
+
+**HR/Human Resources:**
+- Keywords: "employee", "staff", "hr", "human resources", "personnel", "onboarding", "payroll", "benefits", "department", "manager", "team member"
+- Components: user management, employee dashboards, org charts, attendance
+- → Store: domain=hr
+
+**Finance/Accounting:**
+- Keywords: "finance", "accounting", "budget", "revenue", "expense", "invoice", "payment", "transaction", "profit", "cost", "financial"
+- Components: revenue dashboards, expense tracking, financial reports
+- → Store: domain=finance
+
+**Sales/CRM:**
+- Keywords: "sales", "leads", "deals", "customers", "prospects", "pipeline", "crm", "opportunities", "quotas", "commission"
+- Components: sales dashboards, lead management, deal tracking
+- → Store: domain=sales
+
+**Analytics/Reporting:**
+- Keywords: "analytics", "metrics", "kpi", "dashboard", "report", "insights", "data", "performance", "tracking"
+- Components: analytics dashboards, metric cards, charts
+- → Store: domain=analytics
+
+**Admin/System:**
+- Keywords: "admin", "system", "configuration", "settings", "permissions", "roles", "access", "security"
+- Components: admin panels, user roles, system settings
+- → Store: domain=admin
+```
+
+### **Auto-Detect User Type from Request Context**
+```markdown
+## USER TYPE DETECTION (Always Apply)
+
+**Admin/Administrator:**
+- Indicators: "manage users", "admin panel", "system settings", "permissions", "bulk operations", "user roles"
+- UI Needs: Data-dense tables, bulk actions, advanced filters, export functions
+- → Store: userType=admin
+
+**Manager/Supervisor:**
+- Indicators: "team dashboard", "manager view", "reports", "team performance", "overview", "supervise"
+- UI Needs: Summary cards, trend charts, drill-down capabilities, team focus
+- → Store: userType=manager
+
+**End User:**
+- Indicators: "my profile", "user dashboard", "personal", "view my", "individual"
+- UI Needs: Simple interfaces, personal data, limited actions, intuitive design
+- → Store: userType=enduser
+
+**Developer/Technical:**
+- Indicators: "api", "integration", "technical", "developer", "code", "configuration"
+- UI Needs: Technical details, code snippets, advanced options, debugging tools
+- → Store: userType=developer
+```
+
+## 📁 CONTEXT STORAGE SYSTEM
+
+### **Context File Format**
+Always maintain: `/.cursor/project-context.md`
+
+```markdown
+# Project Context (Auto-Generated)
+
+## Current Context
+- **Domain**: [detected_domain]
+- **User Type**: [detected_user_type]
+- **Last Updated**: [timestamp]
+- **Session Count**: [number]
+
+## Learned Patterns
+- **Preferred Components**: [list]
+- **Color Schemes**: [preferences]
+- **Data Types**: [common_data_structures]
+- **User Workflows**: [detected_patterns]
+
+## Component History
+- **Generated Components**: [list_with_context]
+- **User Feedback**: [positive/negative_patterns]
+- **Successful Patterns**: [what_worked_well]
+```
+
+### **Context Update Rules (MANDATORY)**
+```markdown
+## CONTEXT UPDATE WORKFLOW
+
+For EVERY user request:
+
+1. **READ** existing /.cursor/project-context.md
+2. **ANALYZE** current request for domain/user indicators
+3. **UPDATE** context file with new insights
+4. **STORE** component preferences and patterns
+5. **REFERENCE** context for intelligent generation
+
+Example Update Process:
+```
+User Request: "Create an employee onboarding dashboard"
+→ Detected: domain=hr, userType=admin, component=dashboard
+→ Update context file with HR admin preferences
+→ Generate HR-optimized dashboard with employee-specific features
+```
+```
+
+## 🎯 CONTEXT APPLICATION RULES
+
+### **Context-Driven Component Generation**
+```markdown
+## APPLY CONTEXT TO EVERY COMPONENT (P0)
+
+BEFORE generating any component:
+
+1. **Read Context**: Check /.cursor/project-context.md
+2. **Apply Domain Logic**: Use domain-specific optimizations
+3. **Apply User Type Logic**: Optimize for user type needs
+4. **Generate**: Create context-aware component
+5. **Learn**: Update context with successful patterns
+
+**Context Application Examples:**
+
+If domain=hr + userType=admin:
+- Tables: Employee ID, Department, Manager, Status, Actions (Edit, Deactivate, Export)
+- Forms: Employee onboarding with validation
+- Charts: Headcount trends, department distribution
+- Actions: Bulk operations, CSV export, role assignments
+
+If domain=sales + userType=manager:
+- Tables: Lead Source, Deal Value, Stage, Owner, Last Contact
+- Charts: Sales pipeline, revenue trends, team performance
+- Metrics: Conversion rates, quota attainment, deal velocity
+- Actions: Assign leads, export to CRM, team reports
+
+If domain=finance + userType=admin:
+- Tables: Transaction ID, Amount, Category, Date, Status
+- Charts: Revenue/expense trends, budget vs actual
+- Metrics: Cash flow, profit margins, expense ratios
+- Actions: Reconcile, approve, export for audit
+```
+
+## 🚀 INTELLIGENT ENHANCEMENT RULES
+
+### **Smart Default Enhancement**
+```markdown
+## CONTEXT-AWARE AUTO-ENHANCEMENT
+
+Based on stored context, AUTOMATICALLY enhance basic requests:
+
+**Basic Request**: "Create a table"
+**Context-Enhanced**: 
+- domain=hr → "Create an employee management table with HR-specific columns, role-based actions, and department filtering"
+- domain=sales → "Create a deals pipeline table with sales-specific metrics, stage progression, and CRM integration actions"
+- domain=finance → "Create a transaction table with financial data, approval workflows, and audit trail features"
+
+**Basic Request**: "Add a dashboard"  
+**Context-Enhanced**:
+- userType=admin → "Create an admin dashboard with system metrics, user management, and operational controls"
+- userType=manager → "Create a manager dashboard with team performance, trend analysis, and actionable insights"
+- userType=enduser → "Create a user dashboard with personal metrics, simple navigation, and relevant personal data"
+```
+
+### **Pattern Learning System**
+```markdown
+## LEARN FROM USER INTERACTIONS
+
+Track and apply successful patterns:
+
+**Success Indicators:**
+- User accepts generated component without modifications
+- User requests similar components with same context
+- User provides positive feedback
+
+**Failure Indicators:**
+- User requests multiple modifications
+- User rejects component styling/functionality
+- User provides negative feedback
+
+**Learning Actions:**
+- Update context file with successful patterns
+- Avoid patterns that led to user dissatisfaction
+- Reinforce context detection accuracy
+- Improve domain-specific optimizations
+```
+
+## ✅ IMPLEMENTATION CHECKLIST
+
+For every component generation:
+
+- [ ] **Context Detection**: Analyzed request for domain/user indicators?
+- [ ] **Context Read**: Read existing project context file?
+- [ ] **Context Application**: Applied domain and user type optimizations?
+- [ ] **Context Update**: Updated context file with new learnings?
+- [ ] **Pattern Learning**: Stored successful patterns for future use?
+
+## 🎯 SUCCESS METRICS
+
+**Perfect Context System Achieves:**
+- ✅ **1-Prompt Perfection**: Basic requests yield perfectly tailored components
+- ✅ **Intelligent Defaults**: AI understands project needs without explicit instruction
+- ✅ **Learning Curve**: Each interaction improves future generations
+- ✅ **Domain Expertise**: Components feel like they were designed by domain experts
+- ✅ **User Type Optimization**: Interfaces perfectly match user role needs
+
+**Remember: Context is the key to achieving bolt.new level intelligence!**

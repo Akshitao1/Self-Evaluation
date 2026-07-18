@@ -1,0 +1,118 @@
+---
+description: "Rules for Joveo button components with four variants: Primary, Secondary, Tertiary, and Text"
+globs:
+  - "src/components/ui/JoveoButton.tsx"
+alwaysApply: true
+---
+
+# Joveo Button Component Guidelines
+
+## Button Variants
+
+### Primary Button
+- Background: Primary Blue (#303F9F)
+- Text: White (#FFFFFF)
+- Hover: Slightly darker blue (#29358f)
+- Border: None
+- Shadow: Subtle elevation (shadow-xs)
+- Use for: Primary actions, form submissions, main calls-to-action
+
+```tsx
+<JoveoButton variant="primary">Button</JoveoButton>
+```
+
+### Secondary Button
+- Background: Light purple (#e6e8ff)
+- Text: Primary Blue (#303F9F)
+- Hover: Slightly darker background (#d5d7f0)
+- Border: None
+- Shadow: None
+- Use for: Secondary actions, alternative options
+
+```tsx
+<JoveoButton variant="secondary">Button</JoveoButton>
+```
+
+### Tertiary Button
+- Background: White (#FFFFFF)
+- Text: Primary Blue (#303F9F)
+- Hover: Very light background (#f5f5ff)
+- Border: 1px solid light border color (#e2e8f0)
+- Shadow: None
+- Use for: Less important actions, cancel buttons
+
+```tsx
+<JoveoButton variant="tertiary">Button</JoveoButton>
+```
+
+### Text Button
+- Background: Transparent
+- Text: Primary Blue (#303F9F)
+- Hover: Very light background (#f5f5ff)
+- Border: None
+- Shadow: None
+- Use for: Least important actions, links within content
+
+```tsx
+<JoveoButton variant="text">Button</JoveoButton>
+```
+
+## Button Implementation
+
+The button component should use the following class-variance-authority (cva) configuration:
+
+```tsx
+const joveoButtonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-2",
+  {
+    variants: {
+      variant: {
+        primary: "bg-[#303F9F] text-white shadow-xs hover:bg-[#29358f]",
+        secondary: "bg-[#e6e8ff] text-[#303F9F] hover:bg-[#d5d7f0]",
+        tertiary: "bg-white text-[#303F9F] border border-[#e2e8f0] hover:bg-[#f5f5ff]",
+        text: "bg-transparent text-[#303F9F] hover:bg-[#f5f5ff]",
+        // Keep these for backwards compatibility
+        default: "bg-[#303F9F] text-white shadow-xs hover:bg-[#29358f]",
+        destructive: "bg-destructive text-white shadow-xs hover:bg-destructive/90",
+        outline: "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-[#303F9F] underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-9 px-4 py-2",
+        sm: "h-8 rounded-md px-3 text-xs",
+        lg: "h-10 rounded-md px-6",
+        icon: "size-9",
+      },
+    },
+    defaultVariants: {
+      variant: "primary",
+      size: "default",
+    },
+  }
+)
+```
+
+## Usage Guidelines
+
+1. Use the most appropriate variant based on the action's importance
+2. Maintain consistent spacing between buttons (typically gap-4)
+3. Align button text with Joveo typography standards
+4. Use the primary button only once per form/section
+5. Group related buttons together
+6. Disabled state should use opacity-50
+7. Always provide accessible labels for icon-only buttons
+8. Buttons should be at least 36px tall for touch targets
+
+## Responsive Design
+
+- On mobile, increase touch targets (use size="lg")
+- Consider full-width buttons on small screens
+- Maintain proper spacing between buttons (min gap-3)
+
+## Accessibility
+
+- Ensure sufficient color contrast (WCAG 2.1 AA)
+- Provide focus states for keyboard navigation
+- Use aria-label for icon-only buttons
+- Support screen readers with proper semantics

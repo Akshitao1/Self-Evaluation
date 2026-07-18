@@ -1,0 +1,109 @@
+{
+  "name": "Joveo AI Dashboard",
+  "version": "1.0.0",
+  "description": "Profile configuration for Joveo AI Dashboard mode",
+  "styles": {
+    "enforceTokens": true,
+    "enforceLayout": true,
+    "tailwind": {
+      "config": "./tailwind.config.js",
+      "css": "./styles.css"
+    }
+  },
+  "components": {
+    "rules": {
+      "charts": "./rules/charts.mdc",
+      "metrics": "./rules/metrics.mdc",
+      "tables": "./rules/tables.mdc"
+    },
+    "enforce": true,
+    "namespace": "joveo",
+    "styling": {
+      "enforceTokens": true,
+      "enforceBorders": true,
+      "enforceSpacing": true
+    },
+    "table": {
+      "required": {
+        "features": [
+          "columnResizing",
+          "columnReordering",
+          "columnFreezing",
+          "sorting",
+          "rowSelection",
+          "pagination"
+        ],
+        "components": [
+          "StatusCell",
+          "ProgressBar",
+          "ActionBar",
+          "Pagination"
+        ],
+        "accessibility": [
+          "ariaLabels",
+          "keyboardNavigation",
+          "screenReader"
+        ]
+      },
+      "styling": {
+        "enforceTokens": true,
+        "enforceLayout": true,
+        "enforceAnimations": true
+      },
+      "validation": {
+        "rules": [
+          {
+            "type": "features",
+            "severity": "error"
+          },
+          {
+            "type": "components",
+            "severity": "error"
+          },
+          {
+            "type": "accessibility",
+            "severity": "error"
+          },
+          {
+            "type": "styling",
+            "severity": "error"
+          }
+        ]
+      }
+    }
+  },
+  "tokens": {
+    "design": "./design.json",
+    "enforce": true
+  },
+  "validation": {
+    "rules": [
+      {
+        "type": "layout",
+        "severity": "error",
+        "check": "structure"
+      },
+      {
+        "type": "component",
+        "severity": "error",
+        "check": "styling"
+      },
+      {
+        "type": "token",
+        "severity": "error",
+        "check": "usage"
+      },
+      {
+        "type": "table",
+        "severity": "error",
+        "check": "all"
+      }
+    ]
+  },
+  "dependencies": {
+    "required": [
+      "@tanstack/react-table",
+      "@tanstack/react-virtual"
+    ]
+  }
+}

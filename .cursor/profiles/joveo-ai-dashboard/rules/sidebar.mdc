@@ -1,0 +1,209 @@
+---
+description: Sidebar Navigation for Joveo AI Dashboard, sidenav
+alwaysApply: false
+---
+# Sidebar Navigation Component
+
+## Overview
+The sidebar navigation component follows Joveo's enterprise design system with an icon-only left navigation that expands on hover. It uses a light color scheme with Joveo-specific styling.
+
+## Design Specifications
+
+### Layout & Dimensions
+- Width (collapsed): 72px
+- Width (expanded): 240px
+- Height: 100vh (full height)
+- Position: Fixed to the left side
+- Top margin: 64px (to accommodate header)
+- Background color: #FFFFFF
+- Border-right: 1px solid #E6E8F0
+
+### Styling
+- Background: White (#FFFFFF)
+- Border: 1px solid #E6E8F0 (right side)
+- Shadow: None
+- Z-index: 40 (below header)
+- Transition: 300ms ease-in-out for smooth expand/collapse
+
+### Navigation Items
+- Icon size: 20px
+- Icon color (default): #3D4759 (Text Gray)
+- Icon color (active): #303F9F (Primary Blue)
+- Active background: #F0F4FF (Light blue)
+- Active border: 1px solid #E1E8FF
+- Hover state: #F0F4FF background with #303F9F text
+- Padding: 8px 12px
+- Border radius: 4px
+- Vertical spacing between items: 8px
+
+## Component Implementation
+
+```typescript
+"use client";
+import { Home, BarChart, Users, Settings, FileText } from "lucide-react";
+import Link from "next/link";
+import React from "react";
+import { cn } from "@/lib/utils";
+import {
+  DRAWER_WIDTH_CLOSED,
+  DRAWER_WIDTH_OPEN,
+} from "./Sidebar.constants";
+
+export const navItems = [
+  {
+    label: "Overview",
+    icon: <Home size={20} />,
+    href: "/",
+    active: false,
+  },
+  {
+    label: "Dashboard",
+    icon: <BarChart size={20} />,
+    href: "/dashboard",
+    active: true,
+  },
+  {
+    label: "All Clients",
+    icon: <Users size={20} />,
+    href: "/clients",
+    active: false,
+  },
+  {
+    label: "All Publishers",
+    icon: <FileText size={20} />,
+    href: "/publishers",
+    active: false,
+  },
+];
+
+interface SidebarProps {
+  isOpen: boolean;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+}
+
+const Sidebar = ({
+  isOpen,
+  onMouseEnter,
+  onMouseLeave,
+}: SidebarProps) => {
+  return (
+    <aside
+      className={cn(
+        "fixed left-0 top-16 z-40 h-[calc(100vh-64px)] bg-white border-r border-[#E6E8F0] transition-all duration-300 ease-in-out",
+        isOpen ? `w-[${DRAWER_WIDTH_OPEN}px]` : `w-[${DRAWER_WIDTH_CLOSED}px]`
+      )}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      style={{
+        width: isOpen ? DRAWER_WIDTH_OPEN : DRAWER_WIDTH_CLOSED,
+      }}
+    >
+      {/* Navigation */}
+      <nav className="flex flex-col p-4">
+        <ul className="space-y-2">
+          {navItems.map((item) => (
+            <li key={item.label}>
+              <Link
+                href={item.href}
+                className={cn(
+                  "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+                  "hover:bg-[#F0F4FF] hover:text-[#303F9F]",
+                  item.active
+                    ? "bg-[#F0F4FF] text-[#303F9F] border border-[#E1E8FF]"
+                    : "text-[#3D4759]"
+                )}
+              >
+                <div className={cn(
+                  "flex items-center justify-center",
+                  isOpen ? "mr-3" : "mx-auto"
+                )}>
+                  <div className={cn(
+                    item.active ? "text-[#303F9F]" : "text-[#3D4759]"
+                  )}>
+                    {item.icon}
+                  </div>
+                </div>
+                <span
+                  className={cn(
+                    "transition-opacity duration-200",
+                    isOpen ? "opacity-100" : "opacity-0 w-0 overflow-hidden"
+                  )}
+                >
+                  {item.label}
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </aside>
+  );
+};
+
+export default Sidebar;
+```
+
+## Constants File
+
+```typescript
+// src/components/Sidebar.constants.ts
+export const DRAWER_WIDTH_OPEN = 240;
+export const DRAWER_WIDTH_CLOSED = 72;
+```
+
+## Usage Guidelines
+
+### Implementation Best Practices
+1. **Icon-only Mode**: 
+   - Default view should be icon-only (72px width)
+   - Icons should be centered in the collapsed state
+   - Use consistent 20px icon size
+
+2. **Hover/Expand Behavior**:
+   - Expand on hover/focus for better accessibility
+   - Use smooth transitions (300ms duration)
+   - Maintain consistent width when expanded (240px)
+
+3. **Active State**:
+   - Active items must have:
+     - Light blue background (#F0F4FF)
+     - Primary blue text/icon (#303F9F)
+     - Light border (#E1E8FF)
+
+4. **Visual Hierarchy**:
+   - Group related navigation items
+   - Consider using dividers for logical separation
+   - Most frequently used items should be at the top
+
+5. **Positioning**:
+   - Sidebar must start below the header (top: 64px)
+   - Use fixed positioning for consistent navigation
+
+6. **Responsive Behavior**:
+   - Default to collapsed state on smaller screens
+   - Consider hiding completely on mobile with a drawer trigger
+
+### Accessibility Considerations
+- Ensure focus states are clearly visible
+- Add appropriate ARIA attributes
+- Support keyboard navigation
+- Provide screen reader context
+- Test with various input devices
+
+### Integration Rules
+- Place sidebar alongside the main content area
+- Adjust main content with the same transition timing
+- Ensure content doesn't shift abruptly when sidebar expands/collapses
+- Use consistent z-indexing to maintain proper layering
+
+## Examples
+
+### Default (Collapsed) State
+The sidebar appears as a narrow strip with centered icons only.
+
+### Expanded State
+On hover, the sidebar expands to show both icons and labels with smooth transition.
+
+### Active Item
+The currently selected navigation item has visual distinction with blue highlight.

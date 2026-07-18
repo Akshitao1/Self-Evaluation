@@ -1,0 +1,307 @@
+---
+description: joveo, table
+alwaysApply: false
+---
+# ReUI Data Grid Components
+
+## Professional Data Grid Implementation
+
+### Basic Data Grid Example
+```typescript
+"use client";
+
+import { useState, useMemo } from "react";
+import {
+  createColumnHelper,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { DataGrid } from "@/components/ui/data-grid";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { EyeIcon, EditIcon, TrashIcon } from "lucide-react";
+
+interface DataItem {
+  id: string;
+  name: string;
+  status: 'active' | 'inactive' | 'pending';
+  date: string;
+  value: number;
+}
+
+export default function ProfessionalDataGrid() {
+  const [data, setData] = useState<DataItem[]>([
+    {
+      id: "1",
+      name: "Example Item",
+      status: "active",
+      date: "2024-03-20",
+      value: 1000
+    },
+    // ... more data
+  ]);
+
+  const columnHelper = createColumnHelper<DataItem>();
+
+  const columns = useMemo(() => [
+    columnHelper.accessor("name", {
+      header: "Name",
+      cell: ({ getValue }) => (
+        <div className="font-semibold text-slate-900">{getValue()}</div>
+      )
+    }),
+    
+    columnHelper.accessor("status", {
+      header: "Status",
+      cell: ({ getValue }) => {
+        const status = getValue();
+        const statusConfig = {
+          active: { 
+            label: "Active", 
+            className: "bg-gradient-to-r from-emerald-500 to-teal-500 text-white" 
+          },
+          inactive: { 
+            label: "Inactive", 
+            className: "bg-gradient-to-r from-slate-400 to-slate-500 text-white" 
+          },
+          pending: { 
+            label: "Pending", 
+            className: "bg-gradient-to-r from-orange-500 to-yellow-500 text-white" 
+          }
+        };
+        
+        return (
+          <Badge className={`${statusConfig[status].className} shadow-sm`}>
+            {statusConfig[status].label}
+          </Badge>
+        );
+      }
+    }),
+
+    columnHelper.accessor("date", {
+      header: "Date",
+      cell: ({ getValue }) => (
+        <span className="text-slate-600">{getValue()}</span>
+      )
+    }),
+
+    columnHelper.accessor("value", {
+      header: "Value",
+      cell: ({ getValue }) => (
+        <span className="font-medium text-slate-900">
+          ${getValue().toLocaleString()}
+        </span>
+      )
+    }),
+
+    columnHelper.display({
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => (
+        <div className="flex items-center space-x-2">
+          <Button 
+            variant="ghost" 
+            size="sm"
+            className="hover:bg-blue-50 hover:text-blue-600 transition-colors"
+          >
+            <EyeIcon className="w-4 h-4" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm"
+            className="hover:bg-emerald-50 hover:text-emerald-600 transition-colors"
+          >
+            <EditIcon className="w-4 h-4" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm"
+            className="hover:bg-red-50 hover:text-red-600 transition-colors"
+          >
+            <TrashIcon className="w-4 h-4" />
+          </Button>
+        </div>
+      )
+    })
+  ], []);
+
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: { pageSize: 10 }
+    }
+  });
+
+  return (
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+      <DataGrid
+        table={table}
+        recordCount={data.length}
+        tableLayout={{
+          headerBackground: true,
+          headerBorder: true,
+          rowBorder: true,
+          stripped: true,
+          headerSticky: true,
+          columnsResizable: true,
+          columnsPinnable: true,
+          columnsVisibility: true
+        }}
+        tableClassNames={{
+          base: "bg-white/95 backdrop-blur-sm",
+          header: "bg-gradient-to-r from-slate-50 to-blue-50",
+          headerRow: "border-b border-slate-200/50",
+          bodyRow: "hover:bg-blue-50/50 transition-all duration-200"
+        }}
+        onRowClick={(row) => console.log("Row clicked:", row)}
+      />
+    </div>
+  );
+}
+```
+
+### Usage Guidelines
+
+1. **Component Setup**
+   - Always use ReUI Data Grid instead of basic table components
+   - Install required dependencies (TanStack Table, shadcn components)
+   - Import necessary components and hooks
+
+2. **Data Management**
+   - Use TanStack Table for data operations
+   - Implement proper column definitions
+   - Handle data loading and error states
+   - Include pagination for large datasets
+
+3. **Professional Styling**
+   - Apply gradient backgrounds for headers
+   - Use consistent color schemes
+   - Implement smooth hover transitions
+   - Include proper spacing and typography
+   - Add subtle shadows and borders
+
+4. **Interactive Features**
+   - Enable column sorting
+   - Implement filtering capabilities
+   - Add row selection when needed
+   - Include action buttons with hover states
+   - Support keyboard navigation
+
+### Advanced Features
+
+1. **Column Management**
+   - Resizable columns
+   - Column visibility toggle
+   - Column pinning
+   - Column reordering
+   - Custom column rendering
+
+2. **Row Interactions**
+   - Row selection
+   - Row click handlers
+   - Custom row actions
+   - Bulk operations
+   - Row expansion
+
+3. **Data Operations**
+   - Server-side pagination
+   - Advanced filtering
+   - Multi-column sorting
+   - Data export
+   - Batch updates
+
+4. **Visual Enhancements**
+   - Loading skeletons
+   - Empty states
+   - Error boundaries
+   - Custom cell renderers
+   - Status indicators
+
+### Best Practices
+
+1. **Performance**
+   - Use `useMemo` for column definitions
+   - Implement virtual scrolling for large datasets
+   - Optimize re-renders
+   - Lazy load data when possible
+
+2. **Accessibility**
+   - Include proper ARIA labels
+   - Support keyboard navigation
+   - Maintain focus management
+   - Ensure sufficient color contrast
+   - Add screen reader support
+
+3. **Responsive Design**
+   - Handle mobile viewports
+   - Implement responsive columns
+   - Add horizontal scrolling when needed
+   - Consider column priority
+   - Support touch interactions
+
+4. **Error Handling**
+   - Show loading states
+   - Display error messages
+   - Implement retry mechanisms
+   - Handle empty states
+   - Validate data types
+
+### Configuration Options
+
+```typescript
+// Professional table layout configuration
+const tableLayout = {
+  dense: false,                // Comfortable spacing
+  cellBorder: true,           // Professional grid lines
+  rowBorder: true,            // Clear row separation
+  rowRounded: false,          // Clean rectangular rows
+  stripped: true,             // Alternating row colors
+  headerBackground: true,     // Gradient header background
+  headerBorder: true,         // Header separation
+  headerSticky: true,         // Sticky header on scroll
+  columnsVisibility: true,    // Column show/hide controls
+  columnsResizable: true,     // Resizable columns
+  columnsPinnable: true,      // Pin important columns
+  columnsMovable: true,       // Drag to reorder columns
+};
+
+// Professional styling classes
+const tableClassNames = {
+  base: "bg-white/95 backdrop-blur-sm rounded-xl shadow-lg",
+  header: "bg-gradient-to-r from-slate-50 to-blue-50",
+  headerRow: "border-b border-slate-200/50",
+  bodyRow: "hover:bg-blue-50/50 transition-all duration-200",
+  footer: "bg-gradient-to-r from-slate-50 to-slate-100"
+};
+```
+
+### Implementation Checklist
+
+1. **Required Components**
+   - [ ] ReUI Data Grid component
+   - [ ] TanStack Table integration
+   - [ ] Professional styling
+   - [ ] Interactive features
+   - [ ] Responsive design
+
+2. **Design Quality**
+   - [ ] Premium appearance
+   - [ ] Consistent styling
+   - [ ] Smooth animations
+   - [ ] Professional color scheme
+   - [ ] Clear typography
+
+3. **User Experience**
+   - [ ] Intuitive interactions
+   - [ ] Loading states
+   - [ ] Error handling
+   - [ ] Empty states
+   - [ ] Mobile support

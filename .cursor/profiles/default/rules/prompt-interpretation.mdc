@@ -1,0 +1,211 @@
+---
+alwaysApply: true
+priority: P0
+---
+# Prompt Interpretation - Auto-Enhancement Engine
+
+## 🎯 MISSION: MAKE BASIC PROMPTS GENERATE BEAUTIFUL UIs
+
+Transform vague, basic requests into specific, beautiful implementations automatically.
+
+## 🔄 PROMPT TRANSLATION ENGINE
+
+### **Dashboard Requests**
+```
+User Input: "Create a dashboard"
+Auto-Enhanced: "Create a professional analytics dashboard with:
+- Gradient background from slate-50 to blue-50
+- Glassmorphic header with backdrop-blur
+- Grid of metric cards with gradient icons and hover animations
+- Interactive charts using Recharts with gradient fills
+- Data table with search, filters, and smooth row hover effects
+- Mobile-responsive design with professional spacing"
+```
+
+### **Form Requests**
+```
+User Input: "Build a contact form"
+Auto-Enhanced: "Build a contact form with:
+- Glassmorphic card container with backdrop-blur
+- Floating labels with smooth animations
+- Gradient focus rings on all inputs
+- Real-time validation with smooth error message animations
+- Gradient submit button with loading states
+- Professional typography and spacing"
+```
+
+### **Table Requests**
+```
+User Input: "Create a data table"
+Auto-Enhanced: "Create a ReUI Data Grid with:
+- TanStack Table integration for advanced functionality
+- Gradient header background with glassmorphic effects
+- Column sorting, filtering, and resizing capabilities
+- Drag and drop support for rows and columns
+- Professional row hover effects with smooth transitions
+- Status badges with gradient styling
+- Action buttons with scale hover animations
+- Beautiful empty and loading states
+- Mobile-responsive design with touch support"
+```
+
+### **Chart Requests**
+```
+User Input: "Add a chart"
+Auto-Enhanced: "Add a chart with:
+- Recharts library with gradient area fills
+- Smooth load animations (1000ms duration)
+- Interactive tooltips with glassmorphic styling
+- Professional color scheme (blue/indigo gradients)
+- Responsive container design
+- Legend with hover effects"
+```
+
+### **Button Requests**
+```
+User Input: "Create a button"
+Auto-Enhanced: "Create a button with:
+- Gradient background from blue-600 to indigo-600
+- Hover animations with scale transform (1.05x)
+- Shadow effects that intensify on hover
+- Smooth transitions (200ms duration)
+- Professional typography and padding
+- Focus ring for accessibility"
+```
+
+### **Card Requests**
+```
+User Input: "Make a card"
+Auto-Enhanced: "Make a card with:
+- White/transparent background with 95% opacity
+- Backdrop-blur effect for glassmorphism
+- Subtle border with slate-200/50 opacity
+- Hover animations that lift (-translate-y-1)
+- Enhanced shadow on hover with blue tint
+- Professional padding and spacing"
+```
+
+### **Navigation Requests**
+```
+User Input: "Build a navbar"
+Auto-Enhanced: "Build a navbar with:
+- Glassmorphic background with backdrop-blur
+- Sticky positioning with smooth shadow transitions
+- Logo with hover effects
+- Navigation links with gradient hover states
+- Mobile hamburger menu with smooth animations
+- Professional spacing and typography"
+```
+
+### **Modal/Dialog Requests**
+```
+User Input: "Create a modal"
+Auto-Enhanced: "Create a modal with:
+- Glassmorphic background with backdrop-blur
+- Smooth entrance animations using Framer Motion
+- Professional shadow system
+- Header with gradient accents
+- Form validation if applicable
+- Responsive design for mobile"
+```
+
+## 🎨 DEFAULT STYLING PATTERNS
+
+### **Always Apply These Styles:**
+```tsx
+// Backgrounds
+- Page: 'bg-gradient-to-br from-slate-50 to-blue-50'
+- Cards: 'bg-white/95 backdrop-blur-sm'
+- Headers: 'bg-gradient-to-r from-slate-50 to-slate-100'
+
+// Interactions
+- Hover: 'hover:scale-105 hover:shadow-xl'
+- Focus: 'focus:ring-2 focus:ring-blue-500/20'
+- Transitions: 'transition-all duration-200'
+
+// Colors
+- Primary: 'from-blue-600 to-indigo-600'
+- Success: 'from-emerald-600 to-teal-600'
+- Error: 'from-red-600 to-red-700'
+- Text: 'text-slate-900' (primary), 'text-slate-600' (secondary)
+```
+
+## 🚫 INTERPRETATION RULES
+
+### **NEVER Interpret As Basic:**
+- "Simple dashboard" → Still generate full professional dashboard
+- "Basic form" → Still generate enhanced form with animations
+- "Quick table" → Still generate interactive table with all features
+- "Plain button" → Still generate gradient button with effects
+
+### **ALWAYS Interpret With Enhancement:**
+- Any component request gets the full professional treatment
+- Any layout request includes glassmorphic and gradient elements
+- Any interactive element gets hover effects and animations
+- Any data display gets search, filters, and professional styling
+
+## 🎯 CONTEXT-AWARE ENHANCEMENTS
+
+### **For Product Managers:**
+When PM-style language is detected, auto-add:
+- "user-friendly interface"
+- "professional appearance"
+- "intuitive interactions"
+- "modern design standards"
+
+### **For Backend Developers:**
+When technical language is detected, auto-add:
+- "TypeScript interfaces"
+- "proper error handling"
+- "loading states"
+- "responsive design"
+
+### **For Designers:**
+When design terms are detected, enhance with:
+- "consistent visual hierarchy"
+- "accessibility compliance"
+- "mobile-first approach"
+- "interaction feedback"
+
+## 🔧 IMPLEMENTATION LOGIC
+
+### **Step 1: Detect Intent**
+- Dashboard → Analytics dashboard template
+- Form → Contact/input form template  
+- Table → Data table template
+- Chart → Analytics chart template
+- Button → CTA button template
+- Card → Content card template
+
+### **Step 2: Auto-Enhance**
+- Add gradient backgrounds
+- Include hover animations
+- Add glassmorphic effects
+- Include professional spacing
+- Add interactive states
+
+### **Step 3: Generate Code**
+- Use enhanced component templates
+- Include all necessary imports
+- Add TypeScript interfaces
+- Include responsive design
+- Add accessibility features
+
+## ✅ SUCCESS CRITERIA
+
+### **Every Generated Component Must Have:**
+- [ ] **Visual Appeal**: Looks premium immediately
+- [ ] **Interactivity**: Hover effects and animations
+- [ ] **Professional Polish**: Gradients and glassmorphic effects
+- [ ] **Responsive Design**: Works on all screen sizes
+- [ ] **Accessibility**: Proper focus states and ARIA labels
+- [ ] **TypeScript**: Proper interfaces and types
+- [ ] **Loading States**: For any async operations
+- [ ] **Error Handling**: Graceful failure modes
+
+## 🎉 EXPECTED OUTCOME
+
+**Before**: PM says "create a dashboard" → Gets basic, ugly dashboard
+**After**: PM says "create a dashboard" → Gets beautiful analytics dashboard with metrics, charts, and professional styling
+
+**The user should be amazed by the quality, regardless of how basic their request was.**

@@ -1,0 +1,451 @@
+---
+description: Performance optimization guidelines for Joveo AI Dashboard components
+globs: ["**/*.tsx", "**/*.ts"]
+alwaysApply: true
+---
+
+# Joveo AI Dashboard Performance Optimization Rules
+
+## Component Optimization Techniques
+
+### Memoization
+
+#### React.memo for Component Optimization
+```typescript
+// Good: Memoize components that render often but update infrequently
+const MetricCard = React.memo(function MetricCard({ title, value, delta }: MetricCardProps) {
+  return (
+    <Card className="bg-white rounded-[4px] shadow-sm p-6">
+      <div className="flex justify-between items-start mb-4">
+        <Typography variant="label" className="text-[#3D4759]">{title}</Typography>
+        <Typography variant="h1" className="text-[#1C2536]">{value}</Typography>
+        {/* Delta indicator */}
+      </div>
+    </Card>
+  );
+});
+
+// ALWAYS provide a custom comparison function for complex props
+const TableRow = React.memo(
+  function TableRow({ data, onSelect }: TableRowProps) {
+    return (/* Row content */);
+  },
+  (prevProps, nextProps) => {
+    // Custom comparison logic
+    return prevProps.data.id === nextProps.data.id && 
+           prevProps.data.version === nextProps.data.version;
+  }
+);
+```
+
+#### useMemo and useCallback
+```typescript
+// Good: Memoize expensive calculations
+const sortedData = useMemo(() => {
+  return data
+    .filter(item => item.active)
+    .sort((a, b) => a.value - b.value);
+}, [data]);
+
+// Good: Memoize callback functions passed as props
+const handleRowClick = useCallback((id: string) => {
+  setSelectedRow(id);
+}, []);
+
+// Bad: Don't memoize simple values
+// ❌ Unnecessary memoization
+const displayValue = useMemo(() => `$${value}`, [value]);
+
+// ✅ Better approach
+const displayValue = `$${value}`;
+```
+
+### Rendering Optimization
+
+#### State Management
+```typescript
+// Good: Granular state updates
+// Instead of a single large state object:
+const [formData, setFormData] = useState({ 
+  name: '',
+  email: '',
+  preferences: { /* many fields */ }
+});
+
+// Break into logical pieces to prevent unnecessary re-renders
+const [name, setName] = useState('');
+const [email, setEmail] = useState('');
+const [preferences, setPreferences] = useState({ /* many fields */ });
+
+// Good: Use functional updates for state that depends on previous state
+const incrementCount = () => {
+  setCount(prevCount => prevCount + 1);
+};
+```
+
+#### Component Structure
+```typescript
+// Good: Extract intensive parts to child components
+function Dashboard() {
+  // Parent component with layout and state
+  return (
+    <div className="dashboard-layout">
+      <Header />
+      <Sidebar />
+      <MainContent>
+        <MetricsSection /> {/* Extract to separate component */}
+        <ChartsSection /> {/* Extract to separate component */}
+        <DataTableSection /> {/* Extract to separate component */}
+      </MainContent>
+    </div>
+  );
+}
+```
+
+## Lazy Loading Patterns
+
+### Code Splitting with Dynamic Imports
+
+#### Component-Level Code Splitting
+```typescript
+// Good: Lazily load heavy components
+import dynamic from 'next/dynamic';
+
+// Dashboard components that aren't needed immediately
+const DataExplorer = dynamic(() => import('@/components/DataExplorer'), {
+  loading: () => <DataExplorerSkeleton />,
+  ssr: false // Disable SSR for components with browser-only APIs
+});
+
+const AdvancedChart = dynamic(() => import('@/components/charts/AdvancedChart'), {
+  loading: () => <ChartSkeleton />
+});
+```
+
+#### Route-Based Code Splitting
+```typescript
+// This is automatic in Next.js App Router
+// Each route segment becomes its own chunk
+```
+
+### Defer Loading Non-Critical Components
+
+#### Use Intersection Observer for Below-the-Fold Content
+```typescript
+"use client";
+import { useEffect, useRef, useState } from 'react';
+
+function DeferredComponent({ children }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' } // Load when within 200px of viewport
+    );
+    
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    
+    return () => observer.disconnect();
+  }, []);
+  
+  return (
+    <div ref={ref}>
+      {isVisible ? children : <Placeholder />}
+    </div>
+  );
+}
+
+// Usage
+function Dashboard() {
+  return (
+    <>
+      <CriticalContent />
+      <DeferredComponent>
+        <HeavyDataTable />
+      </DeferredComponent>
+      <DeferredComponent>
+        <ComplexCharts />
+      </DeferredComponent>
+    </>
+  );
+}
+```
+
+## Image Optimization
+
+### Next.js Image Component
+```typescript
+import Image from 'next/image';
+
+// Good: Always use Next.js Image component
+<Image
+  src="/dashboard/chart-thumbnail.png"
+  alt="Monthly Revenue Chart"
+  width={400}
+  height={300}
+  quality={85}
+  priority={isAboveFold} // Load with priority if above the fold
+  placeholder="blur" // Show blur placeholder while loading
+  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg=="
+/>
+```
+
+### SVG Optimization
+```typescript
+// Good: Use inline SVGs for icons
+function DashboardIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path
+        d="M3 3h6v6H3V3zm8 0h6v6h-6V3zm0 8h6v6h-6v-6zm-8 0h6v6H3v-6z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+// Better: For many icons, use a sprite system
+import * as Icons from '@/components/icons';
+
+function IconExample() {
+  return <Icons.Dashboard className="h-5 w-5 text-gray-500" />;
+}
+```
+
+## Data Fetching & Caching
+
+### Server Components
+```typescript
+// Good: Fetch data in Server Components
+// app/dashboard/page.tsx
+async function DashboardPage() {
+  // This runs on the server and is cached according to fetch cache rules
+  const data = await fetch('https://api.example.com/dashboard', {
+    next: { revalidate: 60 } // Revalidate every 60 seconds
+  });
+  const dashboardData = await data.json();
+  
+  return <DashboardUI data={dashboardData} />;
+}
+```
+
+### Client Data Fetching
+```typescript
+"use client";
+import { useQuery } from '@tanstack/react-query';
+
+// Good: Use React Query for client-side data
+function MetricsPanel() {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['metrics'],
+    queryFn: () => fetch('/api/metrics').then(res => res.json()),
+    staleTime: 1000 * 60 * 5, // Consider data fresh for 5 minutes
+    cacheTime: 1000 * 60 * 30, // Keep in cache for 30 minutes
+  });
+  
+  if (isLoading) return <MetricsSkeletonLoader />;
+  if (error) return <ErrorDisplay />;
+  
+  return <MetricsDisplay data={data} />;
+}
+```
+
+## Virtual Rendering for Large Data Sets
+
+### Table Virtualization
+```typescript
+"use client";
+import { useVirtualizer } from '@tanstack/react-virtual';
+
+function VirtualTable({ data }) {
+  const parentRef = React.useRef();
+  
+  const rowVirtualizer = useVirtualizer({
+    count: data.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 35, // row height estimate
+    overscan: 10, // extra rows to render above/below viewport
+  });
+  
+  return (
+    <div
+      ref={parentRef}
+      className="h-[500px] overflow-auto"
+    >
+      <div
+        style={{
+          height: `${rowVirtualizer.getTotalSize()}px`,
+          position: 'relative',
+        }}
+      >
+        {rowVirtualizer.getVirtualItems().map(virtualRow => (
+          <div
+            key={virtualRow.index}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: `${virtualRow.size}px`,
+              transform: `translateY(${virtualRow.start}px)`,
+            }}
+          >
+            {data[virtualRow.index].name}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+### Windowed Lists
+```typescript
+"use client";
+import { useWindowVirtualizer } from '@tanstack/react-virtual';
+
+function VirtualizedMetricsList({ metrics }) {
+  const parentRef = React.useRef();
+  
+  // Only render items in the viewport
+  const virtualizer = useWindowVirtualizer({
+    count: metrics.length,
+    estimateSize: () => 150, // card height
+    scrollMargin: parentRef.current?.offsetTop ?? 0,
+  });
+  
+  return (
+    <div ref={parentRef}>
+      <div
+        style={{
+          height: virtualizer.getTotalSize(),
+          position: 'relative',
+        }}
+      >
+        {virtualizer.getVirtualItems().map(virtualItem => (
+          <div
+            key={virtualItem.key}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: `${virtualItem.size}px`,
+              transform: `translateY(${virtualItem.start}px)`,
+            }}
+          >
+            <MetricCard data={metrics[virtualItem.index]} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+## Bundle Size Optimization
+
+### Import Optimization
+```typescript
+// Bad: Importing the entire library
+// ❌ import _ from 'lodash';
+
+// Good: Import only what you need
+// ✅ import debounce from 'lodash/debounce';
+
+// Bad: Importing entire icon library
+// ❌ import { Icons } from '@/components/icons';
+
+// Good: Import specific icons
+// ✅ import { DashboardIcon, SettingsIcon } from '@/components/icons';
+```
+
+### Library Selection
+```typescript
+// Prefer smaller alternatives when appropriate:
+// - date-fns over moment.js
+// - lightweight chart libraries over heavy ones
+// - utility functions over full frameworks
+```
+
+## Critical Rendering Path Optimization
+
+### Font Loading Strategy
+```typescript
+// font.ts
+import { Inter } from 'next/font/google';
+
+export const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap', // Use system font until custom font loads
+  preload: true,
+  variable: '--font-inter',
+});
+```
+
+### Critical CSS Extraction
+```typescript
+// Use Next.js built-in CSS extraction
+// It automatically extracts and inlines critical CSS
+```
+
+## Testing and Measurement
+
+### Performance Monitoring
+```typescript
+// Add Real User Monitoring (RUM)
+// Configure in layout.tsx or a monitoring component
+
+"use client";
+import { useReportWebVitals } from 'next/web-vitals';
+
+export function PerformanceMetrics() {
+  useReportWebVitals(metric => {
+    // Send to your analytics service
+    console.log(metric);
+  });
+  
+  return null;
+}
+```
+
+### Lighthouse Audit Requirements
+- Performance score > 90
+- First Contentful Paint < 1.8s
+- Time to Interactive < 3.8s
+- Speed Index < 3.4s
+- Total Blocking Time < 300ms
+- Cumulative Layout Shift < 0.1
+
+## Common Performance Anti-patterns to Avoid
+
+1. Excessive re-renders due to unstable props/callbacks
+2. Large, unoptimized images
+3. Blocking JavaScript execution
+4. Complex component trees without proper memoization
+5. Excessive DOM manipulation
+6. Non-windowed large data sets
+7. Unoptimized third-party scripts
+8. Synchronous long-running JavaScript
+
+## Checklist for Component Performance
+
+- [ ] Memoized with React.memo for pure display components
+- [ ] Event handlers wrapped in useCallback
+- [ ] Complex calculations wrapped in useMemo
+- [ ] Proper dependency arrays in hooks
+- [ ] Code-split for large component trees
+- [ ] Virtualized for large data rendering
+- [ ] Images optimized with next/image
+- [ ] Proper loading states implemented
+- [ ] Data fetching optimized with caching
+- [ ] Bundle size minimized with proper imports

@@ -1,0 +1,502 @@
+---
+description: jira token key secret aws
+alwaysApply: false
+---
+# Jira Integration - Cursor Development Rules
+
+## 🔐 CORE PRINCIPLES
+
+**SERVER-SIDE ONLY**: Jira credentials MUST NEVER reach client components  
+**WEBHOOK VALIDATION**: Always validate webhook payloads with secrets
+**RATE LIMITING**: Respect Jira API rate limits and implement backoff
+
+## 📋 SECRET STRUCTURE
+
+### Required AWS Secrets Manager Keys
+```json
+{
+  "JIRA_API_TOKEN": "your-jira-personal-access-token",
+  "JIRA_BASE_URL": "https://joveojira.atlassian.net",
+  "JIRA_USERNAME": "service.account@company.com",
+  "JIRA_WEBHOOK_SECRET": "webhook-validation-secret"
+}
+```
+
+## 🏗 IMPLEMENTATION PATTERNS
+
+### 1. Typed Configuration
+```typescript
+// src/lib/secrets/jira.ts
+import { getRequiredSecret, getSecret } from '@/lib/secrets-manager';
+
+export interface JiraConfig {
+  apiToken: string;
+  baseUrl: string;
+  username: string;
+  webhookSecret?: string;
+}
+
+export async function getJiraConfig(): Promise<JiraConfig> {
+  return {
+    apiToken: await getRequiredSecret('JIRA_API_TOKEN'),
+    baseUrl: await getRequiredSecret('JIRA_BASE_URL'),
+    username: await getRequiredSecret('JIRA_USERNAME'),
+    webhookSecret: await getSecret('JIRA_WEBHOOK_SECRET'),
+  };
+}
+```
+
+### 2. Connection Factory
+```typescript
+// src/lib/connections/jira.ts
+import { getJiraConfig } from '@/lib/secrets/jira';
+
+export async function createJiraClient() {
+  const config = await getJiraConfig();
+  
+  // Using fetch-based client
+  return {
+    async request(endpoint: string, options: RequestInit = {}) {
+      const url = `${config.baseUrl}/rest/api/2${endpoint}`;
+      const auth = Buffer.from(`${config.username}:${config.apiToken}`).toString('base64');
+      
+      const response = await fetch(url, {
+        ...options,
+        headers: {
+          'Authorization': `Basic ${auth}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          ...options.headers,
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Jira API error: ${response.status} ${response.statusText}`);
+      }
+      
+      return response.json();
+    }
+  };
+}
+
+// Alternative: Using jira-client library
+export async function createJiraApiClient() {
+  const config = await getJiraConfig();
+  const JiraApi = require('jira-client');
+  
+  return new JiraApi({
+    protocol: 'https',
+    host: config.baseUrl.replace(/^https?:\/\//, ''),
+    username: config.username,
+    password: config.apiToken,
+    apiVersion: '2',
+    strictSSL: true,
+  });
+}
+```
+
+### 3. Service Layer
+```typescript
+// src/lib/services/jira-service.ts
+import { createJiraClient } from '@/lib/connections/jira';
+import { withServiceConnection } from '@/lib/utils/service-wrapper';
+
+export class JiraService {
+  static async getIssue(issueKey: string) {
+    return withServiceConnection(
+      'Jira',
+      () => createJiraClient(),
+      async (client) => {
+        return await client.request(`/issue/${issueKey}`);
+      }
+    );
+  }
+
+  static async searchIssues(jql: string, maxResults = 50) {
+    return withServiceConnection(
+      'Jira',
+      () => createJiraClient(),
+      async (client) => {
+        return await client.request('/search', {
+          method: 'POST',
+          body: JSON.stringify({
+            jql,
+            maxResults,
+            fields: ['summary', 'status', 'assignee', 'created', 'updated']
+          })
+        });
+      }
+    );
+  }
+
+  static async createIssue(issueData: {
+    projectKey: string;
+    summary: string;
+    description?: string;
+    issueType: string;
+    assignee?: string;
+  }) {
+    return withServiceConnection(
+      'Jira',
+      () => createJiraClient(),
+      async (client) => {
+        const payload = {
+          fields: {
+            project: { key: issueData.projectKey },
+            summary: issueData.summary,
+            description: issueData.description,
+            issuetype: { name: issueData.issueType },
+            ...(issueData.assignee && { 
+              assignee: { name: issueData.assignee } 
+            })
+          }
+        };
+        
+        return await client.request('/issue', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+      }
+    );
+  }
+
+  static async getProjects() {
+    return withServiceConnection(
+      'Jira',
+      () => createJiraClient(),
+      async (client) => {
+        return await client.request('/project');
+      }
+    );
+  }
+
+  static async updateIssue(issueKey: string, updates: any) {
+    return withServiceConnection(
+      'Jira',
+      () => createJiraClient(),
+      async (client) => {
+        return await client.request(`/issue/${issueKey}`, {
+          method: 'PUT',
+          body: JSON.stringify(updates)
+        });
+      }
+    );
+  }
+}
+```
+
+## 🔗 WEBHOOK HANDLING
+
+### Webhook Validation
+```typescript
+// src/lib/utils/jira-webhook.ts
+import { getJiraConfig } from '@/lib/secrets/jira';
+import crypto from 'crypto';
+
+export async function validateJiraWebhook(
+  payload: string,
+  signature: string
+): Promise<boolean> {
+  const config = await getJiraConfig();
+  
+  if (!config.webhookSecret) {
+    console.warn('Jira webhook secret not configured');
+    return false;
+  }
+  
+  const expectedSignature = crypto
+    .createHmac('sha256', config.webhookSecret)
+    .update(payload)
+    .digest('hex');
+    
+  return crypto.timingSafeEqual(
+    Buffer.from(signature),
+    Buffer.from(expectedSignature)
+  );
+}
+
+export interface JiraWebhookEvent {
+  webhookEvent: string;
+  issue_event_type_name?: string;
+  issue?: {
+    key: string;
+    fields: {
+      summary: string;
+      status: { name: string };
+      assignee?: { displayName: string };
+    };
+  };
+  user?: {
+    displayName: string;
+    emailAddress: string;
+  };
+}
+```
+
+## 🛡 SECURITY BEST PRACTICES
+
+### ❌ NEVER DO THESE:
+```typescript
+// ❌ NEVER - Client-side Jira access
+'use client';
+export function ClientComponent() {
+  const [issues, setIssues] = useState();
+  
+  useEffect(() => {
+    // This will fail and expose credentials
+    getJiraConfig().then(config => {
+      fetch(`${config.baseUrl}/rest/api/2/issue/PROJ-123`, {
+        headers: { Authorization: `Bearer ${config.apiToken}` }
+      });
+    });
+  }, []);
+}
+
+// ❌ NEVER - Log API tokens
+const config = await getJiraConfig();
+console.log('Jira config:', config); // Exposes API token!
+
+// ❌ NEVER - Return credentials in API
+export async function GET() {
+  const config = await getJiraConfig();
+  return Response.json(config); // Exposes API token!
+}
+
+// ❌ NEVER - Unvalidated webhook handling
+export async function POST(request: Request) {
+  const payload = await request.json();
+  // Process webhook without validation - SECURITY RISK!
+  await processJiraWebhook(payload);
+}
+```
+
+### ✅ ALWAYS DO THESE:
+```typescript
+// ✅ GOOD - Server-side API route
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const projectKey = searchParams.get('project');
+    
+    if (!projectKey) {
+      return Response.json({ error: 'Project key required' }, { status: 400 });
+    }
+    
+    const issues = await JiraService.searchIssues(`project = ${projectKey}`);
+    return Response.json({ issues: issues.issues });
+    
+  } catch (error) {
+    console.error('Jira API failed:', error.message);
+    return Response.json({ error: 'Jira service unavailable' }, { status: 503 });
+  }
+}
+
+// ✅ GOOD - Webhook validation
+export async function POST(request: Request) {
+  try {
+    const signature = request.headers.get('x-jira-signature');
+    const payload = await request.text();
+    
+    if (!signature || !await validateJiraWebhook(payload, signature)) {
+      return Response.json({ error: 'Invalid webhook signature' }, { status: 401 });
+    }
+    
+    const event: JiraWebhookEvent = JSON.parse(payload);
+    await processJiraWebhook(event);
+    
+    return Response.json({ success: true });
+    
+  } catch (error) {
+    console.error('Webhook processing failed:', error.message);
+    return Response.json({ error: 'Webhook processing failed' }, { status: 500 });
+  }
+}
+
+// ✅ GOOD - Safe logging
+const config = await getJiraConfig();
+console.log('Jira connection established:', {
+  baseUrl: config.baseUrl,
+  username: config.username,
+  apiToken: '[REDACTED]',
+  webhookSecret: config.webhookSecret ? '[CONFIGURED]' : '[NOT SET]'
+});
+```
+
+## 🚨 ERROR HANDLING
+
+### Rate Limiting Handler
+```typescript
+// src/lib/utils/jira-rate-limit.ts
+export class JiraRateLimitError extends Error {
+  constructor(public retryAfter: number) {
+    super(`Jira rate limit exceeded. Retry after ${retryAfter} seconds`);
+  }
+}
+
+export async function handleJiraRequest<T>(
+  requestFn: () => Promise<Response>
+): Promise<T> {
+  const response = await requestFn();
+  
+  if (response.status === 429) {
+    const retryAfter = parseInt(response.headers.get('Retry-After') || '60');
+    throw new JiraRateLimitError(retryAfter);
+  }
+  
+  if (!response.ok) {
+    throw new Error(`Jira API error: ${response.status} ${response.statusText}`);
+  }
+  
+  return response.json();
+}
+```
+
+## 📁 FILE STRUCTURE
+
+```
+src/
+├── lib/
+│   ├── secrets/
+│   │   └── jira.ts              # Configuration getter
+│   ├── connections/
+│   │   └── jira.ts              # Connection factory
+│   ├── services/
+│   │   └── jira-service.ts      # Business logic
+│   └── utils/
+│       ├── jira-webhook.ts      # Webhook validation
+│       └── jira-rate-limit.ts   # Rate limiting
+├── app/
+│   └── api/
+│       └── jira/
+│           ├── issues/
+│           │   └── route.ts     # Issue operations
+│           ├── projects/
+│           │   └── route.ts     # Project listing
+│           └── webhook/
+│               └── route.ts     # Webhook handler
+```
+
+## 🔍 DEBUGGING UTILITIES
+
+### Development Debug Helper
+```typescript
+// src/lib/debug/jira-debug.ts
+export async function debugJiraConnection() {
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('🚫 Debug functions disabled in production');
+  }
+  
+  try {
+    const config = await getJiraConfig();
+    console.log('🔐 Jira Configuration:');
+    console.log(`   Base URL: ${config.baseUrl}`);
+    console.log(`   Username: ${config.username}`);
+    console.log(`   API Token: ${config.apiToken ? '[LOADED]' : '[MISSING]'}`);
+    console.log(`   Webhook Secret: ${config.webhookSecret ? '[CONFIGURED]' : '[NOT SET]'}`);
+    
+    // Test connection
+    const client = await createJiraClient();
+    const projects = await client.request('/project');
+    console.log(`✅ Jira connection test successful - Found ${projects.length} projects`);
+    
+  } catch (error) {
+    console.error('❌ Jira connection test failed:', error.message);
+    throw error;
+  }
+}
+```
+
+## 🎯 COMMON PATTERNS
+
+### Issue Dashboard API
+```typescript
+// src/app/api/jira/dashboard/route.ts
+export async function GET() {
+  try {
+    const [projects, recentIssues] = await Promise.all([
+      JiraService.getProjects(),
+      JiraService.searchIssues('updated >= -7d ORDER BY updated DESC', 10)
+    ]);
+    
+    const dashboard = {
+      projectCount: projects.length,
+      recentIssues: recentIssues.issues.map((issue: any) => ({
+        key: issue.key,
+        summary: issue.fields.summary,
+        status: issue.fields.status.name,
+        updated: issue.fields.updated
+      }))
+    };
+    
+    return Response.json(dashboard);
+    
+  } catch (error) {
+    console.error('Dashboard API error:', error.message);
+    return Response.json({ 
+      error: 'Failed to load dashboard data' 
+    }, { status: 500 });
+  }
+}
+```
+
+### Issue Creation Form Handler
+```typescript
+// src/app/api/jira/issues/create/route.ts
+export async function POST(request: Request) {
+  try {
+    const { projectKey, summary, description, issueType, assignee } = await request.json();
+    
+    // Validation
+    if (!projectKey || !summary || !issueType) {
+      return Response.json({ 
+        error: 'Missing required fields: projectKey, summary, issueType' 
+      }, { status: 400 });
+    }
+    
+    const issue = await JiraService.createIssue({
+      projectKey,
+      summary,
+      description,
+      issueType,
+      assignee
+    });
+    
+    return Response.json({ 
+      success: true, 
+      issueKey: issue.key,
+      issueUrl: `${(await getJiraConfig()).baseUrl}/browse/${issue.key}`
+    });
+    
+  } catch (error) {
+    console.error('Issue creation failed:', error.message);
+    return Response.json({ 
+      error: 'Failed to create issue' 
+    }, { status: 500 });
+  }
+}
+```
+
+## 📝 CURSOR PROMPT HELPERS
+
+Use these exact prompts for Jira development:
+
+```
+"Create a Jira issue browser following the Jira cursor rules"
+"Add a Jira webhook handler with proper validation"
+"Create a Jira project dashboard using the service patterns"
+"Add Jira issue creation form with error handling"
+"Debug Jira connection using the debug utilities"
+```
+
+## ⚡ VALIDATION CHECKLIST
+
+When working with Jira:
+
+- [ ] API token properly configured in AWS Secrets Manager
+- [ ] Base URL includes full domain (https://company.atlassian.net)
+- [ ] Server-side only (no client-side access)
+- [ ] Webhook signature validation implemented
+- [ ] Rate limiting and retry logic in place
+- [ ] Safe error logging (no token exposure)
+- [ ] Input validation for user-provided data
+- [ ] Proper JQL injection protection 

@@ -1,0 +1,463 @@
+# Enhanced Data Table Rules & Best Practices
+
+## 🎯 OVERVIEW
+This document outlines the rules and best practices for using the enhancedDataTable component that integrates Tanstack Table with advanced features like pagination, column resizing, reordering, and Joveo design system compliance.
+
+## 🚀 CORE FEATURES
+
+### **1. Pagination**
+- **Automatic pagination** with configurable page sizes (10, 20, 30, 40, 50)
+- **Navigation controls** with first, previous, next, and last page buttons
+- **Page size selector** for customizing rows per page
+- **Row count display** showing current selection and total records
+
+### **2. Column Resizing**
+- **Drag handles** on the right edge of each column header
+- **Minimum width enforcement** (100px) to prevent unusable columns
+- **Visual feedback** with hover states and cursor changes
+- **Persistent sizing** during the session
+
+### **3. Column Reordering**
+- **Drag and drop** column headers to reorder
+- **Visual indicators** with grip handles and drag states
+- **Keyboard support** for accessibility
+- **Smooth animations** during reordering
+
+### **4. Advanced Sorting**
+- **Multi-column sorting** with visual indicators
+- **Sort direction** arrows (ascending/descending)
+- **Clickable headers** for easy sorting
+- **Custom sort functions** support
+
+### **5. Search & Filtering**
+- **Global search** across all searchable columns
+- **Column-specific filters** for targeted filtering
+- **Real-time search** with debounced input
+- **Highlighted results** for better UX
+
+### **6. Column Visibility**
+- **Show/hide columns** via dropdown menu
+- **Persistent visibility** state
+- **Selective hiding** for focused views
+- **Responsive column management**
+
+## 📋 IMPLEMENTATION PATTERNS
+
+### **Basic Table Setup**
+```typescript
+import { DataTable } from "@/components/ui/data-table"
+import { createColumnHelper, ColumnDef } from "@tanstack/react-table"
+
+interface YourDataType {
+  id: string
+  name: string
+  // ... other properties
+}
+
+export function YourTable() {
+  const columnHelper = createColumnHelper<YourDataType>()
+  
+  const columns: ColumnDef<YourDataType, any>[] = [
+    columnHelper.accessor("name", {
+      header: "Name",
+      cell: ({ getValue }) => <span>{getValue()}</span>,
+      size: 200, // Initial column width
+    }),
+    // ... more columns
+  ]
+
+  return (
+    <DataTable
+      columns={columns}
+      data={yourData}
+      enableSearch={true}
+      enableColumnVisibility={true}
+      enableColumnReordering={true}
+      enableColumnResizing={true}
+      enablePagination={true}
+      pageSize={20}
+    />
+  )
+}
+```
+
+### **Advanced Column Definitions**
+```typescript
+// Checkbox column for row selection
+columnHelper.display({
+  id: "select",
+  header: ({ table }) => (
+    <Checkbox
+      checked={table.getIsAllRowsSelected()}
+      onCheckedChange={table.getToggleAllRowsSelectedHandler()}
+    />
+  ),
+  cell: ({ row }) => (
+    <Checkbox
+      checked={row.getIsSelected()}
+      onCheckedChange={row.getToggleSelectedHandler()}
+    />
+  ),
+  size: 50,
+  enableSorting: false,
+  enableResizing: false,
+}),
+
+// Custom cell renderer with complex content
+columnHelper.accessor("budgetUtilization", {
+  header: "Budget Utilization%",
+  cell: ({ row }) => (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <span>${row.original.spend.toLocaleString()}</span>
+        <span>{row.original.budgetUtilization.toFixed(2)}%</span>
+      </div>
+      <Progress value={row.original.budgetUtilization} />
+    </div>
+  ),
+  size: 200,
+}),
+
+// Action column with buttons
+columnHelper.display({
+  id: "actions",
+  header: "",
+  cell: ({ row }) => (
+    <div className="flex items-center space-x-2">
+      <Button variant="ghost" size="sm">
+        <EyeIcon className="w-4 h-4" />
+      </Button>
+      <Button variant="ghost" size="sm">
+        <EditIcon className="w-4 h-4" />
+      </Button>
+    </div>
+  ),
+  size: 120,
+  enableSorting: false,
+})
+```
+
+### **Total Row Implementation**
+```typescript
+// Define total row data
+const totalRowData: Partial<YourDataType> = {
+  name: "Total",
+  spend: totalSpend,
+  budgetUtilization: averageUtilization,
+  // ... other aggregated values
+}
+
+// Use in DataTable
+<DataTable
+  // ... other props
+  showTotalRow={true}
+  totalRowData={totalRowData}
+/>
+```
+
+## 🎨 DESIGN SYSTEM COMPLIANCE
+
+### **Joveo Color Palette**
+```typescript
+// Use these colors for consistent theming
+const joveoColors = {
+  primary: '#303F9F',      // Primary blue
+  secondary: '#7681E8',    // Secondary blue
+  success: '#43A047',      // Success green
+  text: '#3D4759',         // Text gray
+  background: '#FFFFFF',    // Content background
+  header: '#1C2536',       // Dark navy header
+}
+```
+
+### **Typography Scale**
+```typescript
+// Follow Joveo typography standards
+const typography = {
+  headers: 'font-semibold text-xl leading-7',    // 20px/30px
+  body: 'font-normal text-sm leading-5',         // 14px/20px
+  labels: 'font-medium text-xs leading-4',       // 12px/18px
+}
+```
+
+### **Spacing & Layout**
+```typescript
+// Consistent spacing units
+const spacing = {
+  component: 'p-6',        // 24px padding
+  section: 'space-y-4',    // 16px between sections
+  border: 'rounded-[4px]', // 4px border radius
+  shadow: 'shadow-sm',     // Subtle elevation
+}
+```
+
+## ⚡ PERFORMANCE OPTIMIZATIONS
+
+### **Column Memoization**
+```typescript
+// Always memoize column definitions
+const columns = React.useMemo(() => [
+  // ... column definitions
+], []) // Empty dependency array for static columns
+```
+
+### **Data Memoization**
+```typescript
+// Memoize processed data
+const processedData = React.useMemo(() => {
+  return data.map(item => ({
+    ...item,
+    calculatedField: calculateSomething(item)
+  }))
+}, [data])
+```
+
+### **Row Click Handlers**
+```typescript
+// Use useCallback for row click handlers
+const handleRowClick = React.useCallback((row: Row<YourDataType>) => {
+  // Handle row click
+}, [])
+```
+
+## 🔧 CONFIGURATION OPTIONS
+
+### **DataTable Props**
+```typescript
+interface DataTableProps<TData, TValue> {
+  // Core data
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+  
+  // Features
+  enableSearch?: boolean                    // Global search
+  enableColumnVisibility?: boolean         // Show/hide columns
+  enableColumnReordering?: boolean         // Drag to reorder
+  enableColumnResizing?: boolean           // Resize columns
+  enablePagination?: boolean               // Pagination controls
+  
+  // Customization
+  searchPlaceholder?: string               // Search input placeholder
+  pageSize?: number                        // Initial page size
+  className?: string                       // Additional CSS classes
+  
+  // Interactions
+  onRowClick?: (row: Row<TData>) => void  // Row click handler
+  
+  // Special features
+  showTotalRow?: boolean                   // Show total row
+  totalRowData?: Partial<TData>           // Total row data
+}
+```
+
+### **Column Configuration**
+```typescript
+interface ColumnConfig {
+  size?: number                    // Initial column width
+  minSize?: number                 // Minimum column width
+  maxSize?: number                 // Maximum column width
+  enableSorting?: boolean          // Allow sorting
+  enableResizing?: boolean         // Allow resizing
+  enablePinning?: boolean          // Allow pinning (future)
+  enableHiding?: boolean           // Allow hiding
+}
+```
+
+## 🚫 FORBIDDEN PRACTICES
+
+### **Never Do This**
+```typescript
+// ❌ Don't create columns inside render
+const columns = [
+  // This will recreate columns on every render
+]
+
+// ❌ Don't inline complex cell renderers
+cell: ({ getValue }) => (
+  <div className="complex-inline-jsx">
+    {/* Complex JSX here */}
+  </div>
+)
+
+// ❌ Don't forget to memoize
+const columns = [/* ... */] // Missing useMemo
+
+// ❌ Don't use basic HTML tables
+<table> {/* Use DataTable instead */}
+```
+
+### **Always Do This**
+```typescript
+// ✅ Memoize column definitions
+const columns = React.useMemo(() => [/* ... */], [])
+
+// ✅ Use proper TypeScript interfaces
+interface YourDataType {
+  id: string
+  name: string
+}
+
+// ✅ Handle loading and error states
+{isLoading ? <Skeleton /> : <DataTable {...props} />}
+
+// ✅ Use consistent styling classes
+className="bg-white rounded-lg border shadow-sm"
+```
+
+## 📱 RESPONSIVE DESIGN
+
+### **Mobile Considerations**
+```typescript
+// Responsive column visibility
+const columns = React.useMemo(() => [
+  columnHelper.accessor("name", {
+    header: "Name",
+    cell: ({ getValue }) => <span>{getValue()}</span>,
+    size: 200,
+    enableHiding: true, // Allow hiding on mobile
+  }),
+  // Less important columns can be hidden on mobile
+  columnHelper.accessor("details", {
+    header: "Details",
+    cell: ({ getValue }) => <span>{getValue()}</span>,
+    size: 150,
+    enableHiding: true,
+  }),
+], [])
+```
+
+### **Touch Interactions**
+```typescript
+// Ensure touch-friendly interactions
+const sensors = useSensors(
+  useSensor(PointerSensor, {
+    activationConstraint: {
+      distance: 8, // Minimum drag distance
+    },
+  }),
+  useSensor(KeyboardSensor, {
+    coordinateGetter: sortableKeyboardCoordinates,
+  })
+)
+```
+
+## 🔍 ACCESSIBILITY
+
+### **ARIA Labels**
+```typescript
+// Proper ARIA labels for interactive elements
+<Button
+  aria-label="Sort by name"
+  onClick={() => column.toggleSorting()}
+>
+  Name
+</Button>
+
+// Screen reader support for sortable columns
+<div
+  role="button"
+  tabIndex={0}
+  aria-label={`Sort by ${column.id}`}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      column.toggleSorting()
+    }
+  }}
+>
+  {column.header}
+</div>
+```
+
+### **Keyboard Navigation**
+```typescript
+// Support keyboard navigation
+const handleKeyDown = (e: React.KeyboardEvent, action: () => void) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault()
+    action()
+  }
+}
+```
+
+## 🧪 TESTING
+
+### **Component Testing**
+```typescript
+// Test column sorting
+test('sorts columns correctly', () => {
+  render(<DataTable columns={columns} data={testData} />)
+  
+  const nameHeader = screen.getByText('Name')
+  fireEvent.click(nameHeader)
+  
+  // Verify sorting behavior
+})
+
+// Test pagination
+test('changes page correctly', () => {
+  render(<DataTable columns={columns} data={testData} />)
+  
+  const nextButton = screen.getByLabelText('Go to next page')
+  fireEvent.click(nextButton)
+  
+  // Verify page change
+})
+```
+
+### **Integration Testing**
+```typescript
+// Test with real data
+test('handles real data correctly', async () => {
+  const mockData = await fetchTestData()
+  
+  render(<DataTable columns={columns} data={mockData} />)
+  
+  // Verify data rendering
+  expect(screen.getByText(mockData[0].name)).toBeInTheDocument()
+})
+```
+
+## 📚 RESOURCES
+
+### **Dependencies**
+- `@tanstack/react-table` - Core table functionality
+- `@dnd-kit/core` - Drag and drop core
+- `@dnd-kit/sortable` - Sortable functionality
+- `@dnd-kit/utilities` - Utility functions
+
+### **Related Components**
+- `Checkbox` - Row selection
+- `Switch` - Toggle controls
+- `Progress` - Progress bars
+- `Badge` - Status indicators
+- `Button` - Action buttons
+
+### **Design System**
+- Joveo color palette
+- Typography scale
+- Spacing guidelines
+- Component patterns
+
+## 🎯 SUCCESS METRICS
+
+### **Performance**
+- Table renders in < 100ms
+- Smooth scrolling with 1000+ rows
+- Responsive column resizing
+- Fast search and filtering
+
+### **User Experience**
+- Intuitive drag and drop
+- Clear visual feedback
+- Consistent interactions
+- Accessible design
+
+### **Code Quality**
+- TypeScript compliance
+- Performance optimized
+- Clean architecture
+- Maintainable code
+description:
+globs:
+alwaysApply: false
+---

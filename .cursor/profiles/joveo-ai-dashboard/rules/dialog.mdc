@@ -1,0 +1,241 @@
+---
+description: dialog, modal
+alwaysApply: false
+---
+# Dialog Components
+
+## Modal Dialog Components
+
+### Basic Dialog
+```typescript
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
+<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">Open Dialog</Button>
+  </DialogTrigger>
+  <DialogContent className="bg-surface-lighter">
+    <DialogHeader>
+      <DialogTitle className="text-xl font-semibold text-content-darker">
+        Dialog Title
+      </DialogTitle>
+      <DialogDescription className="text-sm text-content-light">
+        Dialog description here.
+      </DialogDescription>
+    </DialogHeader>
+  </DialogContent>
+</Dialog>
+```
+
+### Usage Guidelines
+1. Use for important user interactions and confirmations
+2. Keep content focused and concise
+3. Include clear call-to-action buttons
+4. Provide escape mechanisms (close button, overlay click)
+5. Show proper loading states during actions
+6. Handle form submissions appropriately
+7. Maintain consistent styling
+
+### Accessibility Considerations
+- Trap focus within dialog when open
+- Support keyboard navigation (Escape to close)
+- Provide proper ARIA roles and labels
+- Ensure proper focus management
+- Include screen reader announcements
+- Support reduced motion preferences
+
+### Dialog Variants
+
+#### Confirmation Dialog
+```typescript
+<Dialog>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Confirm Action</DialogTitle>
+      <DialogDescription>
+        Are you sure you want to proceed? This action cannot be undone.
+      </DialogDescription>
+    </DialogHeader>
+    <div className="flex justify-end gap-2 mt-4">
+      <Button variant="outline" onClick={onCancel}>
+        Cancel
+      </Button>
+      <Button variant="destructive" onClick={onConfirm}>
+        Delete
+      </Button>
+    </div>
+  </DialogContent>
+</Dialog>
+```
+
+#### Form Dialog
+```typescript
+<Dialog>
+  <DialogContent className="sm:max-w-[425px]">
+    <DialogHeader>
+      <DialogTitle>Edit Profile</DialogTitle>
+      <DialogDescription>
+        Make changes to your profile here.
+      </DialogDescription>
+    </DialogHeader>
+    <form onSubmit={handleSubmit}>
+      <div className="space-y-4 py-4">
+        <div className="space-y-2">
+          <Label htmlFor="name">Name</Label>
+          <Input id="name" />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+          <Input id="email" type="email" />
+        </div>
+      </div>
+      <DialogFooter>
+        <Button type="submit">Save changes</Button>
+      </DialogFooter>
+    </form>
+  </DialogContent>
+</Dialog>
+```
+
+### Best Practices
+1. Use appropriate dialog size for content
+2. Implement proper error handling
+3. Show validation feedback immediately
+4. Include loading states for actions
+5. Handle long content gracefully
+6. Consider mobile viewports
+7. Maintain consistent button placement
+
+### Styling Guidelines
+1. Use consistent padding and spacing
+2. Apply proper typography hierarchy
+3. Implement clear visual hierarchy
+4. Use appropriate animations
+5. Style form elements consistently
+6. Handle focus states properly
+7. Maintain proper z-index stacking# Dialog Components
+
+## Modal Dialog Components
+
+### Basic Dialog
+```typescript
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
+<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">Open Dialog</Button>
+  </DialogTrigger>
+  <DialogContent className="bg-surface-lighter">
+    <DialogHeader>
+      <DialogTitle className="text-xl font-semibold text-content-darker">
+        Dialog Title
+      </DialogTitle>
+      <DialogDescription className="text-sm text-content-light">
+        Dialog description here.
+      </DialogDescription>
+    </DialogHeader>
+  </DialogContent>
+</Dialog>
+```
+
+### Usage Guidelines
+1. Use for important user interactions and confirmations
+2. Keep content focused and concise
+3. Include clear call-to-action buttons
+4. Provide escape mechanisms (close button, overlay click)
+5. Show proper loading states during actions
+6. Handle form submissions appropriately
+7. Maintain consistent styling
+
+### Accessibility Considerations
+- Trap focus within dialog when open
+- Support keyboard navigation (Escape to close)
+- Provide proper ARIA roles and labels
+- Ensure proper focus management
+- Include screen reader announcements
+- Support reduced motion preferences
+
+### Dialog Variants
+
+#### Confirmation Dialog
+```typescript
+<Dialog>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Confirm Action</DialogTitle>
+      <DialogDescription>
+        Are you sure you want to proceed? This action cannot be undone.
+      </DialogDescription>
+    </DialogHeader>
+    <div className="flex justify-end gap-2 mt-4">
+      <Button variant="outline" onClick={onCancel}>
+        Cancel
+      </Button>
+      <Button variant="destructive" onClick={onConfirm}>
+        Delete
+      </Button>
+    </div>
+  </DialogContent>
+</Dialog>
+```
+
+#### Form Dialog
+```typescript
+<Dialog>
+  <DialogContent className="sm:max-w-[425px]">
+    <DialogHeader>
+      <DialogTitle>Edit Profile</DialogTitle>
+      <DialogDescription>
+        Make changes to your profile here.
+      </DialogDescription>
+    </DialogHeader>
+    <form onSubmit={handleSubmit}>
+      <div className="space-y-4 py-4">
+        <div className="space-y-2">
+          <Label htmlFor="name">Name</Label>
+          <Input id="name" />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+          <Input id="email" type="email" />
+        </div>
+      </div>
+      <DialogFooter>
+        <Button type="submit">Save changes</Button>
+      </DialogFooter>
+    </form>
+  </DialogContent>
+</Dialog>
+```
+
+### Best Practices
+1. Use appropriate dialog size for content
+2. Implement proper error handling
+3. Show validation feedback immediately
+4. Include loading states for actions
+5. Handle long content gracefully
+6. Consider mobile viewports
+7. Maintain consistent button placement
+
+### Styling Guidelines
+1. Use consistent padding and spacing
+2. Apply proper typography hierarchy
+3. Implement clear visual hierarchy
+4. Use appropriate animations
+5. Style form elements consistently
+6. Handle focus states properly
+7. Maintain proper z-index stacking

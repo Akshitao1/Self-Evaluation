@@ -1,0 +1,213 @@
+---
+description: Joveo Dashboard Footer Guidelines
+alwaysApply: true
+matches:
+  - regex: (?i)footer|create.*footer|make.*footer|build.*footer
+---
+# Joveo Footer Components
+
+## Footer Components
+
+### FooterLink Component
+```typescript
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+
+interface FooterLinkProps {
+  href: string;
+  children: React.ReactNode;
+  className?: string;
+  external?: boolean;
+}
+
+const FooterLink = ({ href, children, className, external = false }: FooterLinkProps) => {
+  if (external) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={cn("text-sm text-[#3D4759] hover:text-[#303F9F] transition-colors", className)}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <Link 
+      href={href}
+      className={cn("text-sm text-[#3D4759] hover:text-[#303F9F] transition-colors", className)}
+    >
+      {children}
+    </Link>
+  );
+}
+```
+
+### FooterColumn Component
+```typescript
+import { Typography } from "@/components/ui/typography";
+
+interface FooterColumnProps {
+  title: string;
+  links: {
+    label: string;
+    href: string;
+    external?: boolean;
+  }[];
+}
+
+const FooterColumn = ({ title, links }: FooterColumnProps) => (
+  <div className="space-y-4">
+    <Typography variant="h6" className="text-[#3D4759] font-semibold">
+      {title}
+    </Typography>
+    <div className="space-y-2">
+      {links.map((link) => (
+        <FooterLink key={link.href} href={link.href} external={link.external}>
+          {link.label}
+        </FooterLink>
+      ))}
+    </div>
+  </div>
+);
+```
+
+### Standard Footer Component (for Dashboard)
+```typescript
+import Link from "next/link";
+import { Typography } from "@/components/ui/typography";
+import { cn } from "@/lib/utils";
+import { JoveoLogoIcon } from "@/components/JoveoLogoIcon";
+
+interface FooterProps {
+  className?: string;
+}
+
+export function Footer({ className }: FooterProps) {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className={cn("bg-white border-t border-gray-200 py-4 mt-auto", className)}>
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0">
+          <Typography variant="small" className="text-[#3D4759]">
+            © {currentYear} Joveo. All rights reserved.
+          </Typography>
+          <div className="flex items-center space-x-6">
+            <FooterLink href="/privacy">Privacy Policy</FooterLink>
+            <FooterLink href="/terms">Terms of Service</FooterLink>
+            <FooterLink href="/support">Support</FooterLink>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+```
+
+### Full Footer Component (for Marketing Pages)
+```typescript
+import { Typography } from "@/components/ui/typography";
+import { cn } from "@/lib/utils";
+import { JoveoLogoIcon } from "@/components/JoveoLogoIcon";
+
+interface FullFooterProps {
+  className?: string;
+}
+
+export function FullFooter({ className }: FullFooterProps) {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className={cn("bg-white border-t border-gray-200", className)}>
+      <div className="container mx-auto px-4 py-12">
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          {/* Company Info */}
+          <div className="col-span-1 md:col-span-2">
+            <div className="space-y-4">
+              <JoveoLogoIcon className="h-8 w-auto" />
+              <Typography variant="p" className="text-[#3D4759] max-w-md">
+                Programmatic job advertising platform that helps recruiters
+                buy, analyze, and optimize job postings to reach the right
+                talent at the right time.
+              </Typography>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <FooterColumn
+            title="Product"
+            links={[
+              { label: "Features", href: "/features" },
+              { label: "Solutions", href: "/solutions" },
+              { label: "Enterprise", href: "/enterprise" },
+              { label: "Pricing", href: "/pricing" },
+            ]}
+          />
+
+          {/* Resources */}
+          <FooterColumn
+            title="Resources"
+            links={[
+              { label: "Documentation", href: "/docs" },
+              { label: "API Reference", href: "/api" },
+              { label: "Blog", href: "/blog" },
+              { label: "Support", href: "/support" },
+            ]}
+          />
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-gray-200">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            {/* Copyright */}
+            <Typography variant="small" className="text-[#3D4759]">
+              © {currentYear} Joveo. All rights reserved.
+            </Typography>
+
+            {/* Legal Links */}
+            <div className="flex items-center space-x-6">
+              <FooterLink href="/privacy">Privacy Policy</FooterLink>
+              <FooterLink href="/terms">Terms of Service</FooterLink>
+              <FooterLink href="/security">Security</FooterLink>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+```
+
+## Usage Guidelines
+
+1. **Dashboard Pages**:
+   - Use standard `Footer` component for all dashboard pages
+   - Keep it compact with essential links only
+
+2. **Marketing Pages**:
+   - Use `FullFooter` component for landing and marketing pages
+   - Include comprehensive information and multiple link categories
+
+3. **Design System Compliance**:
+   - Colors follow Joveo design system:
+     - Text: #3D4759 (Text Gray)
+     - Hover: #303F9F (Primary Blue)
+     - Border: border-gray-200
+   - Typography: Use Typography component with appropriate variants
+   - Spacing: Maintain consistent padding and margins
+
+4. **Accessibility**:
+   - Use semantic HTML structure
+   - Ensure proper heading hierarchy
+   - Provide descriptive link text
+   - Support keyboard navigation
+   - Include proper aria attributes when needed
+
+5. **Responsive Design**:
+   - Adapt layout for mobile and desktop views
+   - Stack elements vertically on smaller screens
+   - Maintain readability at all screen sizes

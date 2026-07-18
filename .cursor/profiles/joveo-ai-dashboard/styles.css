@@ -1,0 +1,100 @@
+/* Joveo AI Dashboard Profile Styles */
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Text:wght@400;500;600&display=swap');
+
+:root {
+  /* Primary Colors */
+  --joveo-header: #1C2536;
+  --joveo-blue: #303F9F;
+  --joveo-secondary-blue: #7681E8;
+  --joveo-success: #43A047;
+  --joveo-text: #3D4759;
+  --joveo-content: #FFFFFF;
+
+  /* Chart Colors */
+  --chart-primary-1: #525DC2;
+  --chart-primary-2: #7681E8;
+  --chart-primary-3: #649EF5;
+  --chart-primary-4: #83B2F9;
+  
+  --chart-secondary-1: #59CEE0;
+  --chart-secondary-2: #7CE0F0;
+  --chart-secondary-3: #85CB8B;
+  --chart-secondary-4: #C5E08C;
+
+  /* Typography */
+  --font-sf-pro: 'SF Pro Text', sans-serif;
+}
+
+/* Typography Classes */
+.joveo-h1 {
+  font-family: var(--font-sf-pro);
+  font-size: 24px;
+  line-height: 36px;
+  font-weight: 600;
+}
+
+.joveo-h2 {
+  font-family: var(--font-sf-pro);
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 600;
+}
+
+.joveo-h3 {
+  font-family: var(--font-sf-pro);
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+.joveo-body {
+  font-family: var(--font-sf-pro);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+.joveo-label {
+  font-family: var(--font-sf-pro);
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 500;
+}
+
+/* Component Styles */
+.joveo-header {
+  background-color: var(--joveo-header);
+  height: 64px;
+}
+
+.joveo-metric-card {
+  background-color: var(--joveo-content);
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+}
+
+.joveo-chart-container {
+  background-color: var(--joveo-content);
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+}
+
+/* Grid Layout */
+.joveo-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* Chart Colors */
+.joveo-chart-primary-1 { color: var(--chart-primary-1); }
+.joveo-chart-primary-2 { color: var(--chart-primary-2); }
+.joveo-chart-primary-3 { color: var(--chart-primary-3); }
+.joveo-chart-primary-4 { color: var(--chart-primary-4); }
+
+.joveo-chart-secondary-1 { color: var(--chart-secondary-1); }
+.joveo-chart-secondary-2 { color: var(--chart-secondary-2); }
+.joveo-chart-secondary-3 { color: var(--chart-secondary-3); }
+.joveo-chart-secondary-4 { color: var(--chart-secondary-4); }

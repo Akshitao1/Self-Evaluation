@@ -1,0 +1,311 @@
+---
+description: Form
+alwaysApply: false
+---
+# Form Components
+
+## Input Components
+
+### Basic Input Field
+```typescript
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+
+<div className="space-y-2">
+  <Label htmlFor="email" className="text-sm font-medium text-content-dark">
+    Email
+  </Label>
+  <Input
+    id="email"
+    type="email"
+    className="border-border-DEFAULT focus:border-primary"
+    placeholder="Enter your email"
+  />
+</div>
+```
+
+### Select Field
+```typescript
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+<Select>
+  <SelectTrigger className="border-border-DEFAULT">
+    <SelectValue placeholder="Select option" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="option1">Option 1</SelectItem>
+    <SelectItem value="option2">Option 2</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+### Form Field Variants
+
+#### Text Input with Validation
+```typescript
+<div className="space-y-2">
+  <Label htmlFor="username" className="text-sm font-medium">
+    Username
+  </Label>
+  <Input
+    id="username"
+    className={cn(
+      "border-border-DEFAULT",
+      error && "border-red-500 focus:border-red-500"
+    )}
+    {...register("username")}
+  />
+  {error && (
+    <p className="text-sm text-red-500">{error.message}</p>
+  )}
+</div>
+```
+
+#### Textarea Field
+```typescript
+<div className="space-y-2">
+  <Label htmlFor="description">Description</Label>
+  <Textarea
+    id="description"
+    className="min-h-[100px]"
+    placeholder="Enter description"
+  />
+</div>
+```
+
+#### Checkbox Field
+```typescript
+<div className="flex items-center space-x-2">
+  <Checkbox id="terms" />
+  <Label htmlFor="terms" className="text-sm">
+    I agree to the terms and conditions
+  </Label>
+</div>
+```
+
+### Form Layout Components
+
+#### Form Section
+```typescript
+interface FormSectionProps {
+  title: string
+  description?: string
+  children: React.ReactNode
+}
+
+const FormSection = ({ title, description, children }: FormSectionProps) => (
+  <div className="space-y-4">
+    <div>
+      <h3 className="text-lg font-medium text-gray-900">{title}</h3>
+      {description && (
+        <p className="mt-1 text-sm text-gray-500">{description}</p>
+      )}
+    </div>
+    <div className="space-y-4">
+      {children}
+    </div>
+  </div>
+)
+```
+
+#### Form Grid
+```typescript
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <FormField name="firstName" label="First Name" />
+  <FormField name="lastName" label="Last Name" />
+</div>
+```
+
+### Usage Guidelines
+1. Group related fields logically
+2. Provide clear labels and placeholders
+3. Show validation feedback immediately
+4. Use appropriate input types
+5. Include helper text when needed
+6. Implement proper error states
+7. Consider form accessibility
+
+### Accessibility Considerations
+- Use proper label associations
+- Provide error feedback to screen readers
+- Maintain keyboard navigation
+- Use proper ARIA attributes
+- Ensure sufficient color contrast
+- Support form validation
+
+### Best Practices
+1. Validate input in real-time
+2. Show clear error messages
+3. Use consistent styling
+4. Handle loading states
+5. Implement proper form submission
+6. Consider mobile input methods
+7. Maintain proper spacing
+
+### Styling Guidelines
+1. Use consistent spacing
+2. Apply proper typography
+3. Style validation states
+4. Handle focus states
+5. Implement proper borders
+6. Consider field sizes
+7. Maintain proper alignment# Form Components
+
+## Input Components
+
+### Basic Input Field
+```typescript
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+
+<div className="space-y-2">
+  <Label htmlFor="email" className="text-sm font-medium text-content-dark">
+    Email
+  </Label>
+  <Input
+    id="email"
+    type="email"
+    className="border-border-DEFAULT focus:border-primary"
+    placeholder="Enter your email"
+  />
+</div>
+```
+
+### Select Field
+```typescript
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+<Select>
+  <SelectTrigger className="border-border-DEFAULT">
+    <SelectValue placeholder="Select option" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="option1">Option 1</SelectItem>
+    <SelectItem value="option2">Option 2</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+### Form Field Variants
+
+#### Text Input with Validation
+```typescript
+<div className="space-y-2">
+  <Label htmlFor="username" className="text-sm font-medium">
+    Username
+  </Label>
+  <Input
+    id="username"
+    className={cn(
+      "border-border-DEFAULT",
+      error && "border-red-500 focus:border-red-500"
+    )}
+    {...register("username")}
+  />
+  {error && (
+    <p className="text-sm text-red-500">{error.message}</p>
+  )}
+</div>
+```
+
+#### Textarea Field
+```typescript
+<div className="space-y-2">
+  <Label htmlFor="description">Description</Label>
+  <Textarea
+    id="description"
+    className="min-h-[100px]"
+    placeholder="Enter description"
+  />
+</div>
+```
+
+#### Checkbox Field
+```typescript
+<div className="flex items-center space-x-2">
+  <Checkbox id="terms" />
+  <Label htmlFor="terms" className="text-sm">
+    I agree to the terms and conditions
+  </Label>
+</div>
+```
+
+### Form Layout Components
+
+#### Form Section
+```typescript
+interface FormSectionProps {
+  title: string
+  description?: string
+  children: React.ReactNode
+}
+
+const FormSection = ({ title, description, children }: FormSectionProps) => (
+  <div className="space-y-4">
+    <div>
+      <h3 className="text-lg font-medium text-gray-900">{title}</h3>
+      {description && (
+        <p className="mt-1 text-sm text-gray-500">{description}</p>
+      )}
+    </div>
+    <div className="space-y-4">
+      {children}
+    </div>
+  </div>
+)
+```
+
+#### Form Grid
+```typescript
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <FormField name="firstName" label="First Name" />
+  <FormField name="lastName" label="Last Name" />
+</div>
+```
+
+### Usage Guidelines
+1. Group related fields logically
+2. Provide clear labels and placeholders
+3. Show validation feedback immediately
+4. Use appropriate input types
+5. Include helper text when needed
+6. Implement proper error states
+7. Consider form accessibility
+
+### Accessibility Considerations
+- Use proper label associations
+- Provide error feedback to screen readers
+- Maintain keyboard navigation
+- Use proper ARIA attributes
+- Ensure sufficient color contrast
+- Support form validation
+
+### Best Practices
+1. Validate input in real-time
+2. Show clear error messages
+3. Use consistent styling
+4. Handle loading states
+5. Implement proper form submission
+6. Consider mobile input methods
+7. Maintain proper spacing
+
+### Styling Guidelines
+1. Use consistent spacing
+2. Apply proper typography
+3. Style validation states
+4. Handle focus states
+5. Implement proper borders
+6. Consider field sizes
+7. Maintain proper alignment

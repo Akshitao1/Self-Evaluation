@@ -1,0 +1,366 @@
+---
+alwaysApply: true
+priority: P0
+---
+# Intelligent Defaults - Beautiful UI for Basic Prompts
+
+## 🎯 PHILOSOPHY: BEAUTIFUL BY DEFAULT
+When anyone (PM, backend dev, designer) asks for basic components, ALWAYS generate the enhanced, beautiful version automatically.
+
+## 🚫 FORBIDDEN: NEVER CREATE BASIC COMPONENTS
+These basic requests should AUTOMATICALLY be enhanced using CONTEXT-AWARE INTELLIGENCE:
+
+### **🧠 CONTEXT-AWARE AUTO-ENHANCEMENT SYSTEM:**
+
+STEP 1: **READ** /.cursor/project-context.md for domain and user type
+STEP 2: **APPLY** context-specific enhancement rules
+STEP 3: **GENERATE** perfectly tailored component
+STEP 4: **UPDATE** context file with successful patterns
+
+### **❌ User Says → ✅ AI Context-Enhances To:**
+
+**"Create a dashboard"** → 
+- 🏢 **HR Context**: "Create an HR admin dashboard with employee metrics, department charts, team management table with HR-specific actions, and professional blue styling"
+- 💰 **Sales Context**: "Create a sales dashboard with revenue metrics, pipeline analysis, deals table with CRM actions, and success-focused green styling"  
+- 📊 **Finance Context**: "Create a finance dashboard with financial KPIs, budget analysis, transaction table with approval workflows, and professional gray/green styling"
+- 🎯 **Default**: "Create a professional analytics dashboard with gradient background, glassmorphic cards, metric cards with gradient icons, interactive charts, and modern data table"
+
+**"Build a table"** →
+- 🏢 **HR Context**: "Build an HR employee management table with Employee ID, Department, Manager columns, role-based actions (Edit, Time Off, Deactivate), and professional styling"
+- 💰 **Sales Context**: "Build a sales pipeline table with Deal Value, Stage, Probability columns, CRM actions (Edit, Move Stage, Contact), and success-focused styling"
+- 📊 **Finance Context**: "Build a financial transactions table with Amount, Category, Status columns, approval actions (View, Approve, Reject), and professional styling"
+- 🎯 **Default**: "Build a ReUI Data Grid with gradient headers, hover effects, sortable columns, search/filters, and status badges"
+
+**"Make a form"** →
+- 🏢 **HR Context**: "Create an employee onboarding form with personal info, emergency contacts, benefits selection, tax forms, and HR validation rules"
+- 💰 **Sales Context**: "Create a lead capture form with company info, deal size, timeline, source tracking, and sales qualification logic"
+- 📊 **Finance Context**: "Create an expense report form with receipt upload, expense categories, business purpose, and approval workflow integration"
+- 🎯 **Default**: "Create a form with glassmorphic container, gradient focus rings, real-time validation, floating labels, and gradient submit button"
+
+**"Create a card"** → **Enhanced with context-appropriate content and styling**
+
+**"Add a chart"** → **Enhanced with domain-specific metrics and visualizations**
+
+## 🎨 AUTO-ENHANCED COMPONENT TEMPLATES
+
+### **1. DEFAULT BUTTON (Auto-Applied)**
+```tsx
+// When user says "create a button", ALWAYS generate this:
+<Button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-indigo-700 transform hover:scale-105 transition-all duration-200 focus:ring-2 focus:ring-blue-500/20">
+  {children}
+</Button>
+```
+
+### **2. DEFAULT CARD (Auto-Applied)**
+```tsx
+// When user says "create a card", ALWAYS generate this:
+<Card className="bg-white/95 backdrop-blur-sm border border-slate-200/50 rounded-xl shadow-lg hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 hover:border-blue-300/50">
+  <CardContent className="p-6">
+    {children}
+  </CardContent>
+</Card>
+```
+
+### **3. DEFAULT DASHBOARD (Auto-Applied)**
+```tsx
+// When user says "create a dashboard", ALWAYS generate this structure:
+export default function Dashboard() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      {/* Header */}
+      <header className="bg-white/95 backdrop-blur-sm border-b border-slate-200/50 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+            Dashboard
+          </h1>
+        </div>
+      </header>
+
+      {/* Content */}
+      <main className="max-w-7xl mx-auto p-6 space-y-8">
+        {/* Metrics Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <MetricCard title="Total Users" value="12,345" change="+12%" />
+          <MetricCard title="Revenue" value="$45,231" change="+8%" />
+          <MetricCard title="Growth" value="23.5%" change="+5%" />
+          <MetricCard title="Conversion" value="3.2%" change="+2%" />
+        </div>
+
+        {/* Charts Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ChartCard title="Revenue Trend" />
+          <ChartCard title="User Growth" />
+        </div>
+
+        {/* Data Table */}
+        <DataTable title="Recent Activity" />
+      </main>
+    </div>
+  );
+}
+```
+
+### **4. DEFAULT FORM (Auto-Applied)**
+```tsx
+// When user says "create a form", ALWAYS generate this:
+<div className="max-w-md mx-auto">
+  <Card className="bg-white/95 backdrop-blur-sm border border-slate-200/50 shadow-xl">
+    <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200/50">
+      <CardTitle className="text-xl font-bold text-slate-900">Contact Form</CardTitle>
+    </CardHeader>
+    <CardContent className="p-6 space-y-6">
+      <div className="space-y-2">
+        <Label className="text-sm font-medium text-slate-700">Name</Label>
+        <Input 
+          placeholder="Enter your name" 
+          className="border-slate-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-200 hover:border-slate-300"
+        />
+      </div>
+      
+      <div className="space-y-2">
+        <Label className="text-sm font-medium text-slate-700">Email</Label>
+        <Input 
+          type="email" 
+          placeholder="Enter your email" 
+          className="border-slate-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-200 hover:border-slate-300"
+        />
+      </div>
+      
+      <div className="space-y-2">
+        <Label className="text-sm font-medium text-slate-700">Message</Label>
+        <Textarea 
+          placeholder="Your message" 
+          className="border-slate-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-200 hover:border-slate-300 min-h-[100px]"
+        />
+      </div>
+      
+      <Button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl">
+        Send Message
+      </Button>
+    </CardContent>
+  </Card>
+</div>
+```
+
+### **5. DEFAULT DATA GRID (Auto-Applied)**
+```tsx
+// When user says "create a table", ALWAYS generate this:
+"use client";
+
+import { useMemo, useState } from "react";
+import { createColumnHelper, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { DataGrid } from "@/components/ui/data-grid";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { MoreHorizontalIcon, EditIcon, TrashIcon } from "lucide-react";
+
+const columnHelper = createColumnHelper<any>();
+
+export default function DefaultDataGrid() {
+  const [data, setData] = useState([
+    { id: 1, name: "John Doe", email: "john@example.com", status: "active" },
+    { id: 2, name: "Jane Smith", email: "jane@example.com", status: "pending" },
+    // ... more data
+  ]);
+
+  const columns = useMemo(() => [
+    columnHelper.accessor("name", {
+      header: "Name",
+      cell: ({ getValue }) => (
+        <span className="font-medium text-slate-900">{getValue()}</span>
+      ),
+      meta: { headerTitle: "User Name" }
+    }),
+    
+    columnHelper.accessor("email", {
+      header: "Email",
+      cell: ({ getValue }) => (
+        <span className="text-slate-700">{getValue()}</span>
+      )
+    }),
+    
+    columnHelper.accessor("status", {
+      header: "Status",
+      cell: ({ getValue }) => {
+        const status = getValue();
+        const statusConfig = {
+          active: "bg-gradient-to-r from-emerald-500 to-teal-500 text-white",
+          pending: "bg-gradient-to-r from-orange-500 to-yellow-500 text-white",
+          inactive: "bg-gradient-to-r from-slate-400 to-slate-500 text-white"
+        };
+        return (
+          <Badge className={`${statusConfig[status]} shadow-sm`}>
+            {status.charAt(0).toUpperCase() + status.slice(1)}
+          </Badge>
+        );
+      }
+    }),
+    
+    columnHelper.display({
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => (
+        <div className="flex items-center space-x-2">
+          <Button variant="ghost" size="sm" className="hover:bg-emerald-50 hover:text-emerald-600">
+            <EditIcon className="w-4 h-4" />
+          </Button>
+          <Button variant="ghost" size="sm" className="hover:bg-red-50 hover:text-red-600">
+            <TrashIcon className="w-4 h-4" />
+          </Button>
+        </div>
+      ),
+      meta: { cellClassName: "text-center" }
+    })
+  ], []);
+
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  return (
+    <div className="bg-white/95 backdrop-blur-sm rounded-xl border border-slate-200/50 shadow-lg overflow-hidden">
+      <DataGrid
+        table={table}
+        recordCount={data.length}
+        tableLayout={{
+          headerBackground: true,
+          headerBorder: true,
+          rowBorder: true,
+          stripped: true,
+          columnsResizable: true,
+          columnsVisibility: true
+        }}
+        tableClassNames={{
+          headerSticky: "bg-gradient-to-r from-slate-50 to-blue-50 backdrop-blur-sm",
+          bodyRow: "hover:bg-blue-50/50 transition-colors duration-200"
+        }}
+        onRowClick={(row) => console.log("Row clicked:", row)}
+      />
+    </div>
+  );
+}
+```
+
+## 📊 AUTO-ENHANCED CHART TEMPLATES
+
+### **Default Chart Component (Auto-Applied)**
+```tsx
+// When user says "add a chart", ALWAYS generate this:
+<Card className="bg-white/95 backdrop-blur-sm border border-slate-200/50">
+  <CardHeader>
+    <CardTitle className="text-lg font-semibold text-slate-900">Chart Title</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <ResponsiveContainer width="100%" height={300}>
+      <AreaChart data={data}>
+        <defs>
+          <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
+            <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
+          </linearGradient>
+        </defs>
+        <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+        <XAxis 
+          dataKey="name" 
+          stroke="#64748b" 
+          fontSize={12} 
+          tickLine={false} 
+          axisLine={false} 
+        />
+        <YAxis 
+          stroke="#64748b" 
+          fontSize={12} 
+          tickLine={false} 
+          axisLine={false} 
+        />
+        <Tooltip 
+          contentStyle={{
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(10px)',
+            border: 'none',
+            borderRadius: '8px',
+            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.1)'
+          }}
+        />
+        <Area
+          type="monotone"
+          dataKey="value"
+          stroke="#3B82F6"
+          strokeWidth={2}
+          fill="url(#colorValue)"
+          animationDuration={1000}
+        />
+      </AreaChart>
+    </ResponsiveContainer>
+  </CardContent>
+</Card>
+```
+
+## 🎭 DEFAULT ANIMATIONS (Always Include)
+
+### **Standard Animation Classes (Auto-Applied)**
+```tsx
+// ALWAYS add these to interactive elements:
+hover:scale-105          // Buttons
+hover:-translate-y-1     // Cards
+transition-all duration-200    // All interactive elements
+hover:shadow-xl          // Enhanced shadows
+focus:ring-2 focus:ring-blue-500/20  // Focus states
+```
+
+## 🌈 DEFAULT COLOR SCHEMES (Auto-Applied)
+
+### **Professional Color Palette (Always Use)**
+```tsx
+// Background gradients (use by default):
+'bg-gradient-to-br from-slate-50 to-blue-50'      // Page backgrounds
+'bg-gradient-to-r from-blue-600 to-indigo-600'    // Primary buttons
+'bg-gradient-to-r from-emerald-600 to-teal-600'   // Success elements
+'bg-gradient-to-r from-red-600 to-red-700'        // Error/destructive
+'bg-white/95 backdrop-blur-sm'                     // Card backgrounds
+
+// Text colors (use by default):
+'text-slate-900'   // Primary text
+'text-slate-700'   // Secondary text  
+'text-slate-500'   // Muted text
+```
+
+## 🎯 PROMPT ENHANCEMENT RULES
+
+### **Auto-Enhance Basic Prompts:**
+When user gives basic prompt, AUTOMATICALLY interpret as enhanced version:
+
+**Input**: "Create a login page"
+**Auto-Enhanced**: "Create a login page with glassmorphic card design, gradient background, floating labels, real-time validation with smooth animations, and branded styling"
+
+**Input**: "Build a settings panel"  
+**Auto-Enhanced**: "Build a settings panel with tabbed navigation, toggle switches with smooth animations, gradient accents, and organized card sections"
+
+**Input**: "Make a navigation bar"
+**Auto-Enhanced**: "Make a navigation bar with glassmorphic background, smooth hover effects, gradient active states, and mobile-responsive hamburger menu"
+
+## ✅ QUALITY ENFORCEMENT
+
+### **NEVER Generate These Basic Versions:**
+- ❌ Plain white cards without effects
+- ❌ Solid color buttons without gradients  
+- ❌ Static tables without hover effects
+- ❌ Forms without focus animations
+- ❌ Charts without gradient fills
+- ❌ Dashboards without glassmorphic elements
+
+### **ALWAYS Generate These Enhanced Versions:**
+- ✅ Glassmorphic cards with backdrop-blur
+- ✅ Gradient buttons with hover animations
+- ✅ Interactive tables with search/filters
+- ✅ Forms with smooth validation feedback
+- ✅ Charts with gradient fills and animations
+- ✅ Dashboards with professional spacing and effects
+
+## 🚀 IMPLEMENTATION NOTE
+
+**For Cursor AI:** When processing ANY basic component request, automatically apply the enhanced template from this file. The user should NEVER need to specify visual details - beautiful should be the only option.
+
+**Remember**: A product manager saying "build me a dashboard" should get the same quality result as a designer saying "build me a professional dashboard with glassmorphic effects and gradient styling."

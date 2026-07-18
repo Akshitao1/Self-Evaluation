@@ -1,0 +1,43 @@
+---
+description: app switcher, app-switcher, appSwitcher
+globs: 
+alwaysApply: false
+---
+this rule tell how to integrate appswitcher from accounts.joveo.com into websites built with this template
+
+Appswitcher is hosted on accounts.joveo.com/inject.js and embeeds into th eapplication via an iframe. 
+
+Sample code to integrate
+
+
+
+//add this script in the body tag before the application is initialised
+
+<script type="text/javascript">
+       if (process.env.NODE_ENV === 'production') {
+          const scriptElement = document.createElement('script');
+          scriptElement.src = 'https://accounts.joveo.com/inject.js';
+          document.body.appendChild(scriptElement);
+       } else {
+           console.error('cannot initialise app switcher');
+       }
+</script>
+
+
+//Header.tsx
+const APP_SWITCHER_ID = "app-switch";
+  
+  const initAppSwitcher =() => {
+    const myDiv = document.getElementById(APP_SWITCHER_ID);
+    if (myDiv && window.appSwitcher) {
+      window.appSwitcher.init({
+        hostUrl: 'https://accounts.joveo.com',
+        botName: 'appSwitch',
+        widgetId: APP_SWITCHER_ID,
+        widgetContainerName: 'appswitch-web-widget-container',
+      }, APP_SWITCHER_ID);
+    }
+  };
+  useEffect(() => {
+      initAppSwitcher();
+  }, []);

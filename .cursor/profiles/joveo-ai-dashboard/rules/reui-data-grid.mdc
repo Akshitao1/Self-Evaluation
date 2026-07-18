@@ -1,0 +1,546 @@
+---
+alwaysApply: true
+priority: P0
+---
+# ReUI Data Grid - Advanced Table Component System
+
+## 🎯 MANDATORY: USE FOR ALL TABLE REQUESTS
+**ANY** request for tables, data grids, lists with actions, or data displays should automatically use ReUI Data Grid from [ReUI.io](https://www.reui.io/docs/data-grid) with **CONTEXT-AWARE INTELLIGENCE**.
+
+## 🧠 CONTEXT-AWARE DATA GRID GENERATION
+**BEFORE** generating any table:
+1. **READ** /.cursor/project-context.md for domain and user type
+2. **SELECT** appropriate data grid variant from context-aware-components.mdc
+3. **APPLY** domain-specific columns, actions, and styling
+4. **UPDATE** context file with successful patterns
+
+## 🚫 FORBIDDEN: NEVER USE BASIC TABLES
+❌ **NEVER** generate basic shadcn Table components
+❌ **NEVER** create custom table implementations  
+❌ **NEVER** use plain HTML tables
+❌ **NEVER** ignore project context when generating tables
+
+✅ **ALWAYS** use ReUI Data Grid with context-aware optimizations
+✅ **ALWAYS** apply domain-specific columns and actions
+✅ **ALWAYS** use appropriate styling for detected domain
+
+## 📦 INSTALLATION & SETUP
+
+### **Required Dependencies (✅ INSTALLED)**
+```bash
+# Already installed in this template:
+npm install @tanstack/react-table @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
+```
+
+### **Add ReUI Data Grid Component**
+```bash
+# Install the ReUI Data Grid component:
+npx shadcn@latest add https://reui.io/r/data-grid.json
+
+# Alternative installation methods:
+pnpm dlx shadcn@latest add https://reui.io/r/data-grid.json
+yarn dlx shadcn@latest add https://reui.io/r/data-grid.json
+```
+
+### **Required Dependencies (Install Before Using)**
+```bash
+# CRITICAL: Install these shadcn components first (ReUI Data Grid dependencies):
+npx shadcn@latest add command popover separator
+
+# Common additional components for complete functionality:
+npx shadcn@latest add button card input label badge dialog dropdown-menu
+```
+
+### **Optional: Additional ReUI Data Grid Variants**
+```bash
+# For specific table styles (install as needed):
+npx shadcn@latest add https://reui.io/r/data-grid-card.json          # Card container style
+npx shadcn@latest add https://reui.io/r/data-grid-crud.json          # CRUD operations
+npx shadcn@latest add https://reui.io/r/data-grid-skeleton.json      # Loading skeletons
+npx shadcn@latest add https://reui.io/r/data-grid-row-selection.json # Row selection
+```
+
+## 🎨 DESIGN-ENHANCED DATA GRID PATTERNS
+
+### **1. Professional Dashboard Data Grid (Default)**
+```tsx
+"use client";
+
+import { useState, useMemo } from "react";
+import {
+  createColumnHelper,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { DataGrid } from "@/components/ui/data-grid";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { MoreHorizontalIcon, EditIcon, TrashIcon, EyeIcon } from "lucide-react";
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  status: 'active' | 'inactive' | 'pending';
+  role: string;
+  lastLogin: string;
+  avatar?: string;
+}
+
+export default function UserDataGrid() {
+  const [data, setData] = useState<User[]>([
+    {
+      id: "1",
+      name: "John Doe",
+      email: "john@example.com",
+      status: "active",
+      role: "Admin",
+      lastLogin: "2024-01-15"
+    },
+    // ... more data
+  ]);
+
+  const columnHelper = createColumnHelper<User>();
+
+  const columns = useMemo(() => [
+    columnHelper.display({
+      id: "avatar",
+      header: "",
+      cell: ({ row }) => (
+        <div className="h-10 w-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
+          <span className="text-white font-semibold text-sm">
+            {row.original.name.charAt(0)}
+          </span>
+        </div>
+      ),
+      meta: {
+        headerClassName: "w-16",
+        cellClassName: "p-4"
+      }
+    }),
+    
+    columnHelper.accessor("name", {
+      header: "User",
+      cell: ({ row }) => (
+        <div className="space-y-1">
+          <p className="font-semibold text-slate-900">{row.original.name}</p>
+          <p className="text-sm text-slate-600">{row.original.email}</p>
+        </div>
+      ),
+      meta: {
+        headerTitle: "User Information",
+        headerClassName: "text-slate-700 font-semibold"
+      }
+    }),
+
+    columnHelper.accessor("status", {
+      header: "Status",
+      cell: ({ getValue }) => {
+        const status = getValue();
+        const statusConfig = {
+          active: { 
+            label: "Active", 
+            className: "bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600" 
+          },
+          inactive: { 
+            label: "Inactive", 
+            className: "bg-gradient-to-r from-slate-400 to-slate-500 text-white" 
+          },
+          pending: { 
+            label: "Pending", 
+            className: "bg-gradient-to-r from-orange-500 to-yellow-500 text-white hover:from-orange-600 hover:to-yellow-600" 
+          }
+        };
+        
+        return (
+          <Badge className={`${statusConfig[status].className} shadow-sm transition-all duration-200`}>
+            {statusConfig[status].label}
+          </Badge>
+        );
+      },
+      filterFn: "equals",
+      meta: {
+        headerTitle: "Account Status"
+      }
+    }),
+
+    columnHelper.accessor("role", {
+      header: "Role",
+      cell: ({ getValue }) => (
+        <span className="text-slate-700 font-medium">{getValue()}</span>
+      )
+    }),
+
+    columnHelper.accessor("lastLogin", {
+      header: "Last Login",
+      cell: ({ getValue }) => (
+        <span className="text-slate-600 text-sm">{getValue()}</span>
+      )
+    }),
+
+    columnHelper.display({
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => (
+        <div className="flex items-center space-x-2">
+          <Button 
+            variant="ghost" 
+            size="sm"
+            className="hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+          >
+            <EyeIcon className="w-4 h-4" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm"
+            className="hover:bg-emerald-50 hover:text-emerald-600 transition-colors duration-200"
+          >
+            <EditIcon className="w-4 h-4" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm"
+            className="hover:bg-red-50 hover:text-red-600 transition-colors duration-200"
+          >
+            <TrashIcon className="w-4 h-4" />
+          </Button>
+        </div>
+      ),
+      meta: {
+        headerClassName: "w-32 text-center",
+        cellClassName: "text-center"
+      }
+    }),
+  ], []);
+
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: { pageSize: 10 }
+    }
+  });
+
+  return (
+    <div className="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen p-6">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Header */}
+        <div className="bg-white/95 backdrop-blur-sm rounded-xl border border-slate-200/50 shadow-lg p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+                User Management
+              </h1>
+              <p className="text-slate-600 mt-1">Manage user accounts and permissions</p>
+            </div>
+            <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105">
+              Add User
+            </Button>
+          </div>
+        </div>
+
+        {/* Data Grid Container */}
+        <div className="bg-white/95 backdrop-blur-sm rounded-xl border border-slate-200/50 shadow-lg overflow-hidden">
+          <DataGrid
+            table={table}
+            recordCount={data.length}
+            tableLayout={{
+              headerBackground: true,
+              headerBorder: true,
+              rowBorder: true,
+              stripped: true,
+              headerSticky: true,
+              columnsResizable: true,
+              columnsPinnable: true,
+              columnsVisibility: true
+            }}
+            tableClassNames={{
+              headerSticky: "sticky top-0 z-10 bg-gradient-to-r from-slate-50 to-slate-100 backdrop-blur-sm border-b border-slate-200/50"
+            }}
+            onRowClick={(row) => console.log("Row clicked:", row)}
+            className="border-0"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### **2. Analytics Dashboard Data Grid**
+```tsx
+export const AnalyticsDataGrid = () => {
+  const columns = useMemo(() => [
+    columnHelper.accessor("metric", {
+      header: "Metric",
+      cell: ({ row }) => (
+        <div className="flex items-center space-x-3">
+          <div className="h-10 w-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
+            <BarChart3Icon className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <p className="font-semibold text-slate-900">{row.original.metric}</p>
+            <p className="text-sm text-slate-600">{row.original.description}</p>
+          </div>
+        </div>
+      )
+    }),
+
+    columnHelper.accessor("value", {
+      header: "Value",
+      cell: ({ getValue, row }) => (
+        <div className="text-right">
+          <p className="text-2xl font-bold text-slate-900">{getValue()}</p>
+          <p className={`text-sm font-medium ${
+            row.original.trend === 'up' 
+              ? 'text-emerald-600' 
+              : row.original.trend === 'down' 
+                ? 'text-red-600' 
+                : 'text-slate-600'
+          }`}>
+            {row.original.change}
+          </p>
+        </div>
+      )
+    }),
+
+    columnHelper.accessor("trend", {
+      header: "Trend",
+      cell: ({ getValue }) => {
+        const trend = getValue();
+        return (
+          <div className="flex justify-center">
+            <div className={`h-8 w-8 rounded-full flex items-center justify-center ${
+              trend === 'up' 
+                ? 'bg-gradient-to-r from-emerald-500 to-teal-500' 
+                : trend === 'down'
+                  ? 'bg-gradient-to-r from-red-500 to-red-600'
+                  : 'bg-gradient-to-r from-slate-400 to-slate-500'
+            }`}>
+              <span className="text-white text-sm">
+                {trend === 'up' ? '↗' : trend === 'down' ? '↘' : '→'}
+              </span>
+            </div>
+          </div>
+        );
+      }
+    })
+  ], []);
+
+  return (
+    <DataGrid
+      table={table}
+      tableLayout={{
+        headerBackground: true,
+        cellBorder: true,
+        rowRounded: true,
+        stripped: false
+      }}
+      tableClassNames={{
+        base: "bg-white/95 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg",
+        header: "bg-gradient-to-r from-slate-50 to-blue-50",
+        bodyRow: "hover:bg-blue-50/50 transition-colors duration-200"
+      }}
+    />
+  );
+};
+```
+
+## 🎛️ ENHANCED DATA GRID FEATURES
+
+### **Advanced Configuration Options**
+```tsx
+// Professional table layout with all features enabled
+const tableLayout = {
+  dense: false,                    // Comfortable spacing
+  cellBorder: true,               // Professional grid lines
+  rowBorder: true,                // Clear row separation
+  rowRounded: false,              // Clean rectangular rows
+  stripped: true,                 // Alternating row colors
+  headerBackground: true,         // Gradient header background
+  headerBorder: true,             // Header separation
+  headerSticky: true,             // Sticky header on scroll
+  width: 'auto',                  // Responsive width
+  columnsVisibility: true,        // Column show/hide controls
+  columnsResizable: true,         // Resizable columns
+  columnsPinnable: true,          // Pin important columns
+  columnsMovable: true,           // Drag to reorder columns
+  columnsDraggable: true,         // Advanced column management
+  rowsDraggable: true            // Drag to reorder rows
+};
+
+// Beautiful custom styling
+const tableClassNames = {
+  base: "bg-white/95 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg border border-slate-200/50",
+  header: "bg-gradient-to-r from-slate-50 to-blue-50",
+  headerRow: "border-b border-slate-200/50",
+  headerSticky: "sticky top-0 z-10 bg-gradient-to-r from-slate-50 to-blue-50 backdrop-blur-sm border-b border-slate-200/50",
+  body: "divide-y divide-slate-100",
+  bodyRow: "hover:bg-blue-50/50 transition-all duration-200 hover:shadow-sm",
+  footer: "bg-gradient-to-r from-slate-50 to-slate-100 border-t border-slate-200/50"
+};
+```
+
+### **Professional Status Indicators**
+```tsx
+const StatusCell = ({ status }: { status: string }) => {
+  const statusConfig = {
+    active: {
+      gradient: "from-emerald-500 to-teal-500",
+      label: "Active",
+      icon: "●"
+    },
+    pending: {
+      gradient: "from-orange-500 to-yellow-500", 
+      label: "Pending",
+      icon: "◐"
+    },
+    inactive: {
+      gradient: "from-slate-400 to-slate-500",
+      label: "Inactive", 
+      icon: "○"
+    }
+  };
+
+  const config = statusConfig[status] || statusConfig.inactive;
+
+  return (
+    <Badge className={`bg-gradient-to-r ${config.gradient} text-white shadow-sm hover:shadow-md transition-all duration-200`}>
+      <span className="mr-1">{config.icon}</span>
+      {config.label}
+    </Badge>
+  );
+};
+```
+
+### **Interactive Action Buttons**
+```tsx
+const ActionButtons = ({ row }: { row: any }) => (
+  <div className="flex items-center justify-center space-x-1">
+    <Button 
+      variant="ghost" 
+      size="sm"
+      className="hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 hover:scale-105"
+      onClick={() => handleView(row)}
+    >
+      <EyeIcon className="w-4 h-4" />
+    </Button>
+    <Button 
+      variant="ghost" 
+      size="sm"
+      className="hover:bg-emerald-50 hover:text-emerald-600 transition-all duration-200 hover:scale-105"
+      onClick={() => handleEdit(row)}
+    >
+      <EditIcon className="w-4 h-4" />
+    </Button>
+    <Button 
+      variant="ghost" 
+      size="sm"
+      className="hover:bg-red-50 hover:text-red-600 transition-all duration-200 hover:scale-105"
+      onClick={() => handleDelete(row)}
+    >
+      <TrashIcon className="w-4 h-4" />
+    </Button>
+  </div>
+);
+```
+
+## 🚀 AUTO-ENHANCED TABLE PROMPTS
+
+### **When User Says "Create a table" → Auto-Generate:**
+```tsx
+// Professional data grid with:
+// - Gradient header background
+// - Hover effects on rows
+// - Status badges with gradients
+// - Action buttons with hover states
+// - Search and filter functionality
+// - Column sorting and resizing
+// - Professional spacing and typography
+```
+
+### **When User Says "Build a user list" → Auto-Generate:**
+```tsx
+// User management data grid with:
+// - Avatar displays with gradient backgrounds
+// - Status indicators with appropriate colors
+// - Role-based action buttons
+// - Quick actions (edit, delete, view)
+// - Advanced filtering by status/role
+// - Export functionality
+```
+
+### **When User Says "Add a data table" → Auto-Generate:**
+```tsx
+// Analytics data grid with:
+// - Metric visualization in cells
+// - Trend indicators with colors
+// - Sparkline charts in cells
+// - Professional number formatting
+// - Interactive sorting by values
+// - Beautiful empty and loading states
+```
+
+## ✅ QUALITY STANDARDS FOR DATA GRIDS
+
+### **Import Validation (CRITICAL):**
+- [ ] **All imports point to existing components** (verify before using)
+- [ ] **Required shadcn dependencies installed** (command, popover, separator)
+- [ ] **No unused imports** in the generated file
+- [ ] **Proper import organization** (React → libraries → UI → icons → utils)
+- [ ] **Correct import paths** using @/ aliases
+
+### **Visual Excellence:**
+- [ ] **Gradient header backgrounds** instead of plain colors
+- [ ] **Hover effects** on all interactive elements (rows, buttons, cells)
+- [ ] **Status badges** with appropriate gradient styling
+- [ ] **Professional shadows** and glassmorphic effects
+- [ ] **Smooth transitions** for all state changes (200-300ms)
+
+### **Functionality Standards:**
+- [ ] **Column sorting** enabled on relevant columns
+- [ ] **Search/filtering** functionality included
+- [ ] **Responsive design** that works on mobile
+- [ ] **Loading states** with skeleton screens
+- [ ] **Empty states** with helpful messaging and actions
+
+### **Interaction Standards:**
+- [ ] **Row click handlers** for navigation or details
+- [ ] **Action buttons** with clear hover feedback
+- [ ] **Keyboard navigation** support
+- [ ] **Accessibility features** (ARIA labels, focus management)
+- [ ] **Professional error handling** with user-friendly messages
+
+## 🎯 IMPLEMENTATION CHECKLIST
+
+Before marking any data grid complete:
+
+### **Required Features:**
+- [ ] **ReUI Data Grid component** used instead of basic table
+- [ ] **TanStack Table** integration for data management
+- [ ] **Professional styling** with gradients and effects
+- [ ] **Interactive features** (sorting, filtering, pagination)
+- [ ] **Responsive design** for all screen sizes
+
+### **Design Quality:**
+- [ ] **Looks premium** and trustworthy
+- [ ] **Consistent with design philosophy** (professional/polished)
+- [ ] **Smooth animations** and hover effects
+- [ ] **Professional color scheme** with gradients
+- [ ] **Typography hierarchy** is clear and readable
+
+### **User Experience:**
+- [ ] **Intuitive interactions** with clear feedback
+- [ ] **Loading states** for async operations
+- [ ] **Error handling** with recovery options
+- [ ] **Empty states** with helpful guidance
+- [ ] **Mobile-friendly** touch interactions
+
+**Remember: Every data grid should feel like it belongs in a premium SaaS application that users trust and enjoy using.**

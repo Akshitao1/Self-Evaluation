@@ -1,0 +1,47 @@
+# Joveo Dashboard Layout Rules
+
+## Page Structure
+- Every dashboard page must have a consistent layout with:
+  - Fixed left sidebar (72px width)
+  - Fixed top header (64px height)
+  - Main content area with proper padding (32px)
+  - White background for content sections
+  - Light gray background (#F4F5FB) for page background
+
+## Section Separation
+- All major sections must be separated by:
+  - 24px gap between sections
+  - White background for each section
+  - Border: 1px solid #E2E6F1
+  - Border radius: 8px
+  - Internal padding: 24px
+
+## Grid System
+- Use 4-column grid for metric cards
+- Grid gap: 24px
+- Full width sections for charts and tables
+- Maintain consistent spacing between elements
+
+## Charts
+- All charts must have:
+  - White background container
+  - Border: 1px solid #E2E6F1
+  - Border radius: 8px
+  - Internal padding: 24px
+  - Proper axis labels and grid lines
+  - Consistent color scheme from design tokens
+
+## Tables
+- Tables must have:
+  - Full width layout
+  - Fixed header with white background
+  - Border bottom on header and rows
+  - Consistent cell padding
+  - Hover states on rows
+  - Status indicators with proper colors
+
+## Responsive Behavior
+- Maintain fixed sidebar width
+- Allow content area to be scrollable
+- Keep metric cards in grid layout
+- Stack sections vertically on smaller screens

@@ -1,0 +1,456 @@
+@import "tailwindcss";
+
+/* ── Joveo Design Tokens ── */
+@theme {
+  --color-navy: #1C2536;
+  --color-navy-light: #253046;
+  --color-primary: #303F9F;
+  --color-primary-light: #3D4CB3;
+  --color-secondary: #7681E8;
+  --color-secondary-light: #929BED;
+  --color-success: #43A047;
+  --color-success-light: #E8F5E9;
+  --color-warning: #F9A825;
+  --color-warning-light: #FFF8E1;
+  --color-danger: #E53935;
+  --color-danger-light: #FFEBEE;
+  --color-text: #3D4759;
+  --color-text-muted: #6B7A90;
+  --color-text-light: #9CA3B0;
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #F8F9FA;
+  --color-border: #E2E5EA;
+  --color-border-light: #F0F1F3;
+
+  --font-sans: "SF Pro Text", system-ui, -apple-system, sans-serif;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Sidebar custom styles for Joveo */
+.sidebar-icon svg {
+  stroke-width: 1.5;
+  transition: all 0.2s ease;
+}
+
+.sidebar-icon.active-icon svg {
+  stroke: #7681E8; /* Joveo secondary blue color */
+  fill: rgba(118, 129, 232, 0.1);
+}
+
+.sidebar-icon.text-gray-600 svg {
+  stroke: #3D4759; /* Joveo text gray color */
+}
+
+.sidebar-icon.text-gray-600 svg:hover {
+  stroke: #303F9F; /* Joveo primary blue color */
+}
+
+html, body {
+  overscroll-behavior: none;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: var(--color-surface-alt);
+  margin: 0;
+}
+
+/* Custom animations for home page */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation delay utilities */
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-900 { animation-delay: 900ms; }
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(139, 92, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+  }
+}
+
+/* Animation classes */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.6s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.6s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Custom gradient backgrounds */
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-from) 0%, var(--tw-gradient-to) 100%);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* Super thin scrollbar */
+.thin-scrollbar::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: rgba(225, 232, 255, 0.3);
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(118, 129, 232, 0.3);
+  border-radius: 10px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(48, 63, 159, 0.5);
+}
+
+/* Firefox thin scrollbar */
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(118, 129, 232, 0.3) rgba(225, 232, 255, 0.3);
+}
+
+/* Backdrop blur support for older browsers */
+.backdrop-blur-lg {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Custom glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Custom button hover effects */
+.btn-glow:hover {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+/* Improved focus states */
+.focus-ring:focus {
+  outline: none;
+  ring: 2px solid rgba(139, 92, 246, 0.5);
+  ring-offset: 2px;
+}
+
+/* Custom card hover effects */
+.card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Gradient text animation */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-animate {
+  background: linear-gradient(-45deg, #06b6d4, #8b5cf6, #ec4899, #10b981);
+  background-size: 400% 400%;
+  animation: gradient-shift 3s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Loading states */
+.skeleton {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.1) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+  .hide-on-mobile {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .show-on-tablet {
+    display: block;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none;
+  }
+}
+
+/* Dark mode improvements */
+@media (prefers-color-scheme: dark) {
+  /* Enhanced dark mode styles can go here */
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Enhanced Table Styling for Joveo Theme */
+.joveo-table-header {
+  background-color: #F8F9FA !important;
+  border-bottom: 1px solid #E1E8FF !important;
+}
+
+.joveo-table-header:hover {
+  background-color: #F0F4FF !important;
+}
+
+.joveo-table-header th {
+  height: 80px !important;
+  padding: 0 24px !important;
+  font-weight: 600 !important;
+  color: #1C2536 !important;
+  font-size: 14px !important;
+}
+
+.joveo-table-row {
+  border-bottom: 1px solid #F1F3F4 !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.joveo-table-row:hover {
+  background-color: #F0F4FF !important;
+}
+
+.joveo-table-row:nth-child(even) {
+  background-color: #FAFBFC !important;
+}
+
+.joveo-table-row:nth-child(odd) {
+  background-color: #FFFFFF !important;
+}
+
+.joveo-table-cell {
+  padding: 20px 24px !important;
+  font-size: 14px !important;
+}
+
+.joveo-table-search {
+  background-color: #F8F9FA !important;
+  border: 1px solid #E1E8FF !important;
+  border-radius: 8px 8px 0 0 !important;
+  padding: 16px !important;
+  border-bottom: 1px solid #E1E8FF !important;
+}
+
+.joveo-table-pagination {
+  background-color: #F8F9FA !important;
+  border: 1px solid #E1E8FF !important;
+  border-radius: 0 0 8px 8px !important;
+  padding: 24px 16px !important;
+  border-top: 1px solid #E1E8FF !important;
+}
+
+.joveo-table-container {
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+  background-color: #FFFFFF !important;
+}
+
+/* Enhanced filter controls */
+.joveo-table-search select {
+  border: 1px solid #E1E8FF !important;
+  background-color: #FFFFFF !important;
+  color: #3D4759 !important;
+  border-radius: 4px !important;
+  transition: all 0.2s ease !important;
+}
+
+.joveo-table-search select:hover {
+  border-color: #7681E8 !important;
+}
+
+.joveo-table-search select:focus {
+  outline: none !important;
+  border-color: #303F9F !important;
+  box-shadow: 0 0 0 2px rgba(48, 63, 159, 0.1) !important;
+}
+
+/* Column filter inputs */
+.joveo-table-header input {
+  border: 1px solid #E1E8FF !important;
+  background-color: #FFFFFF !important;
+  color: #3D4759 !important;
+  border-radius: 4px !important;
+  transition: all 0.2s ease !important;
+}
+
+.joveo-table-header input:hover {
+  border-color: #7681E8 !important;
+}
+
+.joveo-table-header input:focus {
+  outline: none !important;
+  border-color: #303F9F !important;
+  box-shadow: 0 0 0 2px rgba(48, 63, 159, 0.1) !important;
+}
+
+.joveo-channel-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 4px 12px !important;
+  border-radius: 9999px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  background-color: #F0F4FF !important;
+  color: #303F9F !important;
+  border: 1px solid #E1E8FF !important;
+}
+
+.joveo-sort-icon {
+  color: #7681E8 !important;
+}
+
+.joveo-sort-active {
+  color: #303F9F !important;
+}
+
+.joveo-button-outline {
+  border: 1px solid #E1E8FF !important;
+  color: #3D4759 !important;
+  background-color: #FFFFFF !important;
+  transition: all 0.2s ease !important;
+}
+
+.joveo-button-outline:hover {
+  background-color: #F0F4FF !important;
+  border-color: #303F9F !important;
+}
+
+.joveo-input {
+  border: 1px solid #E1E8FF !important;
+  background-color: #FFFFFF !important;
+  color: #3D4759 !important;
+}
+
+.joveo-input:focus {
+  border-color: #303F9F !important;
+  box-shadow: 0 0 0 1px #303F9F !important;
+}

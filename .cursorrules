@@ -1,0 +1,183 @@
+# 🎯 ACTIVE PROFILE: JOVEO AI DASHBOARD MODE
+# Enterprise-grade dashboards with strict Joveo design system compliance
+
+## 🎨 JOVEO DESIGN SYSTEM (P0 PRIORITY)
+
+This profile enforces strict adherence to Joveo's enterprise design system:
+
+### Core Design Tokens
+- **Colors**:
+  - Primary Header: #1C2536 (Dark Navy)
+  - Primary Blue: #303F9F
+  - Secondary Blue: #7681E8
+  - Success Green: #43A047
+  - Text Gray: #3D4759
+  - Content Background: #FFFFFF
+
+- **Typography**:
+  - Font Family: SF Pro Text
+  - Headers: Semibold 20px/30px
+  - Body Text: Regular 14px/20px
+  - Labels: Medium 12px/18px
+
+- **Spacing & Layout**:
+  - Border Radius: 4px
+  - Component Shadows: Subtle elevation
+  - Grid: 4-column for metric cards
+  - Padding: Consistent 16px/24px units
+
+## 🚀 RULE SCOPE CONFIGURATION
+
+<available_instructions>
+# Only use Joveo-specific rules
+design-system: .cursor/profiles/joveo-ai-dashboard/rules/joveo-design-system.mdc
+components: .cursor/profiles/joveo-ai-dashboard/rules/joveo-components.mdc
+patterns: .cursor/profiles/joveo-ai-dashboard/rules/joveo-patterns.mdc
+data-grid: .cursor/profiles/joveo-ai-dashboard/rules/data-grid.mdc
+charts: .cursor/profiles/joveo-ai-dashboard/rules/charts.mdc
+metrics: .cursor/profiles/joveo-ai-dashboard/rules/metrics.mdc
+</available_instructions>
+
+## 🎯 MANDATORY LAYOUT STRUCTURE
+
+### Header & Navigation
+1. **Top Header**:
+   - Dark navy (#1C2536) background
+   - Account/region selection
+   - Notification center
+   - User profile
+
+2. **Left Sidebar**:
+   - Icon-only navigation in light mode
+   - Single-level menu structure
+   - Active state indicators
+
+3. **Main Content**:
+   - White background (#FFFFFF)
+   - Breadcrumb navigation
+   - Page-level filters
+   - Consistent padding (24px)
+
+### Dashboard Components
+1. **Metric Cards**:
+   - 4-column grid layout
+   - Consistent height
+   - Chart integration
+   - Clear KPI hierarchy
+
+2. **Data Visualizations**:
+   - Brand-compliant color palette
+   - Interactive tooltips
+   - Clear legends
+   - Responsive sizing
+
+3. **Data Tables**:
+   - Fixed header
+   - Row hover states
+   - Pagination controls
+   - Column sorting
+
+## ⚡ STRICT DEVELOPMENT GUIDELINES
+
+### Component Rules
+- ALWAYS use pre-built Joveo components
+- ALWAYS maintain exact spacing and alignment
+- ALWAYS follow typography scale
+- NEVER create custom variations
+- NEVER modify color tokens
+- NEVER add unauthorized animations
+
+### Data Visualization
+- ALWAYS use approved chart types
+- ALWAYS follow data viz color palette
+- ALWAYS include proper legends
+- NEVER use experimental chart types
+- NEVER modify chart styling
+- NEVER skip loading states
+
+### Code Standards
+- Strong TypeScript typing
+- Consistent error handling
+- Performance optimization
+- Accessibility compliance
+- Mobile responsiveness
+- Clean code structure
+
+## 🚫 FORBIDDEN PRACTICES
+
+<forbidden_rules>
+# Never use flexible/context-aware rules
+- .cursor/profiles/default/rules/*.mdc
+# Never allow custom styling
+- Custom colors
+- Custom animations
+- Custom component variants
+- Gradient backgrounds
+- Non-standard layouts
+</forbidden_rules>
+
+## 📊 COMPONENT PATTERNS
+
+### Metric Cards
+```typescript
+<Card className="bg-white rounded-[4px] shadow-sm p-6">
+  <div className="flex justify-between items-center mb-4">
+    <Typography variant="h3" className="text-[#3D4759]">
+      {metric.title}
+    </Typography>
+    <InfoTooltip content={metric.description} />
+  </div>
+  <div className="h-[200px]">
+    <MetricChart data={metric.data} />
+  </div>
+</Card>
+```
+
+### Data Tables
+```typescript
+<Table>
+  <TableHeader className="bg-[#F8F9FA]">
+    {columns.map(column => (
+      <TableColumn key={column.key}>{column.label}</TableColumn>
+    ))}
+  </TableHeader>
+  <TableBody>
+    {data.map(row => (
+      <TableRow key={row.id}>
+        {columns.map(column => (
+          <TableCell key={`${row.id}-${column.key}`}>
+            {row[column.key]}
+          </TableCell>
+        ))}
+      </TableRow>
+    ))}
+  </TableBody>
+</Table>
+```
+
+## 🔐 SPECIALIZED RULES
+
+For specific development areas, refer to specialized rule files in `.cursor/profiles/joveo-ai-dashboard/rules/`:
+
+### Core Design System
+- **Design Tokens**: See `joveo-design-system.mdc` for colors, typography, and spacing
+- **Components**: See `joveo-components.mdc` for component library
+- **Patterns**: See `joveo-patterns.mdc` for layout patterns
+- **Data Grid**: See `data-grid.mdc` for table implementations
+- **Charts**: See `charts.mdc` for data visualization
+- **Metrics**: See `metrics.mdc` for KPI displays
+
+### Integration Rules
+- **Data Fetching**: Standard patterns for API integration
+- **Error Handling**: Consistent error states
+- **Loading States**: Standardized loading indicators
+- **Responsive Design**: Mobile-first approach
+
+## 📝 REMEMBER
+
+- **Consistency > Creativity**
+- **Standards > Speed**
+- **Brand > Innovation**
+- **Patterns > Customization**
+
+**PRIORITY**: Always maintain strict adherence to Joveo design standards. No exceptions.

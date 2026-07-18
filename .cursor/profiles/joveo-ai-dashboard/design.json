@@ -1,0 +1,170 @@
+{
+  "designTokens": {
+    "colors": {
+      "charts": {
+        "axis": {
+          "label": "#718096",
+          "tick": "#718096",
+          "line": "#E2E6F1",
+          "grid": "#E2E6F1"
+        },
+        "legend": {
+          "text": {
+            "default": "#3D4759",
+            "hover": "#303F9F",
+            "disabled": "#718096"
+          },
+          "symbol": {
+            "opacity": {
+              "default": 1,
+              "hover": 0.8,
+              "disabled": 0.3
+            }
+          }
+        },
+        "series": {
+          "primary": [
+            "#303F9F",
+            "#7681E8",
+            "#43A047",
+            "#3D4759",
+            "#F57C00"
+          ],
+          "secondary": [
+            "#E8EAF6",
+            "#C5CAE9",
+            "#E8F5E9",
+            "#F5F6F8",
+            "#FFF3E0"
+          ]
+        }
+      }
+    },
+    "typography": {
+      "charts": {
+        "axis": {
+          "label": {
+            "fontFamily": "SF Pro Text",
+            "fontSize": "12px",
+            "fontWeight": 500,
+            "lineHeight": "16px",
+            "letterSpacing": "-0.01em"
+          },
+          "tick": {
+            "fontFamily": "SF Pro Text",
+            "fontSize": "11px",
+            "fontWeight": 400,
+            "lineHeight": "16px"
+          }
+        },
+        "legend": {
+          "text": {
+            "fontFamily": "SF Pro Text",
+            "fontSize": "12px",
+            "fontWeight": 400,
+            "lineHeight": "16px"
+          }
+        }
+      }
+    },
+    "spacing": {
+      "charts": {
+        "axis": {
+          "label": {
+            "padding": {
+              "x": "16px",
+              "y": "16px"
+            }
+          },
+          "tick": {
+            "padding": "8px",
+            "length": "4px"
+          },
+          "grid": {
+            "dashArray": "4,4"
+          }
+        },
+        "legend": {
+          "container": {
+            "padding": {
+              "top": "0px",
+              "right": "16px",
+              "bottom": "0px",
+              "left": "16px"
+            }
+          },
+          "item": {
+            "gap": "8px",
+            "padding": "4px",
+            "marginBottom": "8px"
+          },
+          "symbol": {
+            "size": "12px"
+          }
+        }
+      }
+    },
+    "layout": {
+      "charts": {
+        "axis": {
+          "x": {
+            "maxTicksLimit": 8,
+            "maxLabelLength": 16
+          },
+          "y": {
+            "maxTicksLimit": 6
+          }
+        },
+        "legend": {
+          "position": {
+            "default": "right",
+            "responsive": {
+              "sm": "bottom"
+            }
+          },
+          "align": "start"
+        }
+      }
+    }
+  },
+  "components": {
+    "charts": {
+      "axis": {
+        "x": {
+          "grid": {
+            "display": false,
+            "drawBorder": true,
+            "drawTicks": true
+          },
+          "ticks": {
+            "maxRotation": 0,
+            "autoSkip": true,
+            "autoSkipPadding": 16
+          }
+        },
+        "y": {
+          "grid": {
+            "display": true,
+            "drawBorder": true,
+            "drawTicks": true
+          },
+          "ticks": {
+            "stepSize": "auto",
+            "includeBounds": true
+          }
+        }
+      },
+      "legend": {
+        "symbol": {
+          "type": "circle",
+          "radius": 2,
+          "borderWidth": 0
+        },
+        "interaction": {
+          "hover": true,
+          "select": true
+        }
+      }
+    }
+  }
+}

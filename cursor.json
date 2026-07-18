@@ -1,0 +1,33 @@
+{
+    "experimental": {
+      "copilot": true
+    },
+    "formatOnSave": true,
+    "defaultLinter": "eslint",
+    "defaultFormatter": "prettier",
+    "lineNumbers": true,
+    "wordWrap": true,
+    "tabSize": 2,
+    "trimTrailingWhitespace": true,
+    "insertFinalNewline": true,
+    "rulers": [80, 100],
+    "files": {
+      "exclude": [
+        "**/.git",
+        "**/node_modules",
+        "**/dist",
+        "**/build",
+        "**/.next",
+        "**/coverage",
+        "**/.env*"
+      ]
+    },
+    "search": {
+      "exclude": [
+        "**/dist",
+        "**/build",
+        "**/.next",
+        "**/coverage"
+      ]
+    }
+  } 

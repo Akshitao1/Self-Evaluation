@@ -1,0 +1,61 @@
+---
+description: data fetching, API, Integration
+globs: 
+alwaysApply: false
+---
+# Data Fetching Rules (Next.js + React Query)
+
+## 🔴 MANDATORY - CHECK FIRST
+**Before ANY data fetching code:**
+- [ ] Server component? → Use `fetch` only
+- [ ] Client component? → Must have `"use client"` + React Query only
+- [ ] API call in client? → Must be inside `useQuery`/`useMutation`
+- [ ] IF API response status code is 401 try logoutAndValidate 
+
+## ❌ INSTANT VIOLATIONS
+// ❌ WRONG - Direct fetch in client
+useEffect(() => {
+  fetch('/api/data').then(setData);
+}, []);
+
+// ✅ CORRECT - React Query in client
+"use client";
+const { data } = useQuery({
+  queryKey: ['data'],
+  queryFn: () => fetch('/api/data').then(res => res.json())
+});
+```
+
+## 📋 QUICK DECISION
+- **Need interactivity/state?** → Client component + React Query
+- **Just display data?** → Server component + fetch
+
+## 🎯 PRIORITY ORDER
+1. **CRITICAL**: No React Query in server components
+2. **CRITICAL**: No direct fetch/axios in client components
+3. **CRITICAL**: Add `"use client"` when using React Query
+4. **PREFERRED**: Use server components when possible
+
+## 🔧 TEMPLATES
+```typescript
+// Server Component
+async function ServerComp() {
+  const data = await fetch('/api/data');
+  return <div>{data}</div>;
+}
+
+// Client Component
+"use client";
+function ClientComp() {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['data'],
+    queryFn: () => fetch('/api/data').then(res => res.json())
+  });
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error</div>;
+  return <div>{data}</div>;
+}
+```
+
+## ✅ FINAL CHECK
+Ask before completion: "Server or client? Using correct method?"

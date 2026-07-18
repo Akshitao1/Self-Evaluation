@@ -1,0 +1,125 @@
+# Joveo Dashboard Metadata Standards
+
+## Overview
+This rule ensures all Joveo dashboard applications include comprehensive metadata for SEO optimization, social sharing, and app store listings.
+
+## Required Metadata
+
+### HTML Head Metadata
+- **Title**: Clear, concise title describing the dashboard functionality
+- **Description**: 150-160 character summary of dashboard purpose and key features
+- **Canonical URL**: Proper canonical URL to prevent duplicate content issues
+- **Viewport**: Responsive configuration for all devices
+- **Character Encoding**: UTF-8 encoding
+
+### Open Graph Protocol
+- **og:title**: Dashboard title (matches HTML title)
+- **og:description**: Dashboard description
+- **og:type**: "website"
+- **og:url**: Canonical URL to the dashboard
+- **og:image**: High-quality thumbnail representing the dashboard (1200×630px)
+- **og:site_name**: "Joveo Dashboard"
+
+### Twitter Cards
+- **twitter:card**: "summary_large_image"
+- **twitter:title**: Dashboard title
+- **twitter:description**: Dashboard description
+- **twitter:image**: High-quality dashboard thumbnail
+
+### App Manifest
+- **name**: Full dashboard name
+- **short_name**: Abbreviated dashboard name
+- **description**: Dashboard purpose and functionality
+- **start_url**: Entry point URL
+- **display**: "standalone"
+- **background_color**: "#FFFFFF"
+- **theme_color**: "#1C2536" (Joveo dark navy)
+
+## Implementation Pattern
+
+```typescript
+// In your Next.js layout.tsx file:
+export const metadata = {
+  title: "Dashboard Name | Joveo",
+  description: "Concise description of dashboard functionality and value proposition.",
+  metadataBase: new URL("https://dashboard.joveo.com"),
+  alternates: {
+    canonical: "/dashboard-path",
+  },
+  openGraph: {
+    type: "website",
+    title: "Dashboard Name | Joveo",
+    description: "Concise description of dashboard functionality and value proposition.",
+    url: "https://dashboard.joveo.com/dashboard-path",
+    siteName: "Joveo Dashboard",
+    images: [
+      {
+        url: "https://dashboard.joveo.com/images/dashboard-thumbnail.jpg",
+        width: 1200,
+        height: 630,
+      }
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Dashboard Name | Joveo",
+    description: "Concise description of dashboard functionality and value proposition.",
+    images: ["https://dashboard.joveo.com/images/dashboard-thumbnail.jpg"],
+  },
+};
+```
+
+## Manifest.json Pattern
+
+```json
+{
+  "name": "Dashboard Name | Joveo",
+  "short_name": "Dashboard",
+  "description": "Concise description of dashboard functionality and value proposition.",
+  "start_url": "/dashboard-path",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#1C2536",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
+```
+
+## Enforcement Rules
+
+### Required
+- Complete metadata in all dashboard applications
+- SEO-optimized descriptions between 150-160 characters
+- Properly sized social media thumbnail images
+- Canonical URLs to prevent duplicate content
+- Responsive viewport settings
+
+### Forbidden
+- Missing or generic metadata
+- Descriptions exceeding 160 characters
+- Low-quality or missing social thumbnail images
+- Missing canonical URLs
+- Hardcoded absolute URLs without environment variables
+
+## Compliance Checklist
+- [ ] HTML title and meta description tags
+- [ ] Open Graph tags
+- [ ] Twitter Card tags
+- [ ] Web app manifest
+- [ ] Favicon and app icons
+- [ ] Canonical URL

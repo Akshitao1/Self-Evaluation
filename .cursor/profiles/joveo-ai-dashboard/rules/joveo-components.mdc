@@ -1,0 +1,143 @@
+---
+alwaysApply: true
+---
+
+# Joveo Component Rules (shadcn/ui Implementation)
+
+## Component Implementation Guidelines
+
+This file contains base components and guidelines. For specific component implementations, refer to:
+
+1. Data Grid Components: See `data-grid.mdc`
+2. Navigation Components: See `navigation.mdc`
+3. Dialog Components: See `dialog.mdc`
+4. Empty State Components: See `empty-state.mdc`
+5. Footer Components: See `footer.mdc`
+6. Form Components: See `form.mdc`
+7. Dropdown Components: See `dropdown.mdc`
+
+### Typography Components
+
+#### Text Components
+```typescript
+import { Typography } from "@/components/ui/typography"
+
+// Headings
+<Typography variant="h1" className="text-content-darker">
+  Large Display Text
+</Typography>
+
+// Body Text
+<Typography variant="p" className="text-sm font-medium text-content-DEFAULT">
+  Body Text
+</Typography>
+
+// Subtle Text
+<Typography variant="muted" className="text-xs text-content-light">
+  Muted Text
+</Typography>
+```
+
+### Button Components
+
+#### Primary Button
+```typescript
+import { Button } from "@/components/ui/button"
+
+<Button variant="default" className="bg-primary hover:bg-primary-dark">
+  Primary Action
+</Button>
+
+// Secondary Button
+<Button variant="secondary" className="bg-secondary hover:bg-secondary-dark">
+  Secondary Action
+</Button>
+
+// Outline Button
+<Button variant="outline" className="border-primary text-primary hover:bg-primary-lighter">
+  Outline Action
+</Button>
+```
+
+### Card Components
+
+#### Analytics Card
+```typescript
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+
+<Card className="bg-surface-lighter border-border-light">
+  <CardHeader>
+    <CardTitle className="text-lg font-semibold text-content-darker">
+      Analytics Overview
+    </CardTitle>
+  </CardHeader>
+  <CardContent>
+    <div className="space-y-2">
+      <div className="flex justify-between items-center">
+        <span className="text-sm text-content-DEFAULT">Metric</span>
+        <span className="text-sm font-medium text-content-darker">Value</span>
+      </div>
+    </div>
+  </CardContent>
+</Card>
+```
+
+## Component Best Practices
+
+### General Guidelines
+1. Use shadcn/ui components as base
+2. Extend with Tailwind classes for Joveo-specific styling
+3. Maintain consistent spacing using Tailwind spacing scale
+4. Use semantic color classes from the theme
+5. Implement responsive designs using Tailwind breakpoints
+
+### Typography
+1. Use Typography component for consistent text styling
+2. Apply proper font weights using Tailwind classes
+3. Maintain text color hierarchy using content-* classes
+4. Use appropriate text sizes for different screen sizes
+
+### Layout
+1. Use Flexbox and Grid with Tailwind classes
+2. Implement proper spacing using Tailwind space-* utilities
+3. Use container queries for responsive layouts
+4. Maintain consistent padding and margins
+
+### Interactive Elements
+1. Implement proper hover and focus states
+2. Use appropriate cursor styles
+3. Add loading states where needed
+4. Include proper disabled states
+
+### Accessibility
+1. Include proper ARIA labels
+2. Maintain sufficient color contrast
+3. Implement keyboard navigation
+4. Add screen reader support
+
+## Component Checklist
+
+### Required Properties
+- [ ] Proper component structure
+- [ ] Consistent styling
+- [ ] Responsive behavior
+- [ ] Interactive states
+- [ ] Error handling
+- [ ] Loading states
+- [ ] Accessibility features
+
+### Style Consistency
+- [ ] Color scheme adherence
+- [ ] Typography hierarchy
+- [ ] Spacing consistency
+- [ ] Border usage
+- [ ] Shadow implementation
+- [ ] Animation consistency
+
+### Accessibility
+- [ ] Color contrast
+- [ ] Keyboard navigation
+- [ ] Screen reader support
+- [ ] Focus indicators
+- [ ] ARIA labels
+- [ ] Semantic HTML

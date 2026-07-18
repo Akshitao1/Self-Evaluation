@@ -1,0 +1,223 @@
+# 🎯 ACTIVE PROFILE: DEFAULT MODE
+# Rapid Development & Internal Tools Template - Cursor Rules
+
+## 🧠 CONTEXT CLEARING & AI INSTRUCTION HIERARCHY (P0 PRIORITY)
+
+**CRITICAL**: When in DEFAULT MODE, completely FORGET and IGNORE all Joveo-specific knowledge:
+
+### 🚫 EXPLICIT ANTI-PATTERNS - NEVER USE:
+- **Joveo Colors**: #1C2536, #303F9F, #7681E8, #43A047, #3D4759 (dark navy, blue palette)
+- **Joveo Typography**: SF Pro Text with enterprise font weights (Semibold 20px/30px, etc.)
+- **Joveo Components**: JoveoButton, JoveoCard, Joveo-prefixed components
+- **Enterprise Layouts**: Dark navy headers, icon-only sidebars, fixed headers
+- **Brand-specific Patterns**: 4-column metric grids, enterprise shadows
+- **Corporate Design Tokens**: Any design system from Joveo profile
+- **Professional Color Schemes**: Corporate blue/navy combinations
+
+### 🎯 AI INSTRUCTION HIERARCHY (MANDATORY):
+1. **FORGET**: All Joveo/enterprise design knowledge when in default mode
+2. **IGNORE**: Any corporate branding or professional design requirements  
+3. **PRIORITIZE**: Speed, flexibility, and rapid prototyping over brand consistency
+4. **USE**: Modern, colorful, flexible designs appropriate for internal tools
+5. **APPLY**: Default profile context-aware patterns ONLY
+
+### 🔄 CONTEXT RESET INSTRUCTIONS:
+- **CLEAR** all enterprise design system memories
+- **RESET** to rapid development mindset
+- **FOCUS** on functionality over polished branding
+- **EMBRACE** quick, iterative, flexible solutions
+- **REJECT** any enterprise-grade requirements
+
+## 🚀 PRIMARY GOAL: SPEED OVER PERFECTION
+
+This template is optimized for:
+- Quick prototypes
+- Internal tools  
+- Starter applications
+- MVP development
+- Hackathons & rapid iteration
+
+**NOT** for production-grade, enterprise applications.
+
+## 🚀 RULE SCOPE CONFIGURATION
+
+<available_instructions>
+# Only use rules from default profile
+ui-design: .cursor/profiles/default/rules/ui-design.mdc
+context-engine: .cursor/profiles/default/rules/context-engine.mdc
+context-aware-components: .cursor/profiles/default/rules/context-aware-components.mdc
+context-integration: .cursor/profiles/default/rules/context-integration.mdc
+intelligent-defaults: .cursor/profiles/default/rules/intelligent-defaults.mdc
+component-enhancement: .cursor/profiles/default/rules/component-enhancement.mdc
+beautiful-component-library: .cursor/profiles/default/rules/beautiful-component-library.mdc
+beautiful-design-system: .cursor/profiles/default/rules/beautiful-design-system.mdc
+reui-data-grid: .cursor/profiles/default/rules/reui-data-grid.mdc
+forms: .cursor/profiles/default/rules/forms.mdc
+dashboard-templates: .cursor/profiles/default/rules/dashboard-templates.mdc
+landing-page-templates: .cursor/profiles/default/rules/landing-page-templates.mdc
+aws-secrets: .cursor/profiles/default/rules/aws-secrets.mdc
+snowflake: .cursor/profiles/default/rules/snowflake.mdc
+jira: .cursor/profiles/default/rules/jira.mdc
+google-sheets: .cursor/profiles/default/rules/google-sheets-unified.mdc
+postgres: .cursor/profiles/default/rules/postgres.mdc
+</available_instructions>
+
+## 🧠 CONTEXT-AWARE UI GENERATION (P0 PRIORITY)
+
+**MANDATORY FOR ALL UI COMPONENTS**: Use the intelligent context system to generate perfectly tailored components automatically.
+
+### **Context-Aware Workflow (Required)**
+1. **READ** context before generating ANY component
+2. **APPLY** context-specific optimizations
+3. **GENERATE** domain-expert-level components that feel purpose-built
+4. **UPDATE** patterns for continuous learning
+
+### **Smart Auto-Enhancement**
+Transform basic requests into intelligent, domain-specific implementations:
+- **"Create a table"** → Auto-generates context-aware tables (HR, Sales, Finance)
+- **"Build a dashboard"** → Auto-generates domain-specific metrics and charts
+- **"Make a form"** → Auto-generates contextual field sets and validation
+
+## ⚡ DEVELOPMENT GUIDELINES
+
+### TypeScript & Types
+- `any` type is ALLOWED when it speeds development
+- Implicit types are fine - don't over-annotate
+- Skip complex type definitions for prototypes
+- Use `@ts-ignore` when needed for quick fixes
+- Focus on working code first, perfect types later
+
+### Component Patterns
+- Inline styles with Tailwind are encouraged
+- Co-locate everything for speed (styles, logic, components)
+- Don't over-architect - keep it simple
+- Copy-paste patterns when they work
+- Optimize for readability and speed of development
+
+### Error Handling
+- Basic try/catch is sufficient
+- Console.log debugging is fine
+- Don't over-engineer error boundaries for internal tools
+- Quick alerts/toasts for user feedback
+
+### Code Organization
+- Flat file structure is okay for small projects
+- Don't create abstractions until you need them
+- Keep related code together
+- Use descriptive names over perfect architecture
+
+## 🛠 ACCEPTABLE SHORTCUTS
+
+### Development Speed Boosters:
+- ✅ Use `any` type when prototyping
+- ✅ Inline event handlers
+- ✅ Copy-paste similar components
+- ✅ Hard-code values for MVPs
+- ✅ Use `console.log` for debugging
+- ✅ Skip unit tests for prototypes
+- ✅ Use `useEffect` without deep dependency analysis
+- ✅ Inline styles when needed
+- ✅ Skip error boundaries for internal tools
+- ✅ Use basic fetch instead of complex query libraries
+
+### Still Important:
+- 🎯 Component naming should be clear
+- 🎯 File organization should make sense
+- 🎯 Comments for complex business logic
+- 🎯 Basic error handling for user actions
+- 🎯 Responsive design (mobile-first)
+- 🎯 Accessibility basics (alt tags, labels)
+
+## 🚫 FORBIDDEN RULES & COMPREHENSIVE ANTI-PATTERNS
+
+<forbidden_rules>
+# NEVER use Joveo-specific rules or patterns
+- .cursor/profiles/joveo-ai-dashboard/rules/*.mdc
+- ANY Joveo design system elements
+- ANY enterprise-grade component libraries
+- ANY corporate branding requirements
+</forbidden_rules>
+
+### 🚫 EXPLICIT DESIGN ANTI-PATTERNS:
+**Colors to NEVER use:**
+- Dark navy headers (#1C2536)  
+- Corporate blue palette (#303F9F, #7681E8)
+- Enterprise green (#43A047)
+- Corporate gray text (#3D4759)
+
+**Typography to NEVER use:**
+- SF Pro Text font family
+- Enterprise font weights (Semibold 20px/30px)
+- Corporate typography scales
+
+**Layout patterns to NEVER use:**
+- Dark navy top headers
+- 4-column metric card grids
+- Enterprise dashboard layouts
+- Fixed header navigation
+- Corporate spacing patterns (24px enterprise units)
+
+**Component patterns to NEVER use:**
+- Joveo-prefixed components (JoveoButton, JoveoCard, etc.)
+- Enterprise metric cards with specific chart integration
+- Corporate data table patterns
+- Brand-compliant chart color palettes
+- Enterprise shadow/elevation patterns
+
+## 🚫 AVOID FOR RAPID DEVELOPMENT
+
+- Complex state management (Redux, Zustand) for simple apps
+- Over-abstracted component hierarchies
+- Extensive type definitions for prototypes
+- Complex testing setups
+- Performance optimizations before they're needed
+- Over-engineered folder structures
+- Complex form validation libraries for simple forms
+- Micro-components for every UI element
+
+## 📝 REMEMBER
+
+- **Working code > Perfect code**
+- **Ship features > Architect abstractions** 
+- **Iterate quickly > Plan extensively**
+- **Copy patterns > Reinvent wheels**
+- **Solve problems > Follow best practices**
+
+## 🔐 SPECIALIZED RULES
+
+For specific development areas, refer to specialized rule files in `.cursor/profiles/default/rules/`:
+
+### 🧠 Context-Aware UI Generation (P0 PRIORITY)
+- **Sample Content Cleanup**: See `.cursor/profiles/default/rules/sample-content-cleanup.mdc` for mandatory demo removal before ANY user work
+- **Context Engine**: See `.cursor/profiles/default/rules/context-engine.mdc` for auto-detection patterns
+- **Context-Aware Components**: See `.cursor/profiles/default/rules/context-aware-components.mdc` for domain-specific variants
+- **Context Integration**: See `.cursor/profiles/default/rules/context-integration.mdc` for complete system overview
+- **Intelligent Defaults**: See `.cursor/profiles/default/rules/intelligent-defaults.mdc` for auto-enhancement rules
+- **UI Design**: See `.cursor/profiles/default/rules/ui-design.mdc` for professional design standards
+- **ReUI Data Grid**: See `.cursor/profiles/default/rules/reui-data-grid.mdc` for advanced table generation
+
+### Core Security & Infrastructure
+- **AWS Secrets Management**: See `.cursor/profiles/default/rules/aws-secrets.mdc` for secure credential handling patterns
+
+### Service-Specific Integration Rules
+- **Snowflake**: See `.cursor/profiles/default/rules/snowflake.mdc` for data warehouse integration patterns
+- **Jira**: See `.cursor/profiles/default/rules/jira.mdc` for issue tracking and project management integrations  
+- **Google Sheets**: See `.cursor/profiles/default/rules/google-sheets-unified.mdc` for spreadsheet and data import/export features
+- **PostgreSQL**: See `.cursor/profiles/default/rules/postgres.mdc` for database operations and data management
+
+**PRIORITY**: Always apply Context-Aware UI rules first, then reference service-specific rules as needed.
+
+## 📋 PROJECT CONTEXT INTEGRATION
+
+**MANDATORY**: Always reference `project-context.md` before generating ANY component or making design decisions. This file contains:
+- Current project phase and requirements
+- Active design philosophy for this session
+- Profile-specific guidelines and constraints  
+- Component naming conventions
+- Integration patterns and data sources
+
+### Context Reference Workflow:
+1. **READ** `project-context.md` before starting any UI work
+2. **APPLY** current project context to component generation
+3. **MAINTAIN** consistency with established patterns in current session
+4. **UPDATE** context file when new patterns are established

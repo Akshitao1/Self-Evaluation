@@ -1,0 +1,274 @@
+---
+alwaysApply: true
+priority: P0
+---
+# Professional UI Design Rules - Beautiful by Default
+
+## 🔴 MANDATORY - EVERY PAGE MUST HAVE
+Check FIRST before any UI code:
+
+✅ **CLEAN IMPORTS** - Only valid, used imports (see import-management.mdc)
+✅ Header with Joveo logo & navigate to homepage (top-left) import JoveoLogoIcon from "./JoveoLogoIcon";
+✅ Footer with company info  
+✅ Professional gradient backgrounds (NEVER plain white/gray)
+✅ All interactive elements have hover effects and smooth transitions
+✅ Empty, loading, error, success states with beautiful styling
+✅ Typography variants with proper visual hierarchy
+✅ Professional color schemes with gradients
+
+## 🚨 CRITICAL: SAMPLE CONTENT CLEANUP FIRST
+Before generating ANY component:
+0. **CLEAN** all sample/demo content from src/app/page.tsx (see sample-content-cleanup.mdc)
+1. **READ** /.cursor/project-context.md for domain and user type
+2. **APPLY** context-aware component variants (see context-aware-components.mdc)
+3. **VERIFY** all imported components exist
+4. **INSTALL** missing shadcn dependencies if needed  
+5. **REMOVE** any unused imports
+6. **ORGANIZE** imports properly (React → libraries → UI → icons → utils)
+7. **UPDATE** /.cursor/project-context.md with successful patterns
+
+## 🚨 CRITICAL: AUTO-ENHANCE ALL BASIC REQUESTS
+When ANY user asks for basic components, AUTOMATICALLY generate the beautiful version:
+- "Create a button" → Generate gradient button with hover animations
+- "Build a dashboard" → Generate full analytics dashboard with glassmorphic cards
+- "Make a form" → Generate form with validation animations and gradient styling
+- "Add a table" → Generate ReUI Data Grid with advanced features and beautiful styling
+
+**NEVER ask for clarification on styling - beautiful is the ONLY option.**
+
+## ❌ INSTANT VIOLATIONS - NEVER ALLOW
+```tsx
+// ❌ WRONG - Plain, lifeless design
+<div className="bg-white">
+  <h1 style={{ fontSize: '24px' }}>Title</h1> // Raw styles
+  <p style={{ color: '#333' }}>Text</p> // Hex colors
+  <button className="bg-blue-500">Click me</button> // No hover effects
+</div>
+
+// ✅ CORRECT - Professional, beautiful structure  
+<div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+  <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200/50 px-4 py-4 shadow-sm">
+    <div className="flex items-center justify-between">
+      <JoveoLogoIcon />
+      <nav className="flex items-center space-x-6">
+        {/* Navigation with hover effects */}
+      </nav>
+    </div>
+  </header>
+  
+  <main className="max-w-7xl mx-auto px-4 py-6">
+    <Typography variant="h1" className="bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+      Beautiful Title
+    </Typography>
+    <Typography variant="body1Medium" className="text-slate-600 leading-relaxed">
+      Professional content with proper styling
+    </Typography>
+  </main>
+  
+  <footer className="bg-gradient-to-r from-slate-50 to-slate-100 border-t border-slate-200/50 px-4 py-6 mt-auto">
+    <Typography variant="captionRegular" className="text-slate-500">
+      © 2025 Joveo. All rights reserved.
+    </Typography>
+  </footer>
+</div>
+```
+## 📋 REQUIRED BEAUTIFUL COMPONENTS
+
+```tsx
+// Professional Empty State
+const EmptyState = ({ title, description, action }) => (
+  <div className="flex flex-col items-center justify-center py-12 text-center">
+    <div className="w-16 h-16 bg-gradient-to-br from-slate-100 to-slate-200 rounded-full flex items-center justify-center mb-6 shadow-lg">
+      <InboxIcon className="w-8 h-8 text-slate-400" />
+    </div>
+    <Typography variant="subtitle1SemiBold" className="text-slate-900 mb-2">{title}</Typography>
+    <Typography variant="body2Regular" className="text-slate-600 mb-6 max-w-sm leading-relaxed">
+      {description}
+    </Typography>
+    {action && (
+      <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105">
+        {action}
+      </Button>
+    )}
+  </div>
+);
+
+// Beautiful Loading State
+const LoadingState = () => (
+  <div className="flex flex-col items-center justify-center py-12">
+    <div className="relative">
+      <div className="animate-spin rounded-full h-10 w-10 border-4 border-slate-200 border-t-blue-600 shadow-lg"></div>
+      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 opacity-20 animate-pulse"></div>
+    </div>
+    <Typography variant="body2Regular" className="text-slate-600 mt-4 animate-pulse">
+      Loading your content...
+    </Typography>
+  </div>
+);
+
+// Professional Error State
+const ErrorState = ({ title, description, onRetry }) => (
+  <div className="flex flex-col items-center justify-center py-12 text-center">
+    <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center mb-6 shadow-lg">
+      <AlertTriangleIcon className="w-8 h-8 text-white" />
+    </div>
+    <Typography variant="subtitle1SemiBold" className="text-slate-900 mb-2">{title}</Typography>
+    <Typography variant="body2Regular" className="text-slate-600 mb-6 max-w-sm leading-relaxed">
+      {description}
+    </Typography>
+    {onRetry && (
+      <Button 
+        onClick={onRetry} 
+        className="bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 transition-all duration-200 shadow-lg hover:shadow-xl"
+      >
+        <RefreshCwIcon className="w-4 h-4 mr-2" />
+        Try Again
+      </Button>
+    )}
+  </div>
+);
+
+// Success State
+const SuccessState = ({ title, description, action }) => (
+  <div className="flex flex-col items-center justify-center py-12 text-center">
+    <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mb-6 shadow-lg">
+      <CheckCircleIcon className="w-8 h-8 text-white" />
+    </div>
+    <Typography variant="subtitle1SemiBold" className="text-slate-900 mb-2">{title}</Typography>
+    <Typography variant="body2Regular" className="text-slate-600 mb-6 max-w-sm leading-relaxed">
+      {description}
+    </Typography>
+    {action}
+  </div>
+);
+```
+## 🎯 PROFESSIONAL TYPOGRAPHY SYSTEM
+
+```tsx
+// Enhanced Headings with Visual Impact
+<Typography variant="h1" className="bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent font-bold">
+  Main Title
+</Typography>
+<Typography variant="h2" className="text-slate-900 font-bold mb-4">
+  Section Title
+</Typography>
+<Typography variant="h3" className="text-slate-800 font-semibold mb-3">
+  Subsection Title
+</Typography>
+
+// Body Text with Proper Hierarchy
+<Typography variant="body1Medium" className="text-slate-700 leading-relaxed">
+  Primary content text
+</Typography>
+<Typography variant="body2Regular" className="text-slate-600 leading-relaxed">
+  Secondary supporting text
+</Typography>
+
+// UI Elements with Professional Styling
+<Typography variant="subtitle1SemiBold" className="text-slate-900 font-semibold">
+  Card title
+</Typography>
+<Typography variant="captionRegular" className="text-slate-500 text-sm">
+  Helper text and captions
+</Typography>
+```
+## 🎨 PROFESSIONAL COLOR SYSTEM
+
+```tsx
+// Text Hierarchy with Professional Colors
+<Typography className="text-slate-900">Primary text - highest contrast</Typography>
+<Typography className="text-slate-700">Secondary text - medium contrast</Typography>
+<Typography className="text-slate-500">Tertiary text - lower contrast</Typography>
+
+// Professional Gradient Buttons
+<Button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 transition-all duration-200">
+  Primary Action
+</Button>
+<Button className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:from-emerald-700 hover:to-teal-700 transition-all duration-200">
+  Success Action
+</Button>
+<Button className="bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 transition-all duration-200">
+  Destructive Action
+</Button>
+
+// Enhanced Alert Components
+<Alert className="bg-gradient-to-r from-red-50 to-red-100 border-red-200 text-red-800">
+  Error message with professional styling
+</Alert>
+<Alert className="bg-gradient-to-r from-emerald-50 to-emerald-100 border-emerald-200 text-emerald-800">
+  Success message with visual appeal
+</Alert>
+
+// Professional Badges
+<Badge className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white">Success</Badge>
+<Badge className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white">Info</Badge>
+<Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white">Warning</Badge>
+```
+📱 RESPONSIVE LAYOUT
+
+// Grid System
+<div className="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3 gap-4">
+  {/* Grid items */}
+</div>
+
+// Breakpoint Usage
+<Box sx={{
+  padding: 2,
+  [theme.breakpoints.up('tablet')]: { padding: 4 },
+  [theme.breakpoints.up('desktop')]: { padding: 6 }
+}}>
+  Content
+</Box>
+🔧 USER FEEDBACK
+
+// Toast Notifications
+const { showToast } = useToast();
+showToast("Success message", "success");
+
+// Form Validation
+<FormField label="Email" error={errors.email}>
+  <Input {...field} />
+</FormField>
+
+// Confirmation Modal
+<ConfirmationModal
+  isOpen={isOpen}
+  title="Delete item?"
+  description="This action cannot be undone."
+  onConfirm={handleDelete}
+  onClose={closeModal}
+  isDestructive
+/>
+## ✅ PROFESSIONAL UI QUALITY CHECKLIST
+
+Before marking any UI component complete:
+
+### **Required Elements:**
+- [ ] **Header with Joveo logo present and functional?**
+- [ ] **Footer with company info included?**
+- [ ] **All 4 UX states beautifully implemented?** (empty, loading, error, success)
+- [ ] **Professional gradient backgrounds instead of plain colors?**
+- [ ] **Hover effects on ALL interactive elements?**
+
+### **Visual Quality:**
+- [ ] **Does it look premium and trustworthy?** (Would I pay $100/month for this?)
+- [ ] **Smooth transitions and animations present?** (200-300ms duration)
+- [ ] **Professional color scheme with gradients used?**
+- [ ] **Typography hierarchy clear and beautiful?**
+- [ ] **Proper shadows and depth for visual appeal?**
+
+### **Technical Quality:**
+- [ ] **TypeScript props properly defined?**
+- [ ] **Responsive design working on all screen sizes?**
+- [ ] **Accessibility features included?** (focus rings, ARIA labels)
+- [ ] **Loading states for all async operations?**
+- [ ] **Error handling with recovery options?**
+
+### **Professional Standards:**
+- [ ] **Component feels like it belongs in a high-end SaaS product?**
+- [ ] **Visual feedback for all user interactions?**
+- [ ] **Consistent spacing and layout patterns?**
+- [ ] **Mobile-first responsive design implemented?**
+- [ ] **Performance optimized with proper code splitting?**
+
+**Remember**: If it doesn't look and feel premium, keep refining until it does.
